@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Interactive map of Pangasinan. Easily locate tourist spots, beaches, and historical landmarks.">
+    <meta property="og:title" content="Map | Tara Pangasinan">
+    <meta property="og:description" content="Interactive map of Pangasinan. Easily locate tourist spots, beaches, and historical landmarks.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global/variables.css">
+    <link rel="stylesheet" href="css/global/base.css">
+    <link rel="stylesheet" href="css/global/navbar.css">
+    <link rel="stylesheet" href="css/global/footer.css">
+    <link rel="stylesheet" href="css/pages/map/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>Map | Tara Pangasinan</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <div class="logo-text">
+                <span class="green">Pangasinan</span>
+                <span class="white">Tourism</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="map.html" class="active">Map</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
+            <a href="profile.html" class="nav-profile-icon" title="My Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </a>
+        </div>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="map-hero">
+        <div class="map-hero-content">
+            <p class="map-hero-label">Navigate Pangasinan</p>
+            <h1>Interactive Map</h1>
+            <p>Discover the exact locations of Pangasinan's breathtaking destinations.</p>
+        </div>
+        <svg class="map-hero-wave" viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill="#f8fafc"/>
+        </svg>
+    </header>
+
+    <!-- Map Layout -->
+    <div class="map-container">
+        
+        <!-- Sidebar Locations -->
+        <div class="map-sidebar">
+            <h2>Locations</h2>
+            <p>Click a destination to locate it on the map.</p>
+            
+            <div class="map-card active" onclick="panTo(16.2039, 120.0381)">
+                <img src="https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=400" alt="Hundred Islands" class="map-card-img">
+                <div class="map-card-info">
+                    <span class="map-card-title">Hundred Islands</span>
+                    <span class="map-card-loc">Alaminos City</span>
+                    <span class="map-card-badge">Nature</span>
+                </div>
+            </div>
+
+            <div class="map-card" onclick="panTo(16.3051, 119.7820)">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400" alt="Patar Beach" class="map-card-img">
+                <div class="map-card-info">
+                    <span class="map-card-title">Patar Beach</span>
+                    <span class="map-card-loc">Bolinao</span>
+                    <span class="map-card-badge">Beach</span>
+                </div>
+            </div>
+
+            <div class="map-card" onclick="panTo(15.9686, 120.3544)">
+                <img src="https://images.unsplash.com/photo-1582556220815-46b5a34e0bd6?w=400" alt="Minor Basilica" class="map-card-img">
+                <div class="map-card-info">
+                    <span class="map-card-title">Minor Basilica</span>
+                    <span class="map-card-loc">Manaoag</span>
+                    <span class="map-card-badge">Culture</span>
+                </div>
+            </div>
+            
+            <div class="map-card" onclick="panTo(16.3813, 119.8942)">
+                <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=400" alt="Bolinao Falls" class="map-card-img">
+                <div class="map-card-info">
+                    <span class="map-card-title">Bolinao Falls</span>
+                    <span class="map-card-loc">Bolinao</span>
+                    <span class="map-card-badge">Nature</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaflet Map Container -->
+        <div class="map-view-wrapper">
+            <div id="leafletMap"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="footer-wrapper">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <div class="footer-logo-text">
+                            <span class="green">Pangasinan</span>
+                            <span class="white">Tourism</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
+                </div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="map.html">Map</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS & Logic -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize Map
+        const map = L.map('leafletMap', {
+            zoomControl: false // Add custom zoom later if needed
+        }).setView([16.0, 120.3], 9);
+
+        // Add Base Tile Layer (CartoDB Positron for clean look)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors & CartoDB'
+        }).addTo(map);
+        
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // Map Markers Data
+        const locations = [
+            { lat: 16.2039, lng: 120.0381, title: 'Hundred Islands', color: '#1D9E75' },
+            { lat: 16.3051, lng: 119.7820, title: 'Patar Beach', color: '#1D9E75' },
+            { lat: 15.9686, lng: 120.3544, title: 'Minor Basilica of Our Lady', color: '#1D9E75' },
+            { lat: 16.3813, lng: 119.8942, title: 'Bolinao Falls 1', color: '#1D9E75' }
+        ];
+
+        // Custom Icon SVG
+        const createMarkerIcon = (color) => {
+            return L.divIcon({
+                className: 'custom-leaflet-marker',
+                html: `<svg width="32" height="32" viewBox="0 0 24 24" fill="${color}" stroke="#fff" stroke-width="2">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3" fill="#fff"></circle>
+                       </svg>`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            });
+        };
+
+        const markers = [];
+        locations.forEach(loc => {
+            const marker = L.marker([loc.lat, loc.lng], { icon: createMarkerIcon(loc.color) })
+                .bindPopup(`<b>${loc.title}</b>`)
+                .addTo(map);
+            markers.push(marker);
+        });
+
+        // Focus first marker
+        setTimeout(() => panTo(locations[0].lat, locations[0].lng), 500);
+
+        function panTo(lat, lng) {
+            map.flyTo([lat, lng], 13, { duration: 1.5 });
+            
+            // Remove active state from all cards
+            document.querySelectorAll('.map-card').forEach(card => card.classList.remove('active'));
+            
+            // Add active state to clicked card
+            if (event) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+

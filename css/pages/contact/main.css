@@ -1,0 +1,190 @@
+﻿/* css/pages/contact/main.css */
+
+.contact-hero {
+    background: linear-gradient(160deg, var(--brand-green) 0%, var(--brand-green-hover) 100%);
+    padding: 140px 32px 90px;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    margin-top: 68px; /* Offset for fixed navbar */
+}
+
+.contact-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.contact-hero-content h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.contact-hero-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.contact-hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    display: block;
+}
+
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    padding: 80px 0;
+}
+
+@media (max-width: 992px) {
+    .contact-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contact-form-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09), 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.contact-form-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text-light);
+    margin-bottom: 32px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--dark);
+    background: #FAFAFA;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 4px rgba(29, 158, 117, 0.12);
+    background: var(--white);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-info-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.info-card {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-left: 3px solid var(--brand-green);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
+}
+
+.info-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(29, 158, 117, 0.12);
+    color: var(--brand-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 5px rgba(29, 158, 117, 0.07);
+}
+
+.info-content h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+}
+
+.info-content p, .info-content a {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text-light);
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+.info-content a:hover {
+    color: var(--brand-green);
+    text-decoration: underline;
+}
+
+/* Success Alert */
+.alert-success {
+    background: #e6f4ef;
+    border: 1px solid var(--brand-green);
+    color: var(--brand-green-hover);
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    margin-bottom: 24px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+}
+
+

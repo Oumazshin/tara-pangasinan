@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create a new Tara Pangasinan account to start booking tours and saving your favorite spots.">
+    <meta property="og:title" content="Register | Tara Pangasinan">
+    <meta property="og:description" content="Create a new Tara Pangasinan account to start booking tours and saving your favorite spots.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global/variables.css">
+    <link rel="stylesheet" href="css/global/base.css">
+    <link rel="stylesheet" href="css/pages/register/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>Create Account | Tara Pangasinan</title>
+</head>
+<body>
+    <div class="auth-split-layout">
+        
+        <!-- Left Side: Image -->
+        <div class="auth-image-side" style="background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600') center/cover no-repeat;">
+            <div class="auth-image-text">
+                <h2>Your Journey Begins</h2>
+                <p>Create a free account to unlock exclusive tours, save your favorite spots, and build your ultimate Pangasinan itinerary.</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="auth-form-side">
+            <a href="home.html" class="auth-logo">
+                <img src="assets/Home Page/Logo.svg" alt="Logo" width="32" height="32">
+                <div class="auth-logo-text">
+                    <span class="green">Pangasinan</span>
+                    <span class="dark">Tourism</span>
+                </div>
+            </a>
+
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Sign up to start booking your Pangasinan adventures.</p>
+            </div>
+
+            <form action="profile.html" method="GET" id="registerForm" onsubmit="event.preventDefault(); window.location.href='profile.html';">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                </div>
+
+                <div class="auth-options">
+                    <label>
+                        <input type="checkbox" style="accent-color: var(--brand-green);" required> I agree to the <a href="#" style="margin-left: 4px;">Terms & Conditions</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-auth">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="login.html">Log in here</a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

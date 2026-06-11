@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Plan your ultimate trip to Pangasinan. Book tours, find accommodations, and create your itinerary.">
+    <meta property="og:title" content="Plan Your Visit | Tara Pangasinan">
+    <meta property="og:description" content="Plan your ultimate trip to Pangasinan. Book tours, find accommodations, and create your itinerary.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global/variables.css">
+    <link rel="stylesheet" href="css/global/base.css">
+    <link rel="stylesheet" href="css/global/navbar.css">
+    <link rel="stylesheet" href="css/global/footer.css">
+    <link rel="stylesheet" href="css/pages/plan/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>Plan Your Visit | Tara Pangasinan</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <div class="logo-text">
+                <span class="green">Pangasinan</span>
+                <span class="white">Tourism</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
+            <a href="profile.html" class="nav-profile-icon" title="My Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </a>
+        </div>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="plan-hero">
+        <div class="plan-hero-content">
+            <p class="plan-hero-label">Plan Your Visit</p>
+            <h1>Book Your Tour</h1>
+            <p>Secure your spot at Pangasinan's top destinations.</p>
+        </div>
+        <svg class="plan-hero-wave" viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill="#f8fafc"/>
+        </svg>
+    </header>
+
+    <!-- Booking Form Container -->
+    <div class="container plan-layout">
+        
+        <!-- Left Column: Form -->
+        <div class="booking-form">
+            <form id="bookingForm" onsubmit="event.preventDefault(); submitBooking();">
+                
+                <!-- Destination Section -->
+                <div class="form-section">
+                    <h2>Destination</h2>
+                    <div class="form-group">
+                        <label for="destination">Select Tour</label>
+                        <select id="destination" class="form-control" required onchange="updatePrice()">
+                            <option value="1200" selected>Hundred Islands Private Boat Tour (&#8369;1,200/pax)</option>
+                            <option value="800">Patar Beach Cottage &amp; Tour (&#8369;800/pax)</option>
+                            <option value="500">Enchanted Cave Entry &amp; Guide (&#8369;500/pax)</option>
+                            <option value="1500">Bolinao Falls Full Day Trip (&#8369;1,500/pax)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Date & Time Section -->
+                <div class="form-section">
+                    <h2>Date & Time</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label for="date">Select Date</label>
+                            <input type="date" id="date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Select Time</label>
+                            <select id="time" class="form-control" required>
+                                <option value="8:00 AM">8:00 AM (Morning Tour)</option>
+                                <option value="1:00 PM">1:00 PM (Afternoon Tour)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guests Section -->
+                <div class="form-section">
+                    <h2>Guests</h2>
+                    
+                    <div class="guest-counter-row">
+                        <div class="guest-info">
+                            <h4>Adults</h4>
+                            <p>Age 13+</p>
+                        </div>
+                        <div class="guest-controls">
+                            <button type="button" class="btn-counter" onclick="updateGuests('adults', -1)">-</button>
+                            <span class="guest-count" id="adult-count">2</span>
+                            <button type="button" class="btn-counter" onclick="updateGuests('adults', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="guest-counter-row">
+                        <div class="guest-info">
+                            <h4>Children</h4>
+                            <p>Ages 2-12 (50% off)</p>
+                        </div>
+                        <div class="guest-controls">
+                            <button type="button" class="btn-counter" onclick="updateGuests('children', -1)">-</button>
+                            <span class="guest-count" id="child-count">0</span>
+                            <button type="button" class="btn-counter" onclick="updateGuests('children', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="form-section">
+                    <h2>Contact Details</h2>
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="+63 9XX XXX XXXX" required>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="summary-container">
+            <div class="summary-card">
+                <h3>Order Summary</h3>
+                
+                <div class="summary-item">
+                    <span>Adults (<span id="summary-adult-count">2</span>)</span>
+                    <span id="summary-adult-price">&#8369;2,400</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Children (<span id="summary-child-count">0</span>)</span>
+                    <span id="summary-child-price">&#8369;0</span>
+                </div>
+
+                <div class="summary-item" style="color: var(--text-light); font-size: 13px;">
+                    <span>Taxes &amp; Fees</span>
+                    <span>&#8369;150</span>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="summary-total-price">&#8369;2,550</span>
+                </div>
+
+                <button type="submit" form="bookingForm" class="btn-primary w-100" style="padding: 16px; font-size: 16px; border-radius: 8px;">
+                    Confirm Booking
+                </button>
+                <p style="text-align: center; font-size: 12px; color: var(--text-light); margin-top: 12px;">
+                    You will pay at the location. No credit card required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="success-modal">
+            <div class="success-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3>Booking Confirmed!</h3>
+            <p>Your tour has been successfully scheduled. We've sent the details to your email.</p>
+            <a href="profile.html" class="btn-primary w-100" style="padding: 14px;">View in Profile</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="footer-wrapper">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <div class="footer-logo-text">
+                            <span class="green">Pangasinan</span>
+                            <span class="white">Tourism</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
+                </div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="map.html">Map</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Logic -->
+    <script>
+        let adults = 2;
+        let children = 0;
+        const tax = 150;
+
+        // Set minimum date to today
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+        function updateGuests(type, change) {
+            if (type === 'adults') {
+                if (adults + change >= 1 && adults + change <= 10) adults += change;
+                document.getElementById('adult-count').textContent = adults;
+                document.getElementById('summary-adult-count').textContent = adults;
+            } else if (type === 'children') {
+                if (children + change >= 0 && children + change <= 10) children += change;
+                document.getElementById('child-count').textContent = children;
+                document.getElementById('summary-child-count').textContent = children;
+            }
+            updatePrice();
+        }
+
+        function updatePrice() {
+            const basePrice = parseInt(document.getElementById('destination').value);
+            const childPrice = basePrice * 0.5;
+
+            const adultTotal = adults * basePrice;
+            const childTotal = children * childPrice;
+            const grandTotal = adultTotal + childTotal + tax;
+
+            document.getElementById('summary-adult-price').textContent = '₱' + adultTotal.toLocaleString();
+            document.getElementById('summary-child-price').textContent = '₱' + childTotal.toLocaleString();
+            document.getElementById('summary-total-price').textContent = '₱' + grandTotal.toLocaleString();
+        }
+
+        function submitBooking() {
+            // Trigger Success Modal
+            const modal = document.getElementById('successModal');
+            modal.classList.add('active');
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
+

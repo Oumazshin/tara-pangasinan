@@ -1,0 +1,189 @@
+﻿/* ------------------- NAVBAR ------------------- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    background: var(--dark-footer);
+    display: flex;
+    width: 100%;
+    height: 68px;
+    padding: 0 32px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.logo-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo-text .green {
+    color: var(--brand-green);
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.logo-text .white {
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar.scrolled .logo-text .white {
+    color: var(--dark);
+}
+
+
+
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    font-family: 'Outfit', sans-serif;
+    color: var(--white);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.navbar.scrolled .nav-links a {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text);
+}
+
+.nav-links a {
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.nav-links a.active {
+    color: var(--brand-green);
+    font-weight: 700;
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--brand-green);
+    border-radius: 99px;
+}
+
+.nav-links a:hover {
+    color: var(--brand-green);
+}
+
+.navbar.scrolled .nav-links a.active,
+.navbar.scrolled .nav-links a:hover {
+    color: var(--brand-green);
+}
+
+
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--white);
+    margin: 5px;
+    transition: 0.3s;
+}
+
+.navbar.scrolled .hamburger span {
+    background-color: var(--dark);
+}
+
+@media (max-width: 768px) {
+    .nav-links { position: fixed; right: -100%; top: 0; height: 100vh; background: var(--white); flex-direction: column; justify-content: center; width: 70%; transition: 0.3s; box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1); }
+    .nav-links.active { right: 0; }
+    .nav-links a {
+    font-family: 'Outfit', sans-serif; color: var(--dark) !important; font-size: 1.25rem; }
+    .hamburger { display: block; z-index: 1001; }
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); background-color: var(--dark); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); background-color: var(--dark); }
+    .nav-action { display: none; }
+}
+
+.btn-primary-outline {
+    background: var(--brand-green);
+    border: 2px solid var(--brand-green);
+    color: var(--white);
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-outline:hover {
+    background: var(--brand-green-hover);
+    border-color: var(--brand-green-hover);
+    color: var(--white);
+}
+
+.navbar.scrolled .btn-primary-outline {
+    background: var(--brand-green);
+    border-color: var(--brand-green);
+    color: var(--white);
+}
+
+.navbar.scrolled .btn-primary-outline:hover {
+    background: var(--brand-green-hover);
+    border-color: var(--brand-green-hover);
+}
+
+.nav-profile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--brand-green);
+    color: var(--white);
+    text-decoration: none;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.nav-profile-icon:hover {
+    transform: scale(1.05);
+    background: var(--brand-green-hover);
+}
+
+.nav-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+

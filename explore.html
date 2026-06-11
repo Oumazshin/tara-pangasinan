@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Discover all iconic tourist spots across the province of Pangasinan. Build your perfect itinerary.">
+    <meta property="og:title" content="Explore | Tara Pangasinan">
+    <meta property="og:description" content="Discover all iconic tourist spots across the province of Pangasinan. Build your perfect itinerary.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages/explore/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>Explore | Tara Pangasinan</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <div class="logo-text">
+                <span class="green">Pangasinan</span>
+                <span class="white">Tourism</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="explore.html" class="active">Explore</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
+        
+            <a href="profile.html" class="nav-profile-icon" title="My Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </a>
+        </div>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="explore-hero">
+        <p class="explore-hero-label">All Destinations</p>
+        <h1>Explore Pangasinan</h1>
+        <p>Discover all iconic tourist spots across the province</p>
+        <svg class="explore-hero-wave" viewBox="0 0 1440 64" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0,32 C240,64 480,0 720,32 C960,64 1200,0 1440,32 L1440,64 L0,64 Z" fill="#f8fafc"/>
+        </svg>
+    </header>
+
+    <!-- Controls -->
+    <div class="explore-controls">
+        <div class="explore-controls-inner">
+            <div class="explore-search">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="exploreSearch" placeholder="Search destinations...">
+            </div>
+            <div class="explore-cats" id="exploreCats">
+                <button class="explore-cat-btn active" data-cat="All">All</button>
+                <button class="explore-cat-btn" data-cat="Beach">Beach</button>
+                <button class="explore-cat-btn" data-cat="Historical">Historical</button>
+                <button class="explore-cat-btn" data-cat="Nature">Nature</button>
+                <button class="explore-cat-btn" data-cat="Festival">Festival</button>
+                <button class="explore-cat-btn" data-cat="Food">Food</button>
+            </div>
+            <div class="explore-sort">
+                <label for="exploreSort">Sort by:</label>
+                <select id="exploreSort">
+                    <option value="popular">Popular</option>
+                    <option value="rating">Rating</option>
+                    <option value="name">Name A–Z</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid Body -->
+    <main class="explore-body">
+        <div class="explore-body-inner">
+            <div class="explore-meta">
+                <p class="explore-count">Showing <strong id="exploreCount">8</strong> destinations</p>
+                <div class="explore-view-toggle">
+                    <button class="view-btn active" id="gridViewBtn" title="Grid view">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    </button>
+                    <button class="view-btn" id="listViewBtn" title="List view">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="explore-grid" id="exploreGrid">
+                <!-- Populated by JS -->
+                <div class="explore-empty">Loading destinations...</div>
+            </div>
+
+            <div class="explore-pagination" id="explorePagination"></div>
+        </div>
+    </main>
+
+    <!-- CTA -->
+    <section class="explore-cta">
+        <div class="explore-cta-inner">
+            <div>
+                <h2>Plan Your Perfect Pangasinan Trip</h2>
+                <p>Use our interactive map to find spots near you and build your itinerary.</p>
+            </div>
+            <div class="explore-cta-btns">
+                <a href="map.html" class="cta-btn-outline">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Open Map View
+                </a>
+                <a href="#" onclick="scrollToTop()" class="cta-btn-dark">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    Browse All Spots
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="footer-wrapper">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <div class="footer-logo-text">
+                            <span class="green">Pangasinan</span>
+                            <span class="white">Tourism</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
+                </div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="map.html">Map</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return false;
+        }
+    </script>
+</body>
+</html>

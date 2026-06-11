@@ -1,0 +1,307 @@
+﻿/* css/pages/plan/main.css */
+
+/* Hero */
+.plan-hero {
+    background: linear-gradient(160deg, var(--brand-green) 0%, var(--brand-green-hover) 100%);
+    padding: 140px 32px 90px;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    margin-top: 68px; /* Offset for fixed navbar */
+}
+
+.plan-hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+}
+
+.plan-hero-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 12px;
+}
+
+.plan-hero-content h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.plan-hero-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Main Layout */
+.plan-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    padding: 80px 0;
+}
+
+@media (max-width: 992px) {
+    .plan-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Left Form Area */
+.booking-form {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-section {
+    margin-bottom: 32px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.form-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--dark);
+    background: #FAFAFA;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 4px rgba(29, 158, 117, 0.12);
+    background: var(--white);
+}
+
+/* Guest Counters */
+.guest-counter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.guest-counter-row:not(:last-child) {
+    border-bottom: 1px solid var(--border);
+}
+
+.guest-info h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 4px;
+}
+
+.guest-info p {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+}
+
+.guest-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-counter {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #c9cdd4;
+    background: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--dark);
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.btn-counter:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+    background: rgba(29, 158, 117, 0.06);
+    box-shadow: 0 2px 8px rgba(29, 158, 117, 0.20);
+}
+
+.guest-count {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Order Summary */
+.summary-container {
+    position: sticky;
+    top: 100px;
+}
+
+.summary-card {
+    background: var(--white);
+    padding: 32px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    border-top: 3px solid var(--brand-green);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.11), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+.summary-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 24px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.summary-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 24px;
+}
+
+/* Success Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.success-modal {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .success-modal {
+    transform: translateY(0);
+}
+
+.success-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(29, 158, 117, 0.1);
+    color: var(--brand-green);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.success-modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 12px;
+}
+
+.success-modal p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+.plan-hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    display: block;
+}
+
+

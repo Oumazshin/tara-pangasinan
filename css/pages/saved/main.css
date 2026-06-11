@@ -1,0 +1,221 @@
+﻿/* css/pages/saved/main.css */
+
+.saved-hero {
+    background: linear-gradient(160deg, var(--brand-green) 0%, var(--brand-green-hover) 100%);
+    padding: 140px 32px 90px;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    margin-top: 68px; /* Offset for fixed navbar */
+}
+
+.saved-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.saved-hero-content h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.saved-hero-content p {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+.saved-hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    display: block;
+}
+
+.saved-content {
+    padding: 60px 0 100px;
+    background: var(--light);
+    min-height: 60vh;
+}
+
+.saved-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.saved-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.saved-count {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--brand-green);
+    background: rgba(29, 158, 117, 0.10);
+    border: 1px solid rgba(29, 158, 117, 0.25);
+    padding: 4px 14px;
+    border-radius: 99px;
+}
+
+.explore-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 1100px) {
+    .explore-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+    .explore-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .explore-grid { grid-template-columns: 1fr; }
+}
+
+/* Explore Card Styles Imported for Saved page */
+.explore-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+}
+
+.explore-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.14), 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.explore-card-img {
+    position: relative;
+    height: 200px;
+    background: #B4B2A9 center/cover no-repeat;
+    flex-shrink: 0;
+}
+
+.explore-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.explore-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.explore-card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--dark-footer);
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.explore-card-loc {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+
+.explore-card-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.55;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.explore-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.explore-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.explore-card-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--brand-green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Remove Save Button Style */
+.btn-remove-save {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    color: #E63946;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.btn-remove-save:hover {
+    background: #E63946;
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+

@@ -1,0 +1,30 @@
+:root {
+    --primary: #14b8a6;
+    /* Teal */
+    --primary-dark: #0f766e;
+    --dark: #1f2937;
+    --dark-footer: #2C2C2A;
+    --light: #f8fafc;
+    --white: #ffffff;
+    --text: #374151;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+
+    /* Brand Colors (Guidelines) */
+    --brand-green: #1D9E75;
+    --brand-green-hover: #168260;
+    --off-white: #F1EFE8;
+    --placeholder: #B4B2A9;
+
+    /* Category Colors */
+    --cat-beach: #0ea5e9;
+    --cat-nature: #10b981;
+    --cat-historical: #78716c;
+    --cat-festival: #f59e0b;
+    --cat-food: #ef4444;
+
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.13), 0 6px 12px rgba(0, 0, 0, 0.07);
+}

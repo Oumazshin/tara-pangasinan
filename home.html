@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Welcome to Tara Pangasinan. Discover the unparalleled beauty, vibrant culture, and hidden wonders of the province.">
+    <meta property="og:title" content="Home | Tara Pangasinan">
+    <meta property="og:description" content="Welcome to Tara Pangasinan. Discover the unparalleled beauty, vibrant culture, and hidden wonders of the province.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages/home/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>Home | Tara Pangasinan</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <div class="logo-text">
+                <span class="green">Pangasinan</span>
+                <span class="white">Tourism</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html" class="active">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
+        
+            <a href="profile.html" class="nav-profile-icon" title="My Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </a>
+        </div>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <p class="hero-subtitle">RECOMMENDED DESTINATIONS</p>
+                <h1>Where Islands Meet Legends</h1>
+                <p class="hero-desc">Pangasinan is a province where pristine beaches, cascading waterfalls, and deep caves hide stories waiting to be discovered.</p>
+                <div class="hero-buttons">
+                    <a href="#explore" class="hero-btn-primary">Explore Spots</a>
+                    <a href="map.html" class="hero-btn-outline">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> View on Map
+                    </a>
+                </div>
+            </div>
+            
+            <div class="scroll-arrow">
+                <img src="assets/Home Page/DownArrow.svg" alt="Scroll Down">
+            </div>
+        </div>
+    </header>
+
+    <!-- Discover Pangasinan Section (Mockup 2 Grid) -->
+    <section class="discover-section">
+        <div class="discover-header-wrapper">
+            <h2 class="discover-title">
+                Discover Pangasinan
+                <div class="discover-title-underline"></div>
+            </h2>
+        </div>
+        <div class="discover-grid" id="discover-grid">
+    <div class="discover-grid-cell">
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=800'); position: relative;">
+                <span class="discover-pill" style="background: var(--primary);">Nature</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Alaminos City</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Hundred Islands</h3>
+                <p class="discover-desc">124 islands and islets scattered across the crystal-clear Lingayen Gulf.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800'); position: relative;">
+                <span class="discover-pill" style="background: var(--primary);">Nature</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Bolinao</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Bolinao Falls</h3>
+                <p class="discover-desc">Stunning cascading waterfalls perfect for swimming.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+    </div>
+    <div class="discover-grid-cell">
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800'); position: relative;">
+                <span class="discover-pill" style="background: var(--primary);">Nature</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Bolinao</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Enchanted Cave</h3>
+                <p class="discover-desc">Underground pool with crystal clear waters hidden deep inside.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800'); position: relative;">
+                <span class="discover-pill" style="background: #EAB308;">Historical</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Bolinao</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Cape Bolinao Lighthouse</h3>
+                <p class="discover-desc">Historic lighthouse offering breathtaking panoramic views.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+    </div>
+    <div class="discover-grid-cell">
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1505051508008-923feaf90263?w=800'); position: relative;">
+                <span class="discover-pill" style="background: #0EA5E9;">Beach</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Bolinao</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Patar Beach</h3>
+                <p class="discover-desc">Famous golden sand beach renowned for its stunning sunsets.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800'); position: relative;">
+                <span class="discover-pill" style="background: #EF4444;">Festival</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Dagupan</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Bangus Festival</h3>
+                <p class="discover-desc">Annual vibrant celebration of the city's world-famous milkfish.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+    </div>
+    <div class="discover-grid-cell">
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800'); position: relative;">
+                <span class="discover-pill" style="background: #0EA5E9;">Beach</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Lingayen</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Lingayen Gulf</h3>
+                <p class="discover-desc">Historic gulf known for its long gray sand beaches.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+        <div class="discover-card">
+            <div class="discover-img" style="background-image: url('https://images.unsplash.com/photo-1548625361-9c636f3db5a8?w=800'); position: relative;">
+                <span class="discover-pill" style="background: #EAB308;">Historical</span>
+            </div>
+            <div class="discover-info">
+                <div class="discover-name"><img src="assets/Home Page/Location.svg" width="12"> Manaoag</div>
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--dark);">Manaoag Church</h3>
+                <p class="discover-desc">A major pilgrimage site for Catholics in the province.</p>
+                <a href="explore.html" class="discover-link">Learn More <img src="assets/Home Page/ArrowRight.svg" width="16"></a>
+            </div>
+        </div>
+    </div>
+</div>
+    </section>
+
+    <!-- Featured Destination Section (Mockup 2) -->
+    <section class="featured-section">
+        <div class="featured-grid">
+            <div class="featured-image" style="background-image: url('https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=1000'); background-size: cover;">
+                <span class="featured-tag">Hundred Islands National Park <img src="assets/Home Page/ArrowRight.svg" width="16" style="vertical-align: middle; margin-left: 4px;"></span>
+            </div>
+            <div class="featured-content">
+                <div class="fc-category">NATURE AND WILDLIFE</div>
+                <h3 class="fc-title">Hundred Islands National Park</h3>
+                <div class="fc-rating">
+                    <img src="assets/Home Page/StarYellow.svg" alt="Star">
+                    <img src="assets/Home Page/StarYellow.svg" alt="Star">
+                    <img src="assets/Home Page/StarYellow.svg" alt="Star">
+                    <img src="assets/Home Page/StarYellow.svg" alt="Star">
+                    <img src="assets/Home Page/HalfStarYellow.svg" alt="Half Star">
+                    <span style="font-weight: 600; margin-left: 8px;">4.5</span>
+                    <span class="fc-rating-text">(124 reviews)</span>
+                </div>
+                <div class="fc-desc">One of the most famous tourist destinations in the Philippines. It consists of 124 islands at low tide and 123 islands at high tide, scattered in Lingayen Gulf. Perfect for island hopping, snorkeling, and discovering hidden coves.</div>
+                <div class="fc-buttons-wrapper">
+                    <div class="fc-buttons">
+                        <a href="details.html?id=hundred-islands" class="fc-btn-primary">
+                            Explore Details
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none">
+                              <path d="M13.7063 8.70664C14.0969 8.31602 14.0969 7.68164 13.7063 7.29102L8.70625 2.29102C8.31563 1.90039 7.68125 1.90039 7.29063 2.29102C6.9 2.68164 6.9 3.31602 7.29063 3.70664L10.5875 7.00039H1C0.446875 7.00039 0 7.44727 0 8.00039C0 8.55352 0.446875 9.00039 1 9.00039H10.5844L7.29375 12.2941C6.90312 12.6848 6.90312 13.3191 7.29375 13.7098C7.68437 14.1004 8.31875 14.1004 8.70938 13.7098L13.7094 8.70977L13.7063 8.70664Z" fill="white"/>
+                            </svg>
+                        </a>
+                        <a href="saved.html" class="fc-btn-outline">Add to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore the Province Section -->
+    <section class="map-section" id="map">
+        <div class="map-wrapper">
+            <div class="map-header">
+                <h2 class="map-title">
+                    Explore the Province
+                    <div class="map-title-underline"></div>
+                </h2>
+            </div>
+            <div class="map-box">
+                <div id="province-map"></div>
+            </div>
+            <div class="map-filters">
+                <div class="map-pill active" data-lat="16.1553" data-lng="119.9798">Alaminos</div>
+                <div class="map-pill" data-lat="16.3894" data-lng="119.8961">Bolinao</div>
+                <div class="map-pill" data-lat="16.0186" data-lng="120.2316">Lingayen</div>
+                <div class="map-pill" data-lat="15.9739" data-lng="120.4776">Manaoag</div>
+                <div class="map-pill" data-lat="16.0433" data-lng="120.3333">Dagupan</div>
+                <div class="map-pill" data-lat="15.9235" data-lng="120.3480">San Carlos</div>
+                <div class="map-pill" data-lat="15.9759" data-lng="120.5711">Urdaneta</div>
+                <div class="map-pill" data-lat="16.1932" data-lng="119.8601">Bani</div>
+            </div>
+            <div class="map-footer-text">
+                Powered by OpenStreetMap &middot; Centered at 15.8949&deg;N 120.2863&deg;E
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function () {
+            const pins = [
+                { name: 'Alaminos',  lat: 16.1553, lng: 119.9798 },
+                { name: 'Bolinao',   lat: 16.3894, lng: 119.8961 },
+                { name: 'Lingayen',  lat: 16.0186, lng: 120.2316 },
+                { name: 'Manaoag',   lat: 15.9739, lng: 120.4776 },
+                { name: 'Dagupan',   lat: 16.0433, lng: 120.3333 },
+                { name: 'San Carlos',lat: 15.9235, lng: 120.3480 },
+                { name: 'Urdaneta',  lat: 15.9759, lng: 120.5711 },
+                { name: 'Bani',      lat: 16.1932, lng: 119.8601 }
+            ];
+
+            const map = L.map('province-map', {
+                center: [15.8949, 120.2863],
+                zoom: 10,
+                zoomControl: true,
+                scrollWheelZoom: false
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const pinIcon = (name) => L.divIcon({
+                className: '',
+                html: `<div class="leaflet-pin-wrapper">
+                           <div class="leaflet-pin-dot"></div>
+                           <div class="leaflet-pin-label">${name}</div>
+                       </div>`,
+                iconAnchor: [10, 10]
+            });
+
+            pins.forEach(p => {
+                L.marker([p.lat, p.lng], { icon: pinIcon(p.name) })
+                    .addTo(map)
+                    .bindPopup(`<strong>${p.name}</strong>`);
+            });
+
+            // Filter pills — fly to location
+            document.querySelectorAll('#map .map-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    document.querySelectorAll('#map .map-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    const lat = parseFloat(pill.dataset.lat);
+                    const lng = parseFloat(pill.dataset.lng);
+                    map.flyTo([lat, lng], 12, { duration: 1 });
+                });
+            });
+        })();
+    </script>
+
+    <!-- Browse by Category Section (Mockup 2) -->
+    <section class="category-section" id="explore">
+        <div class="category-wrapper">
+            <div class="category-header">
+                <h2 class="category-title">Browse by Category<div class="category-title-underline"></div></h2>
+                <div class="category-filters" id="categoryFilters">
+                    <div class="map-pill active" data-category="All">All</div>
+                    <div class="map-pill" data-category="Beach">Beach</div>
+                    <div class="map-pill" data-category="Historical">Historical</div>
+                    <div class="map-pill" data-category="Nature">Nature</div>
+                    <div class="map-pill" data-category="Festival">Festival</div>
+                    <div class="map-pill" data-category="Food">Food</div>
+                </div>
+            </div>
+
+            <div class="category-grid" id="destinationsGrid">
+                <!-- Hardcoded fallback cards, will be replaced by JS or kept if JS fails -->
+                <a href="explore.html" class="category-card">
+                    <div class="category-img"></div>
+                    <div class="category-info">
+                        <span class="category-name">Patar Beach</span>
+                        <span class="category-text">Bolinao</span>
+                    </div>
+                </a>
+                <a href="explore.html" class="category-card">
+                    <div class="category-img"></div>
+                    <div class="category-info">
+                        <span class="category-name">Tinago Falls</span>
+                        <span class="category-text">San Nicolas</span>
+                    </div>
+                </a>
+                <a href="explore.html" class="category-card">
+                    <div class="category-img"></div>
+                    <div class="category-info">
+                        <span class="category-name">Lingayen Gulf</span>
+                        <span class="category-text">Lingayen</span>
+                    </div>
+                </a>
+                <a href="explore.html" class="category-card">
+                    <div class="category-img"></div>
+                    <div class="category-info">
+                        <span class="category-name">Manaoag Church</span>
+                        <span class="category-text">Manaoag</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section (Mockup 2) -->
+    <section class="gallery-section" id="gallery">
+        <div class="gallery-wrapper">
+            <div class="gallery-header">
+                <h2 class="gallery-title">
+                    Gallery
+                    <div class="gallery-title-underline"></div>
+                </h2>
+            </div>
+            <div class="gallery-grid">
+                <!-- Column 1 equivalents in Masonry (total 800px) -->
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Hundred Islands, Alaminos</div>
+                </div>
+                <div class="gallery-item h-320">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Patar White Beach</div>
+                </div>
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Sunflower Maze, Tayug</div>
+                </div>
+
+                <!-- Column 2 equivalents in Masonry (total 800px) -->
+                <div class="gallery-item h-320">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Enchanted Cave, Bolinao</div>
+                </div>
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Lingayen Capitol</div>
+                </div>
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Our Lady of Manaoag</div>
+                </div>
+
+                <!-- Column 3 equivalents in Masonry (total 800px) -->
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Surfing in San Juan</div>
+                </div>
+                <div class="gallery-item h-240">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Bangus Festival</div>
+                </div>
+                <div class="gallery-item h-320">
+                    <div class="gallery-img"></div>
+                    <div class="gallery-overlay">Cacupangan Cave, Mabini</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer (Mockup 2) -->
+    <footer class="footer-section">
+        <div class="footer-wrapper">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <div class="footer-logo-text">
+                            <span class="green">Pangasinan</span>
+                            <span class="white">Tourism</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
+                </div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="map.html">Map</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            
+            <div class="footer-divider"></div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <img src="assets/Home Page/Facebook.svg" alt="Facebook">
+                    </a>
+                    <a href="#" class="social-icon">
+                        <img src="assets/Home Page/instagram.svg" alt="Instagram">
+                    </a>
+                    <a href="#" class="social-icon">
+                        <!-- User's provided placeholder twitter or generic svg -->
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

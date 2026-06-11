@@ -1,0 +1,174 @@
+﻿/* Featured Section */
+.featured-section {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    padding: 80px 32px;
+    /* Figma said 80px, assuming sides need some padding on small screens too */
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.featured-grid {
+    display: grid;
+    width: 100%;
+    height: 500px;
+    margin: 0 auto;
+    row-gap: 48px;
+    column-gap: 48px;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.featured-image {
+    display: flex;
+    height: 500px;
+    /* User Figma: padding: 448px 365.87px 16px 16px; 
+       We'll use responsive flex-end to achieve the same bottom-left alignment without breaking */
+    padding: 16px;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    grid-row: 1 / span 2;
+    grid-column: 1 / span 1;
+    justify-self: stretch;
+    background-color: #cbd5e1;
+    border-radius: 12px;
+}
+
+.featured-tag {
+    background: var(--white);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark);
+}
+
+.featured-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: center;
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 2;
+}
+
+.fc-category {
+    font-size: 0.85rem;
+    color: var(--brand-green);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.fc-title {
+    font-size: 2.5rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--dark);
+    line-height: 1.2;
+}
+
+.fc-rating {
+    display: flex;
+    padding-top: 8px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+}
+
+.fc-rating-text {
+    display: flex;
+    padding-left: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.fc-desc {
+    display: flex;
+    padding-top: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+
+.fc-buttons-wrapper {
+    display: flex;
+    padding-top: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.fc-buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.fc-btn-primary {
+    display: flex;
+    padding: 12px 24px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 99px;
+    background: var(--brand-green);
+    color: var(--white);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.047px;
+    text-decoration: none;
+    transition: 0.3s background;
+}
+
+.fc-btn-primary:hover {
+    background: var(--brand-green-hover);
+}
+
+.fc-btn-outline {
+    display: flex;
+    padding: 12px 32px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 99px;
+    border: 1.5px solid rgba(44, 44, 42, 0.30);
+    color: var(--dark-footer);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+
+.fc-btn-outline:hover {
+    background: rgba(44, 44, 42, 0.06);
+    border-color: rgba(44, 44, 42, 0.50);
+    transform: translateY(-1px);
+}
+
+
+@media (max-width: 992px) {
+    .featured-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; row-gap: 24px; }
+    .featured-image { height: 300px; grid-column: 1 / span 1; grid-row: auto; }
+    .featured-content { grid-column: 1 / span 1; grid-row: auto; align-items: flex-start; }
+    .featured-section { padding: 60px 32px; }
+}
+@media (max-width: 768px) {
+    .featured-section { padding: 40px 16px; }
+}
+
+

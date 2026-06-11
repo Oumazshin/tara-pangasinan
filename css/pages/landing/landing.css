@@ -1,0 +1,65 @@
+
+.landing-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: url('../../../assets/Home Page/HeaderBG.jpg') center/cover no-repeat;
+    position: relative;
+    text-align: center;
+    color: var(--white);
+    padding: 0 20px;
+}
+
+.landing-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(44, 44, 42, 0.80) 0%, rgba(44, 44, 42, 0.90) 100%);
+    mix-blend-mode: multiply;
+    z-index: 1;
+}
+
+.landing-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.landing-logo {
+    width: 60px;
+    height: auto;
+    margin-bottom: 24px;
+}
+
+.landing-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.landing-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 48px;
+}
+
+.btn-enter {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--brand-green);
+    color: var(--white);
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.btn-enter:hover {
+    background: var(--brand-green-hover);
+    transform: translateY(-2px);
+}

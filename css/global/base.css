@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text);
+    background-color: var(--light);
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+/* Global Buttons */
+.btn-primary {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--brand-green);
+    color: var(--white);
+    border-radius: 99px;
+    padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(29, 158, 117, 0.35);
+}
+
+.btn-primary:hover {
+    background: var(--brand-green-hover);
+    box-shadow: 0 4px 14px rgba(29, 158, 117, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1.5px solid rgba(44,44,42,0.30);
+    color: var(--dark-footer);
+    border-radius: 99px;
+    padding: 12px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-decoration: none;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background: rgba(44,44,42,0.06);
+    border-color: rgba(44,44,42,0.45);
+    transform: translateY(-1px);
+}

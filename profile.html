@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your Tara Pangasinan profile, view booking history, and access your saved destinations.">
+    <meta property="og:title" content="My Profile | Tara Pangasinan">
+    <meta property="og:description" content="Manage your Tara Pangasinan profile, view booking history, and access your saved destinations.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/pages/profile/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <title>My Profile | Tara Pangasinan</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <div class="logo-text">
+                <span class="green">Pangasinan</span>
+                <span class="white">Tourism</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="map.html">Map</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+        <div class="nav-action">
+            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
+            <a href="profile.html" class="nav-profile-icon" title="My Profile">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </a>
+        </div>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="profile-hero">
+        <div class="profile-hero-content">
+            <h1>My Account</h1>
+            <p>Manage your bookings, saved spots, and preferences.</p>
+        </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="profile-stats-bar">
+        <div class="profile-stats-inner">
+            <div class="profile-stat">
+                <span class="profile-stat-value">8</span>
+                <span class="profile-stat-label">Total Bookings</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+                <span class="profile-stat-value">5</span>
+                <span class="profile-stat-label">Places Visited</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+                <span class="profile-stat-value">1</span>
+                <span class="profile-stat-label">Upcoming Trips</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+                <span class="profile-stat-value">3</span>
+                <span class="profile-stat-label">Reviews Written</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <main class="container main-layout">
+
+        <!-- LEFT: Content Panels -->
+        <div class="content-left">
+
+            <!-- Panel: Booking History (default) -->
+            <section class="profile-section" id="panel-bookings">
+                <h2>Booking History</h2>
+
+                <!-- Upcoming -->
+                <div class="booking-card">
+                    <img src="https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=400" alt="Hundred Islands" class="booking-img">
+                    <div class="booking-info">
+                        <h3>Hundred Islands Private Boat Tour</h3>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            Oct 12, 2026 &bull; 8:00 AM
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            4 Guests
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            ₱2,400 total
+                        </div>
+                        <div class="booking-footer">
+                            <span class="status-badge status-upcoming">Upcoming</span>
+                            <div class="booking-actions">
+                                <a href="details.html?id=hundred-islands" class="btn-action">View Details</a>
+                                <button class="btn-action btn-action-danger" onclick="if(confirm('Cancel this booking?')) { this.closest('.booking-card').querySelector('.status-badge').textContent='Cancelled'; this.closest('.booking-card').querySelector('.status-badge').className='status-badge status-cancelled'; this.remove(); }">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed -->
+                <div class="booking-card">
+                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400" alt="Patar Beach" class="booking-img">
+                    <div class="booking-info">
+                        <h3>Patar Beach Cottage Rental</h3>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            April 5, 2026 &bull; Full Day
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            8 Guests
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            ₱5,600 total
+                        </div>
+                        <div class="booking-footer">
+                            <span class="status-badge status-completed">Completed</span>
+                            <div class="booking-actions">
+                                <a href="details.html?id=patar-beach" class="btn-action">View Details</a>
+                                <button class="btn-action btn-action-green" onclick="alert('Thank you for your review, Carlo! Your feedback helps other travelers.')">Leave a Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cancelled -->
+                <div class="booking-card">
+                    <img src="https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=400" alt="Cape Bolinao Lighthouse" class="booking-img">
+                    <div class="booking-info">
+                        <h3>Cape Bolinao Lighthouse Guided Tour</h3>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            March 20, 2026 &bull; 9:00 AM
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            2 Guests
+                        </div>
+                        <div class="booking-detail">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            ₱800 total
+                        </div>
+                        <div class="booking-footer">
+                            <span class="status-badge status-cancelled">Cancelled</span>
+                            <div class="booking-actions">
+                                <a href="details.html?id=cape-bolinao" class="btn-action">View Details</a>
+                                <a href="plan.html" class="btn-action btn-action-green">Rebook</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Panel: Profile Settings (hidden by default) -->
+            <section class="profile-section" id="panel-settings" style="display:none;">
+                <h2>Profile Settings</h2>
+
+                <form class="profile-form" onsubmit="handleSaveProfile(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pf-firstname">First Name</label>
+                            <input type="text" id="pf-firstname" class="form-control" value="Carlo">
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-lastname">Last Name</label>
+                            <input type="text" id="pf-lastname" class="form-control" value="Reyes">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-email">Email Address</label>
+                        <input type="email" id="pf-email" class="form-control" value="carlo.reyes@gmail.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pf-phone">Phone Number</label>
+                            <input type="tel" id="pf-phone" class="form-control" value="+63 917 234 5678">
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-city">City / Municipality</label>
+                            <input type="text" id="pf-city" class="form-control" value="Dagupan City, Pangasinan">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-bio">About Me</label>
+                        <textarea id="pf-bio" class="form-control form-textarea" rows="4">Proud Pangasinanon and avid traveler. I love exploring the natural wonders of my home province and sharing them with family and friends.</textarea>
+                    </div>
+
+                    <div class="form-section-divider">
+                        <span>Change Password</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pf-current-pw">Current Password</label>
+                        <input type="password" id="pf-current-pw" class="form-control" placeholder="Enter current password">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pf-new-pw">New Password</label>
+                            <input type="password" id="pf-new-pw" class="form-control" placeholder="New password">
+                        </div>
+                        <div class="form-group">
+                            <label for="pf-confirm-pw">Confirm Password</label>
+                            <input type="password" id="pf-confirm-pw" class="form-control" placeholder="Confirm new password">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save-profile">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            Save Changes
+                        </button>
+                        <button type="button" class="btn-discard" onclick="document.getElementById('pf-firstname').value='Carlo'; document.getElementById('pf-lastname').value='Reyes';">Discard</button>
+                    </div>
+
+                    <div class="form-success" id="profile-save-msg" style="display:none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        Profile updated successfully!
+                    </div>
+                </form>
+            </section>
+
+        </div>
+
+        <!-- RIGHT: Sidebar -->
+        <div class="content-right">
+            <div class="sidebar-card">
+                <div class="sidebar-avatar" style="background-image: url('https://i.pravatar.cc/150?img=68');"></div>
+                <h3>Carlo Reyes</h3>
+                <p class="sidebar-email">carlo.reyes@gmail.com</p>
+                <p class="sidebar-location">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+                    Dagupan City, Pangasinan
+                </p>
+                <p class="sidebar-member-since">Member since January 2025</p>
+
+                <div class="sidebar-links">
+                    <a href="#" class="sidebar-link active" data-panel="bookings">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Booking History
+                    </a>
+                    <a href="#" class="sidebar-link" data-panel="settings">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        Profile Settings
+                    </a>
+                    <a href="saved.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        Saved Spots
+                    </a>
+                    <a href="explore.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        Explore Destinations
+                    </a>
+                </div>
+
+                <button class="btn-logout" onclick="if(confirm('Are you sure you want to log out?')) window.location.href='index.html';">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    Log Out
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="footer-wrapper">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <div class="footer-logo-text">
+                            <span class="green">Pangasinan</span>
+                            <span class="white">Tourism</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
+                </div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="map.html">Map</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-icon">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Panel tab switching
+        const sidebarLinks = document.querySelectorAll('.sidebar-link[data-panel]');
+        const panels = { bookings: document.getElementById('panel-bookings'), settings: document.getElementById('panel-settings') };
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = link.dataset.panel;
+                sidebarLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                Object.values(panels).forEach(p => p.style.display = 'none');
+                if (panels[target]) panels[target].style.display = 'block';
+            });
+        });
+
+        // Profile save handler
+        function handleSaveProfile(e) {
+            e.preventDefault();
+            const msg = document.getElementById('profile-save-msg');
+            msg.style.display = 'flex';
+            setTimeout(() => msg.style.display = 'none', 3500);
+        }
+    </script>
+</body>
+</html>

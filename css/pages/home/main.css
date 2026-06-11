@@ -1,0 +1,18 @@
+/* 1. Core & Variables */
+@import "../../global/variables.css";
+@import "../../global/base.css";
+
+/* 2. Global Utilities & Animations */
+@import "../../global/animations.css";
+
+/* 3. Global Layout Components */
+@import "../../global/navbar.css";
+@import "../../global/footer.css";
+
+/* 4. Page Sections (Chronological Order) */
+@import "hero.css";
+@import "discover.css";
+@import "featured.css";
+@import "map.css";
+@import "category.css";
+@import "gallery.css";

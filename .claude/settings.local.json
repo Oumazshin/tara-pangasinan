@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Figma__whoami",
+      "mcp__claude_ai_Figma__get_design_context",
+      "Bash(Get-ChildItem -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "Bash(del \"c:\\\\Users\\\\Desktop\\\\Documents\\\\GitHub\\\\Tara Pangasinan\\\\landingpage.html\")",
+      "PowerShell(Remove-Item \"c:\\\\Users\\\\Desktop\\\\Documents\\\\GitHub\\\\Tara Pangasinan\\\\landingpage.html\" -Confirm:$false)"
+    ]
+  }
+}
