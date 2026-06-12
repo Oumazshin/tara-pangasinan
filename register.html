@@ -32,8 +32,8 @@
             <a href="home.html" class="auth-logo">
                 <img src="assets/Home Page/Logo.svg" alt="Logo" width="32" height="32">
                 <div class="auth-logo-text">
-                    <span class="green">Pangasinan</span>
-                    <span class="dark">Tourism</span>
+                    <span class="green">Tara</span>
+                    <span class="dark">Pangasinan</span>
                 </div>
             </a>
 
@@ -42,7 +42,7 @@
                 <p>Sign up to start booking your Pangasinan adventures.</p>
             </div>
 
-            <form action="profile.html" method="GET" id="registerForm" onsubmit="event.preventDefault(); window.location.href='profile.html';">
+            <form action="profile.html" method="GET" id="registerForm" onsubmit="event.preventDefault(); localStorage.setItem('tara_session','1'); window.location.href='home.html';">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" class="form-control" placeholder="John Doe" required>

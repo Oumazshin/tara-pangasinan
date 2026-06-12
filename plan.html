@@ -1,9 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="Plan your ultimate trip to Pangasinan. Book tours, find accommodations, and create your itinerary.">
     <meta property="og:title" content="Plan Your Visit | Tara Pangasinan">
     <meta property="og:description" content="Plan your ultimate trip to Pangasinan. Book tours, find accommodations, and create your itinerary.">
@@ -26,8 +25,8 @@
         <div class="logo">
             <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
             <div class="logo-text">
-                <span class="green">Pangasinan</span>
-                <span class="white">Tourism</span>
+                <span class="green">Tara</span>
+                <span class="white">Pangasinan</span>
             </div>
         </div>
         <ul class="nav-links">
@@ -59,143 +58,357 @@
         </svg>
     </header>
 
-    <!-- Booking Form Container -->
-    <div class="container plan-layout">
-        
-        <!-- Left Column: Form -->
-        <div class="booking-form">
-            <form id="bookingForm" onsubmit="event.preventDefault(); submitBooking();">
-                
-                <!-- Destination Section -->
-                <div class="form-section">
-                    <h2>Destination</h2>
-                    <div class="form-group">
-                        <label for="destination">Select Tour</label>
-                        <select id="destination" class="form-control" required onchange="updatePrice()">
-                            <option value="1200" selected>Hundred Islands Private Boat Tour (&#8369;1,200/pax)</option>
-                            <option value="800">Patar Beach Cottage &amp; Tour (&#8369;800/pax)</option>
-                            <option value="500">Enchanted Cave Entry &amp; Guide (&#8369;500/pax)</option>
-                            <option value="1500">Bolinao Falls Full Day Trip (&#8369;1,500/pax)</option>
-                        </select>
-                    </div>
-                </div>
+    <!-- Wizard -->
+    <div class="wizard-wrapper">
 
-                <!-- Date & Time Section -->
-                <div class="form-section">
-                    <h2>Date & Time</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                        <div class="form-group">
-                            <label for="date">Select Date</label>
-                            <input type="date" id="date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="time">Select Time</label>
-                            <select id="time" class="form-control" required>
-                                <option value="8:00 AM">8:00 AM (Morning Tour)</option>
-                                <option value="1:00 PM">1:00 PM (Afternoon Tour)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Guests Section -->
-                <div class="form-section">
-                    <h2>Guests</h2>
-                    
-                    <div class="guest-counter-row">
-                        <div class="guest-info">
-                            <h4>Adults</h4>
-                            <p>Age 13+</p>
-                        </div>
-                        <div class="guest-controls">
-                            <button type="button" class="btn-counter" onclick="updateGuests('adults', -1)">-</button>
-                            <span class="guest-count" id="adult-count">2</span>
-                            <button type="button" class="btn-counter" onclick="updateGuests('adults', 1)">+</button>
-                        </div>
-                    </div>
-
-                    <div class="guest-counter-row">
-                        <div class="guest-info">
-                            <h4>Children</h4>
-                            <p>Ages 2-12 (50% off)</p>
-                        </div>
-                        <div class="guest-controls">
-                            <button type="button" class="btn-counter" onclick="updateGuests('children', -1)">-</button>
-                            <span class="guest-count" id="child-count">0</span>
-                            <button type="button" class="btn-counter" onclick="updateGuests('children', 1)">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Details -->
-                <div class="form-section">
-                    <h2>Contact Details</h2>
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="John Doe" required>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" class="form-control" placeholder="+63 9XX XXX XXXX" required>
-                        </div>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-
-        <!-- Right Column: Order Summary -->
-        <div class="summary-container">
-            <div class="summary-card">
-                <h3>Order Summary</h3>
-                
-                <div class="summary-item">
-                    <span>Adults (<span id="summary-adult-count">2</span>)</span>
-                    <span id="summary-adult-price">&#8369;2,400</span>
-                </div>
-
-                <div class="summary-item">
-                    <span>Children (<span id="summary-child-count">0</span>)</span>
-                    <span id="summary-child-price">&#8369;0</span>
-                </div>
-
-                <div class="summary-item" style="color: var(--text-light); font-size: 13px;">
-                    <span>Taxes &amp; Fees</span>
-                    <span>&#8369;150</span>
-                </div>
-
-                <div class="summary-divider"></div>
-
-                <div class="summary-total">
-                    <span>Total</span>
-                    <span id="summary-total-price">&#8369;2,550</span>
-                </div>
-
-                <button type="submit" form="bookingForm" class="btn-primary w-100" style="padding: 16px; font-size: 16px; border-radius: 8px;">
-                    Confirm Booking
-                </button>
-                <p style="text-align: center; font-size: 12px; color: var(--text-light); margin-top: 12px;">
-                    You will pay at the location. No credit card required.
-                </p>
+        <!-- Progress Bar -->
+        <div class="wizard-progress">
+            <div class="progress-step active" id="prog-1">
+                <div class="progress-dot">1</div>
+                <span class="progress-label">Choose Tour</span>
+            </div>
+            <div class="progress-step" id="prog-2">
+                <div class="progress-dot">2</div>
+                <span class="progress-label">Schedule</span>
+            </div>
+            <div class="progress-step" id="prog-3">
+                <div class="progress-dot">3</div>
+                <span class="progress-label">Details</span>
+            </div>
+            <div class="progress-step" id="prog-4">
+                <div class="progress-dot">4</div>
+                <span class="progress-label">Review</span>
             </div>
         </div>
 
-    </div>
+        <div class="wizard-inner">
+            <!-- Left: Step Panels -->
+            <div class="wizard-left">
+
+                <!-- STEP 1: Choose Tour -->
+                <div class="step-panel active" id="step-1">
+                    <div class="step-panel-header">
+                        <h2>Choose Your Tour</h2>
+                        <p>Select a tour package to get started. Each includes a local guide.</p>
+                    </div>
+
+                    <div class="tour-grid" id="tour-grid">
+                        <!-- JS-rendered -->
+                    </div>
+
+                    <div class="step-error" id="err-1">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+                        Please select a tour to continue.
+                    </div>
+
+                    <div class="step-nav">
+                        <span></span>
+                        <button class="btn-next" onclick="nextStep(1)">
+                            Schedule
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Schedule -->
+                <div class="step-panel" id="step-2">
+                    <div class="step-panel-header">
+                        <h2>Pick a Date &amp; Time</h2>
+                        <p>Choose when you'd like to go and how many guests will join.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Date</label>
+                        <input type="date" id="tour-date" class="form-control" onchange="onDateChange()">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preferred Time Slot</label>
+                        <div class="time-slots" id="time-slots">
+                            <!-- JS-rendered -->
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div class="form-group">
+                        <label>Guests</label>
+                        <div id="guest-counters">
+                            <!-- JS-rendered -->
+                        </div>
+                    </div>
+
+                    <div class="step-error" id="err-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+                        <span id="err-2-msg">Please select a date and time slot.</span>
+                    </div>
+
+                    <div class="step-nav">
+                        <button class="btn-prev" onclick="prevStep(2)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                            Back
+                        </button>
+                        <button class="btn-next" onclick="nextStep(2)">
+                            Add Details
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Details -->
+                <div class="step-panel" id="step-3">
+                    <div class="step-panel-header">
+                        <h2>Add-ons &amp; Contact</h2>
+                        <p>Enhance your experience and leave your contact details.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Optional Add-ons</label>
+                        <div class="addon-grid" id="addon-grid">
+                            <!-- JS-rendered -->
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div class="form-group">
+                        <label>Promo Code</label>
+                        <div class="promo-row">
+                            <input type="text" class="promo-input" id="promo-input-step3" placeholder="e.g. TARA10" maxlength="20">
+                            <button class="btn-promo" type="button" onclick="applyPromo('step3')">Apply</button>
+                        </div>
+                        <span class="promo-msg" id="promo-msg-step3"></span>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div class="form-group">
+                        <label>Contact Details</label>
+                        <input type="text" class="form-control" id="contact-name" placeholder="Full Name" style="margin-bottom:12px;">
+                        <div class="form-row">
+                            <input type="email" class="form-control" id="contact-email" placeholder="Email Address">
+                            <input type="tel" class="form-control" id="contact-phone" placeholder="+63 9XX XXX XXXX">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Special Requests <span style="font-weight:400;color:var(--text-light);text-transform:none;letter-spacing:0;">(Optional)</span></label>
+                        <textarea class="form-control form-textarea" id="contact-requests" placeholder="Any dietary needs, accessibility requirements, or special arrangements..."></textarea>
+                    </div>
+
+                    <div class="step-error" id="err-3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+                        <span id="err-3-msg">Please fill in your name, email, and phone number.</span>
+                    </div>
+
+                    <div class="step-nav">
+                        <button class="btn-prev" onclick="prevStep(3)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                            Back
+                        </button>
+                        <button class="btn-next" onclick="nextStep(3)">
+                            Review Booking
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Review -->
+                <div class="step-panel" id="step-4">
+                    <div class="step-panel-header">
+                        <h2>Review &amp; Confirm</h2>
+                        <p>Double-check your booking details before confirming.</p>
+                    </div>
+
+                    <div class="review-section">
+                        <p class="review-section-title">Selected Tour</p>
+                        <div class="review-tour-card">
+                            <div class="review-tour-img" id="review-tour-img"></div>
+                            <div class="review-tour-info">
+                                <h4 id="review-tour-name">—</h4>
+                                <div class="review-row">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <span id="review-tour-loc">—</span>
+                                </div>
+                                <div class="review-row">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    <span id="review-tour-duration">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <p class="review-section-title">Booking Details</p>
+                        <div class="review-details-grid">
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Date</div>
+                                <div class="review-detail-value" id="review-date">—</div>
+                            </div>
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Time</div>
+                                <div class="review-detail-value" id="review-time">—</div>
+                            </div>
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Guests</div>
+                                <div class="review-detail-value" id="review-guests">—</div>
+                            </div>
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Meeting Point</div>
+                                <div class="review-detail-value" id="review-meeting">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-section" id="review-addons-section" style="display:none;">
+                        <p class="review-section-title">Add-ons</p>
+                        <div id="review-addons-list"></div>
+                    </div>
+
+                    <div class="review-section">
+                        <p class="review-section-title">Contact</p>
+                        <div class="review-details-grid">
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Name</div>
+                                <div class="review-detail-value" id="review-name">—</div>
+                            </div>
+                            <div class="review-detail-item">
+                                <div class="review-detail-label">Email</div>
+                                <div class="review-detail-value" id="review-email" style="font-size:13px;">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="policy-box">
+                        <h4>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Cancellation Policy
+                        </h4>
+                        <p>Free cancellation up to 24 hours before your tour. Cancellations within 24 hours are non-refundable. Payment is made on-site — no credit card required to book.</p>
+                    </div>
+
+                    <label class="terms-check">
+                        <input type="checkbox" id="terms-checkbox" onchange="onTermsChange()">
+                        <span>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>. I confirm the details above are correct.</span>
+                    </label>
+
+                    <div class="step-error" id="err-4">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+                        Please agree to the terms and conditions.
+                    </div>
+
+                    <div class="step-nav">
+                        <button class="btn-prev" onclick="prevStep(4)">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                            Back
+                        </button>
+                        <button class="btn-confirm" id="btn-confirm" onclick="submitBooking()" disabled>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Confirm Booking
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /wizard-left -->
+
+            <!-- Right: Summary Sidebar -->
+            <div class="summary-container">
+                <div class="summary-card">
+                    <div id="summary-img-area">
+                        <div class="summary-tour-img-placeholder">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <p>Select a tour above</p>
+                        </div>
+                    </div>
+                    <div class="summary-body">
+                        <h3>Order Summary</h3>
+
+                        <div id="summary-tour-details" style="display:none;">
+                            <p class="summary-tour-name" id="sum-tour-name">—</p>
+                            <p class="summary-tour-loc" id="sum-tour-loc">—</p>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-item" id="sum-date-row" style="display:none;">
+                            <span>Date</span>
+                            <span id="sum-date">—</span>
+                        </div>
+                        <div class="summary-item" id="sum-time-row" style="display:none;">
+                            <span>Time</span>
+                            <span id="sum-time">—</span>
+                        </div>
+
+                        <div id="sum-price-rows">
+                            <div class="summary-item faded">
+                                <span>Select a tour to see pricing</span>
+                                <span></span>
+                            </div>
+                        </div>
+
+                        <div id="sum-addon-rows" style="display:none;"></div>
+
+                        <div id="sum-promo-row" class="summary-item discount" style="display:none;">
+                            <span id="sum-promo-label">Promo</span>
+                            <span id="sum-promo-val">—</span>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span id="sum-total">₱0</span>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div style="margin-bottom: 4px;">
+                            <div class="promo-row">
+                                <input type="text" class="promo-input" id="promo-input-sidebar" placeholder="Promo code" maxlength="20">
+                                <button class="btn-promo" type="button" onclick="applyPromo('sidebar')">Apply</button>
+                            </div>
+                            <span class="promo-msg" id="promo-msg-sidebar"></span>
+                        </div>
+
+                        <div class="trust-signals">
+                            <div class="trust-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                Secure booking — no payment online
+                            </div>
+                            <div class="trust-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Free cancellation (24h before tour)
+                            </div>
+                            <div class="trust-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                                Local expert guides included
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /summary-container -->
+
+        </div><!-- /wizard-inner -->
+    </div><!-- /wizard-wrapper -->
 
     <!-- Success Modal -->
     <div class="modal-overlay" id="successModal">
         <div class="success-modal">
             <div class="success-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <h3>Booking Confirmed!</h3>
-            <p>Your tour has been successfully scheduled. We've sent the details to your email.</p>
-            <a href="profile.html" class="btn-primary w-100" style="padding: 14px;">View in Profile</a>
+            <div class="booking-ref" id="modal-ref">TPG-XXXXXX</div>
+            <p id="modal-desc">Your tour has been booked. A confirmation will be sent to your email.</p>
+            <div class="modal-actions">
+                <a href="profile.html" class="btn-primary w-100" style="padding:14px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-size:15px;text-decoration:none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    View in My Profile
+                </a>
+                <button onclick="resetWizard()" style="padding:12px;border-radius:10px;border:1.5px solid #d1d5db;background:transparent;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;width:100%;">
+                    Book Another Tour
+                </button>
+            </div>
         </div>
     </div>
 
@@ -207,8 +420,8 @@
                     <div class="footer-logo">
                         <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
                         <div class="footer-logo-text">
-                            <span class="green">Pangasinan</span>
-                            <span class="white">Tourism</span>
+                            <span class="green">Tara</span>
+                            <span class="white">Pangasinan</span>
                         </div>
                     </div>
                     <p class="footer-desc">Experience the beauty of Pangasinan</p>
@@ -223,61 +436,588 @@
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <p class="footer-copy">&copy; 2026 Tara Pangasinan. All rights reserved.</p>
                 <div class="social-icons">
                     <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
                     <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
                     <a href="#" class="social-icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
                     </a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Booking Logic -->
     <script>
-        let adults = 2;
-        let children = 0;
-        const tax = 150;
+    // ── DATA ──────────────────────────────────────────────────
+    const TOURS = [
+        {
+            id: 'hundred-islands',
+            name: 'Hundred Islands Boat Tour',
+            location: 'Alaminos City',
+            duration: '6–8 hours',
+            price: 1200,
+            image: 'https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=800&auto=format&fit=crop',
+            badge: 'Most Popular',
+            badgeColor: '#1D9E75',
+            rating: 4.8,
+            reviews: 248,
+            includes: ['Local boat crew', 'Life vest', 'Island hopping (3 islands)', 'Snorkeling equipment'],
+            meetingPoint: 'Alaminos City Pier'
+        },
+        {
+            id: 'patar-beach',
+            name: 'Patar Beach Sunset Experience',
+            location: 'Bolinao',
+            duration: '4–5 hours',
+            price: 800,
+            image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
+            badge: 'Beach',
+            badgeColor: '#0284c7',
+            rating: 4.7,
+            reviews: 134,
+            includes: ['Cottage rental', 'Welcome coconut drink', 'Bonfire setup', 'Sunset guided walk'],
+            meetingPoint: 'Patar Beach Entrance'
+        },
+        {
+            id: 'enchanted-cave',
+            name: 'Enchanted Cave & Falls Combo',
+            location: 'Bolinao',
+            duration: '5–6 hours',
+            price: 1500,
+            image: 'https://images.unsplash.com/photo-1505051508008-923feaf90263?w=800&auto=format&fit=crop',
+            badge: 'Adventure',
+            badgeColor: '#7c3aed',
+            rating: 4.6,
+            reviews: 97,
+            includes: ['Cave entry fee', 'Life vest', 'Falls access', 'Tour guide'],
+            meetingPoint: 'Bolinao Town Hall'
+        },
+        {
+            id: 'cape-bolinao',
+            name: 'Cape Bolinao Lighthouse Trek',
+            location: 'Bolinao',
+            duration: '3–4 hours',
+            price: 700,
+            image: 'https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=800&auto=format&fit=crop',
+            badge: 'Historical',
+            badgeColor: '#b45309',
+            rating: 4.6,
+            reviews: 92,
+            includes: ['Lighthouse climb access', 'Historical guide', 'Coastal trail walk', 'Photo stops'],
+            meetingPoint: 'Cape Bolinao Lighthouse Gate'
+        },
+        {
+            id: 'lingayen-gulf',
+            name: 'Lingayen Gulf Sunrise Tour',
+            location: 'Lingayen',
+            duration: '2–3 hours',
+            price: 500,
+            image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop',
+            badge: 'Scenic',
+            badgeColor: '#0e7490',
+            rating: 4.4,
+            reviews: 65,
+            includes: ['Sunrise viewing', 'Historical markers tour', 'Bangus (milkfish) breakfast', 'Guide'],
+            meetingPoint: 'Lingayen Beach Boulevard'
+        },
+        {
+            id: 'manaoag-church',
+            name: 'Manaoag Heritage Pilgrimage',
+            location: 'Manaoag',
+            duration: '3–4 hours',
+            price: 400,
+            image: 'https://images.unsplash.com/photo-1548625361-9c636f3db5a8?w=800&auto=format&fit=crop',
+            badge: 'Cultural',
+            badgeColor: '#be185d',
+            rating: 4.7,
+            reviews: 112,
+            includes: ['Church guided tour', 'Heritage walk', 'Candle offering', 'Local snack stop'],
+            meetingPoint: 'Manaoag Church Main Entrance'
+        }
+    ];
 
-        // Set minimum date to today
-        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    const ADDONS = [
+        { id: 'snorkel', name: 'Snorkeling Gear Set', desc: 'Mask, fins, and snorkel for the full underwater experience.', price: 250 },
+        { id: 'guide', name: 'Private Guide Upgrade', desc: 'Dedicated guide just for your group throughout the tour.', price: 500 },
+        { id: 'lunch', name: 'Seafood Lunch Pack', desc: 'Fresh local seafood lunch prepared by the resort.', price: 450 },
+        { id: 'photo', name: 'Photography Package', desc: 'Professional drone + underwater photos delivered digitally.', price: 800 },
+        { id: 'transport', name: 'Round-trip Transport', desc: 'Air-conditioned van pick-up from Dagupan City.', price: 600 }
+    ];
 
-        function updateGuests(type, change) {
-            if (type === 'adults') {
-                if (adults + change >= 1 && adults + change <= 10) adults += change;
-                document.getElementById('adult-count').textContent = adults;
-                document.getElementById('summary-adult-count').textContent = adults;
-            } else if (type === 'children') {
-                if (children + change >= 0 && children + change <= 10) children += change;
-                document.getElementById('child-count').textContent = children;
-                document.getElementById('summary-child-count').textContent = children;
+    const TIME_SLOTS = [
+        { value: '6:00 AM', label: 'Sunrise Tour', icon: '🌅' },
+        { value: '8:00 AM', label: 'Morning Tour', icon: '☀️' },
+        { value: '1:00 PM', label: 'Afternoon Tour', icon: '🌤️' }
+    ];
+
+    const PROMOS = {
+        'TARA10':      { type: 'percent', value: 10,  label: '10% off' },
+        'PANGASINAN':  { type: 'fixed',   value: 200, label: '₱200 off' },
+        'FIRSTTIME':   { type: 'percent', value: 15,  label: '15% off' }
+    };
+
+    // ── STATE ─────────────────────────────────────────────────
+    const state = {
+        step: 1,
+        tourId: null,
+        date: '',
+        time: '',
+        adults: 2,
+        children: 0,
+        infants: 0,
+        addons: new Set(),
+        name: '',
+        email: '',
+        phone: '',
+        requests: '',
+        promoCode: '',
+        promoDiscount: 0
+    };
+
+    // ── INIT ──────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTourCards();
+        renderTimeSlots();
+        renderGuestCounters();
+        renderAddonCards();
+        updateSummary();
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('tour-date').min = today;
+
+        // Pre-select tour if arriving from a details page
+        const urlTour = new URLSearchParams(window.location.search).get('tour');
+        if (urlTour && TOURS.some(t => t.id === urlTour)) {
+            selectTour(urlTour);
+        }
+    });
+
+    // ── RENDER FUNCTIONS ──────────────────────────────────────
+    function renderTourCards() {
+        const grid = document.getElementById('tour-grid');
+        grid.innerHTML = TOURS.map(t => `
+            <div class="tour-card ${state.tourId === t.id ? 'selected' : ''}" onclick="selectTour('${t.id}')" id="tc-${t.id}">
+                <div class="tour-card-check">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="tour-card-img" style="background-image:url('${t.image}')">
+                    <span class="tour-card-badge" style="background:${t.badgeColor}">${t.badge}</span>
+                </div>
+                <div class="tour-card-body">
+                    <p class="tour-card-name">${t.name}</p>
+                    <p class="tour-card-loc">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        ${t.location} &nbsp;·&nbsp; ${t.duration}
+                    </p>
+                    <div class="tour-card-meta">
+                        <p class="tour-card-price">₱${t.price.toLocaleString()} <span>/person</span></p>
+                        <span class="tour-card-rating">⭐ ${t.rating} (${t.reviews})</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderTimeSlots() {
+        document.getElementById('time-slots').innerHTML = TIME_SLOTS.map(ts => `
+            <div class="time-slot ${state.time === ts.value ? 'selected' : ''}" onclick="selectTime('${ts.value}')" id="ts-${ts.value.replace(':','').replace(' ','')}">
+                <div class="time-slot-icon">${ts.icon}</div>
+                <div class="time-slot-info">
+                    <div class="time-slot-time">${ts.value}</div>
+                    <div class="time-slot-label">${ts.label}</div>
+                </div>
+                <div class="time-slot-radio"></div>
+            </div>
+        `).join('');
+    }
+
+    function renderGuestCounters() {
+        const types = [
+            { key: 'adults',   label: 'Adults',   sub: 'Age 13+',         min: 1, max: 20 },
+            { key: 'children', label: 'Children', sub: 'Ages 3–12 (50% off)', min: 0, max: 20 },
+            { key: 'infants',  label: 'Infants',  sub: 'Under 3 (Free)',   min: 0, max: 5  }
+        ];
+        document.getElementById('guest-counters').innerHTML = types.map(g => `
+            <div class="guest-counter-row">
+                <div class="guest-info">
+                    <h4>${g.label}</h4>
+                    <p>${g.sub}</p>
+                </div>
+                <div class="guest-controls">
+                    <button class="btn-counter" type="button" onclick="updateGuests('${g.key}',-1)" id="dec-${g.key}" ${state[g.key] <= g.min ? 'disabled' : ''}>−</button>
+                    <span class="guest-count" id="cnt-${g.key}">${state[g.key]}</span>
+                    <button class="btn-counter" type="button" onclick="updateGuests('${g.key}',1)" id="inc-${g.key}" ${state[g.key] >= g.max ? 'disabled' : ''}>+</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderAddonCards() {
+        document.getElementById('addon-grid').innerHTML = ADDONS.map(a => `
+            <div class="addon-card ${state.addons.has(a.id) ? 'selected' : ''}" onclick="toggleAddon('${a.id}')" id="ac-${a.id}">
+                <div class="addon-checkbox">
+                    ${state.addons.has(a.id) ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+                </div>
+                <div class="addon-info">
+                    <p class="addon-name">${a.name}</p>
+                    <p class="addon-desc">${a.desc}</p>
+                    <p class="addon-price">+₱${a.price.toLocaleString()}/group</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ── STATE UPDATERS ────────────────────────────────────────
+    function selectTour(id) {
+        state.tourId = id;
+        document.querySelectorAll('.tour-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('tc-' + id).classList.add('selected');
+        document.querySelector('#tc-' + id + ' .tour-card-check').style.display = 'flex';
+        hideError(1);
+        updateSummary();
+    }
+
+    function selectTime(val) {
+        state.time = val;
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        const key = val.replace(':','').replace(' ','');
+        document.getElementById('ts-' + key).classList.add('selected');
+        hideError(2);
+        updateSummary();
+    }
+
+    function onDateChange() {
+        state.date = document.getElementById('tour-date').value;
+        hideError(2);
+        updateSummary();
+    }
+
+    function updateGuests(type, delta) {
+        const min = type === 'adults' ? 1 : 0;
+        const max = type === 'infants' ? 5 : 20;
+        const next = state[type] + delta;
+        if (next < min || next > max) return;
+        state[type] = next;
+        document.getElementById('cnt-' + type).textContent = next;
+        document.getElementById('dec-' + type).disabled = (next <= min);
+        document.getElementById('inc-' + type).disabled = (next >= max);
+        updateSummary();
+    }
+
+    function toggleAddon(id) {
+        if (state.addons.has(id)) state.addons.delete(id);
+        else state.addons.add(id);
+        renderAddonCards();
+        updateSummary();
+    }
+
+    function onTermsChange() {
+        const checked = document.getElementById('terms-checkbox').checked;
+        document.getElementById('btn-confirm').disabled = !checked;
+        if (checked) hideError(4);
+    }
+
+    // ── PROMO CODE ────────────────────────────────────────────
+    function applyPromo(source) {
+        const inputId = source === 'sidebar' ? 'promo-input-sidebar' : 'promo-input-step3';
+        const msgId   = source === 'sidebar' ? 'promo-msg-sidebar'   : 'promo-msg-step3';
+        const code = document.getElementById(inputId).value.trim().toUpperCase();
+        const msgEl = document.getElementById(msgId);
+
+        if (!code) { msgEl.textContent = ''; return; }
+
+        if (PROMOS[code]) {
+            state.promoCode = code;
+            // sync both inputs
+            document.getElementById('promo-input-sidebar').value = code;
+            document.getElementById('promo-input-step3').value   = code;
+            msgEl.textContent = '✓ Code applied: ' + PROMOS[code].label;
+            msgEl.className = 'promo-msg success';
+            updateSummary();
+        } else if (state.promoCode && code !== state.promoCode) {
+            state.promoCode = '';
+            msgEl.textContent = '✗ Invalid promo code.';
+            msgEl.className = 'promo-msg error';
+            updateSummary();
+        } else {
+            msgEl.textContent = '✗ Invalid promo code.';
+            msgEl.className = 'promo-msg error';
+        }
+    }
+
+    // ── COMPUTE TOTAL ─────────────────────────────────────────
+    function computeTotal() {
+        const tour = TOURS.find(t => t.id === state.tourId);
+        if (!tour) return { adultTotal: 0, childTotal: 0, infantTotal: 0, addonTotal: 0, subtotal: 0, discount: 0, total: 0 };
+
+        const adultTotal  = state.adults   * tour.price;
+        const childTotal  = state.children * tour.price * 0.5;
+        const infantTotal = 0;
+        const addonTotal  = [...state.addons].reduce((sum, id) => {
+            const a = ADDONS.find(x => x.id === id);
+            return sum + (a ? a.price : 0);
+        }, 0);
+        const subtotal = adultTotal + childTotal + infantTotal + addonTotal;
+
+        let discount = 0;
+        if (state.promoCode && PROMOS[state.promoCode]) {
+            const p = PROMOS[state.promoCode];
+            discount = p.type === 'percent' ? Math.round(subtotal * p.value / 100) : p.value;
+        }
+
+        return { adultTotal, childTotal, infantTotal, addonTotal, subtotal, discount, total: Math.max(0, subtotal - discount) };
+    }
+
+    // ── UPDATE SUMMARY ────────────────────────────────────────
+    function updateSummary() {
+        const tour = TOURS.find(t => t.id === state.tourId);
+        const { adultTotal, childTotal, addonTotal, discount, total } = computeTotal();
+
+        // Tour image + name
+        const imgArea = document.getElementById('summary-img-area');
+        const tourDetails = document.getElementById('summary-tour-details');
+        if (tour) {
+            imgArea.innerHTML = `<div class="summary-tour-img" style="background-image:url('${tour.image}')"></div>`;
+            document.getElementById('sum-tour-name').textContent = tour.name;
+            document.getElementById('sum-tour-loc').textContent  = tour.location + ' · ' + tour.duration;
+            tourDetails.style.display = 'block';
+        } else {
+            imgArea.innerHTML = `<div class="summary-tour-img-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><p>Select a tour above</p></div>`;
+            tourDetails.style.display = 'none';
+        }
+
+        // Date / Time rows
+        const dateRow = document.getElementById('sum-date-row');
+        const timeRow = document.getElementById('sum-time-row');
+        if (state.date) { dateRow.style.display = 'flex'; document.getElementById('sum-date').textContent = formatDate(state.date); }
+        else dateRow.style.display = 'none';
+        if (state.time) { timeRow.style.display = 'flex'; document.getElementById('sum-time').textContent = state.time; }
+        else timeRow.style.display = 'none';
+
+        // Price rows
+        const priceRows = document.getElementById('sum-price-rows');
+        if (tour) {
+            let html = '';
+            html += `<div class="summary-item"><span>Adults × ${state.adults}</span><span>₱${adultTotal.toLocaleString()}</span></div>`;
+            if (state.children > 0)
+                html += `<div class="summary-item"><span>Children × ${state.children}</span><span>₱${childTotal.toLocaleString()}</span></div>`;
+            if (state.infants > 0)
+                html += `<div class="summary-item faded"><span>Infants × ${state.infants}</span><span>Free</span></div>`;
+            priceRows.innerHTML = html;
+        } else {
+            priceRows.innerHTML = `<div class="summary-item faded"><span>Select a tour to see pricing</span><span></span></div>`;
+        }
+
+        // Add-ons
+        const addonRows = document.getElementById('sum-addon-rows');
+        if (state.addons.size > 0) {
+            addonRows.style.display = 'block';
+            addonRows.innerHTML = [...state.addons].map(id => {
+                const a = ADDONS.find(x => x.id === id);
+                return a ? `<div class="summary-item faded"><span>${a.name}</span><span>+₱${a.price.toLocaleString()}</span></div>` : '';
+            }).join('');
+        } else {
+            addonRows.style.display = 'none';
+            addonRows.innerHTML = '';
+        }
+
+        // Promo
+        const promoRow = document.getElementById('sum-promo-row');
+        if (discount > 0) {
+            promoRow.style.display = 'flex';
+            document.getElementById('sum-promo-label').textContent = 'Promo (' + state.promoCode + ')';
+            document.getElementById('sum-promo-val').textContent   = '−₱' + discount.toLocaleString();
+        } else {
+            promoRow.style.display = 'none';
+        }
+
+        // Total
+        document.getElementById('sum-total').textContent = tour ? '₱' + total.toLocaleString() : '₱0';
+    }
+
+    // ── STEP NAVIGATION ───────────────────────────────────────
+    function validateStep(n) {
+        if (n === 1) {
+            if (!state.tourId) { showError(1); return false; }
+        }
+        if (n === 2) {
+            if (!state.date) {
+                document.getElementById('err-2-msg').textContent = 'Please select a date.';
+                showError(2); return false;
             }
-            updatePrice();
+            if (!state.time) {
+                document.getElementById('err-2-msg').textContent = 'Please select a time slot.';
+                showError(2); return false;
+            }
+        }
+        if (n === 3) {
+            const name  = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const phone = document.getElementById('contact-phone').value.trim();
+            if (!name || !email || !phone) {
+                document.getElementById('err-3-msg').textContent = 'Please fill in your name, email, and phone number.';
+                showError(3); return false;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('err-3-msg').textContent = 'Please enter a valid email address.';
+                showError(3); return false;
+            }
+            state.name  = name;
+            state.email = email;
+            state.phone = phone;
+            state.requests = document.getElementById('contact-requests').value.trim();
+        }
+        return true;
+    }
+
+    function nextStep(current) {
+        if (!validateStep(current)) return;
+        goToStep(current + 1);
+    }
+
+    function prevStep(current) {
+        goToStep(current - 1);
+    }
+
+    function goToStep(n) {
+        document.getElementById('step-' + state.step).classList.remove('active');
+        document.getElementById('prog-' + state.step).classList.remove('active');
+
+        // Mark completed steps
+        for (let i = 1; i < n; i++) {
+            const prog = document.getElementById('prog-' + i);
+            prog.classList.remove('active');
+            prog.classList.add('completed');
+            prog.querySelector('.progress-dot').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
         }
 
-        function updatePrice() {
-            const basePrice = parseInt(document.getElementById('destination').value);
-            const childPrice = basePrice * 0.5;
+        state.step = n;
+        document.getElementById('step-' + n).classList.add('active');
+        document.getElementById('prog-' + n).classList.add('active');
+        document.getElementById('prog-' + n).classList.remove('completed');
+        document.getElementById('prog-' + n).querySelector('.progress-dot').textContent = n;
 
-            const adultTotal = adults * basePrice;
-            const childTotal = children * childPrice;
-            const grandTotal = adultTotal + childTotal + tax;
+        if (n === 4) renderReview();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-            document.getElementById('summary-adult-price').textContent = '₱' + adultTotal.toLocaleString();
-            document.getElementById('summary-child-price').textContent = '₱' + childTotal.toLocaleString();
-            document.getElementById('summary-total-price').textContent = '₱' + grandTotal.toLocaleString();
+    // ── REVIEW RENDER ─────────────────────────────────────────
+    function renderReview() {
+        const tour = TOURS.find(t => t.id === state.tourId);
+        if (!tour) return;
+
+        document.getElementById('review-tour-img').style.backgroundImage = `url('${tour.image}')`;
+        document.getElementById('review-tour-name').textContent     = tour.name;
+        document.getElementById('review-tour-loc').textContent      = tour.location;
+        document.getElementById('review-tour-duration').textContent = tour.duration;
+        document.getElementById('review-date').textContent          = formatDate(state.date);
+        document.getElementById('review-time').textContent          = state.time;
+        document.getElementById('review-meeting').textContent       = tour.meetingPoint;
+        document.getElementById('review-name').textContent          = state.name;
+        document.getElementById('review-email').textContent         = state.email;
+
+        const guestParts = [`${state.adults} Adult${state.adults !== 1 ? 's' : ''}`];
+        if (state.children > 0) guestParts.push(`${state.children} Child${state.children !== 1 ? 'ren' : ''}`);
+        if (state.infants  > 0) guestParts.push(`${state.infants} Infant${state.infants !== 1 ? 's' : ''}`);
+        document.getElementById('review-guests').textContent = guestParts.join(', ');
+
+        const addonsSection = document.getElementById('review-addons-section');
+        const addonsList    = document.getElementById('review-addons-list');
+        if (state.addons.size > 0) {
+            addonsSection.style.display = 'block';
+            addonsList.innerHTML = [...state.addons].map(id => {
+                const a = ADDONS.find(x => x.id === id);
+                return a ? `<div class="review-row" style="margin-bottom:6px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:var(--dark);font-weight:500;">${a.name}</span><span style="margin-left:auto;color:var(--brand-green);">+₱${a.price.toLocaleString()}</span></div>` : '';
+            }).join('');
+        } else {
+            addonsSection.style.display = 'none';
         }
 
-        function submitBooking() {
-            // Trigger Success Modal
-            const modal = document.getElementById('successModal');
-            modal.classList.add('active');
+        updateSummary();
+    }
+
+    // ── SUBMIT ────────────────────────────────────────────────
+    function submitBooking() {
+        if (!document.getElementById('terms-checkbox').checked) {
+            showError(4); return;
         }
+        const ref = 'TPG-' + Date.now().toString(36).toUpperCase().slice(-6);
+        const tour = TOURS.find(t => t.id === state.tourId);
+        const { discount, total } = computeTotal();
+
+        const booking = {
+            ref,
+            tourId:       state.tourId,
+            tourName:     tour.name,
+            tourImage:    tour.image,
+            tourLocation: tour.location,
+            date:         state.date,
+            time:         state.time,
+            adults:       state.adults,
+            children:     state.children,
+            infants:      state.infants,
+            addons:       [...state.addons].map(id => {
+                              const a = ADDONS.find(x => x.id === id);
+                              return a ? { id: a.id, name: a.name, price: a.price } : null;
+                          }).filter(Boolean),
+            promoCode:    state.promoCode,
+            discount,
+            total,
+            status:       'upcoming',
+            name:         state.name,
+            email:        state.email,
+            phone:        state.phone,
+            requests:     state.requests,
+            bookedAt:     new Date().toISOString()
+        };
+
+        // Persist to localStorage
+        const bookings = JSON.parse(localStorage.getItem('tara_bookings') || '[]');
+        bookings.unshift(booking);
+        localStorage.setItem('tara_bookings', JSON.stringify(bookings));
+
+        document.getElementById('modal-ref').textContent = ref;
+        document.getElementById('modal-desc').textContent =
+            `${tour.name} on ${formatDate(state.date)} at ${state.time}. Confirmation sent to ${state.email}.`;
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    function resetWizard() {
+        document.getElementById('successModal').classList.remove('active');
+        state.tourId = null; state.date = ''; state.time = '';
+        state.adults = 2; state.children = 0; state.infants = 0;
+        state.addons = new Set(); state.name = ''; state.email = '';
+        state.phone = ''; state.requests = ''; state.promoCode = ''; state.promoDiscount = 0;
+        document.querySelectorAll('.progress-step').forEach((el, i) => {
+            el.classList.remove('active', 'completed');
+            el.querySelector('.progress-dot').textContent = i + 1;
+        });
+        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('step-1').classList.add('active');
+        document.getElementById('prog-1').classList.add('active');
+        state.step = 1;
+        renderTourCards(); renderTimeSlots(); renderGuestCounters(); renderAddonCards(); updateSummary();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── HELPERS ───────────────────────────────────────────────
+    function formatDate(dateStr) {
+        if (!dateStr) return '—';
+        const d = new Date(dateStr + 'T00:00:00');
+        return d.toLocaleDateString('en-PH', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function showError(step) {
+        const el = document.getElementById('err-' + step);
+        el.classList.add('visible');
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideError(step) {
+        document.getElementById('err-' + step).classList.remove('visible');
+    }
     </script>
+
     <script src="js/main.js"></script>
 </body>
 </html>
-
-

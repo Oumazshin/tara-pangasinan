@@ -15,6 +15,16 @@
     z-index: 1;
 }
 
+.contact-hero-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 12px;
+}
+
 .contact-hero-content h1 {
     font-family: 'Outfit', sans-serif;
     font-size: 4rem;

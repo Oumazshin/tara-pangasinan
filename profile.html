@@ -21,8 +21,8 @@
         <div class="logo">
             <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
             <div class="logo-text">
-                <span class="green">Pangasinan</span>
-                <span class="white">Tourism</span>
+                <span class="green">Tara</span>
+                <span class="white">Pangasinan</span>
             </div>
         </div>
         <ul class="nav-links">
@@ -54,22 +54,22 @@
     <div class="profile-stats-bar">
         <div class="profile-stats-inner">
             <div class="profile-stat">
-                <span class="profile-stat-value">8</span>
+                <span class="profile-stat-value" id="stat-total">0</span>
                 <span class="profile-stat-label">Total Bookings</span>
             </div>
             <div class="profile-stat-divider"></div>
             <div class="profile-stat">
-                <span class="profile-stat-value">5</span>
+                <span class="profile-stat-value" id="stat-visited">0</span>
                 <span class="profile-stat-label">Places Visited</span>
             </div>
             <div class="profile-stat-divider"></div>
             <div class="profile-stat">
-                <span class="profile-stat-value">1</span>
+                <span class="profile-stat-value" id="stat-upcoming">0</span>
                 <span class="profile-stat-label">Upcoming Trips</span>
             </div>
             <div class="profile-stat-divider"></div>
             <div class="profile-stat">
-                <span class="profile-stat-value">3</span>
+                <span class="profile-stat-value" id="stat-reviews">0</span>
                 <span class="profile-stat-label">Reviews Written</span>
             </div>
         </div>
@@ -84,86 +84,8 @@
             <!-- Panel: Booking History (default) -->
             <section class="profile-section" id="panel-bookings">
                 <h2>Booking History</h2>
-
-                <!-- Upcoming -->
-                <div class="booking-card">
-                    <img src="https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=400" alt="Hundred Islands" class="booking-img">
-                    <div class="booking-info">
-                        <h3>Hundred Islands Private Boat Tour</h3>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            Oct 12, 2026 &bull; 8:00 AM
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            4 Guests
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            ₱2,400 total
-                        </div>
-                        <div class="booking-footer">
-                            <span class="status-badge status-upcoming">Upcoming</span>
-                            <div class="booking-actions">
-                                <a href="details.html?id=hundred-islands" class="btn-action">View Details</a>
-                                <button class="btn-action btn-action-danger" onclick="if(confirm('Cancel this booking?')) { this.closest('.booking-card').querySelector('.status-badge').textContent='Cancelled'; this.closest('.booking-card').querySelector('.status-badge').className='status-badge status-cancelled'; this.remove(); }">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Completed -->
-                <div class="booking-card">
-                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400" alt="Patar Beach" class="booking-img">
-                    <div class="booking-info">
-                        <h3>Patar Beach Cottage Rental</h3>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            April 5, 2026 &bull; Full Day
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            8 Guests
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            ₱5,600 total
-                        </div>
-                        <div class="booking-footer">
-                            <span class="status-badge status-completed">Completed</span>
-                            <div class="booking-actions">
-                                <a href="details.html?id=patar-beach" class="btn-action">View Details</a>
-                                <button class="btn-action btn-action-green" onclick="alert('Thank you for your review, Carlo! Your feedback helps other travelers.')">Leave a Review</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cancelled -->
-                <div class="booking-card">
-                    <img src="https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=400" alt="Cape Bolinao Lighthouse" class="booking-img">
-                    <div class="booking-info">
-                        <h3>Cape Bolinao Lighthouse Guided Tour</h3>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            March 20, 2026 &bull; 9:00 AM
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            2 Guests
-                        </div>
-                        <div class="booking-detail">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            ₱800 total
-                        </div>
-                        <div class="booking-footer">
-                            <span class="status-badge status-cancelled">Cancelled</span>
-                            <div class="booking-actions">
-                                <a href="details.html?id=cape-bolinao" class="btn-action">View Details</a>
-                                <a href="plan.html" class="btn-action btn-action-green">Rebook</a>
-                            </div>
-                        </div>
-                    </div>
+                <div id="bookings-container">
+                    <!-- Dynamically rendered from localStorage -->
                 </div>
             </section>
 
@@ -225,7 +147,7 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                             Save Changes
                         </button>
-                        <button type="button" class="btn-discard" onclick="document.getElementById('pf-firstname').value='Carlo'; document.getElementById('pf-lastname').value='Reyes';">Discard</button>
+                        <button type="button" class="btn-discard" onclick="discardProfile()">Discard</button>
                     </div>
 
                     <div class="form-success" id="profile-save-msg" style="display:none;">
@@ -268,7 +190,7 @@
                     </a>
                 </div>
 
-                <button class="btn-logout" onclick="if(confirm('Are you sure you want to log out?')) window.location.href='index.html';">
+                <button class="btn-logout" onclick="document.getElementById('logout-modal').style.display='flex'">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     Log Out
                 </button>
@@ -285,8 +207,8 @@
                     <div class="footer-logo">
                         <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
                         <div class="footer-logo-text">
-                            <span class="green">Pangasinan</span>
-                            <span class="white">Tourism</span>
+                            <span class="green">Tara</span>
+                            <span class="white">Pangasinan</span>
                         </div>
                     </div>
                     <p class="footer-desc">Experience the beauty of Pangasinan</p>
@@ -301,7 +223,7 @@
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <p class="footer-copy">&copy; 2026 Tara Pangasinan. All rights reserved.</p>
                 <div class="social-icons">
                     <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
                     <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
@@ -313,9 +235,28 @@
         </div>
     </footer>
 
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-modal" class="logout-modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="logout-modal-box">
+            <div class="logout-modal-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+            </div>
+            <h3>Log Out?</h3>
+            <p>Are you sure you want to log out of Tara Pangasinan? Your bookings and saved spots will remain.</p>
+            <div class="logout-modal-actions">
+                <button class="btn-modal-cancel" onclick="document.getElementById('logout-modal').style.display='none'">Cancel</button>
+                <button class="btn-modal-logout" id="logout-confirm-btn" onclick="doLogout()">Log Out</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
     <script>
-        // Panel tab switching
+        // ── PANEL TAB SWITCHING ───────────────────────────────
         const sidebarLinks = document.querySelectorAll('.sidebar-link[data-panel]');
         const panels = { bookings: document.getElementById('panel-bookings'), settings: document.getElementById('panel-settings') };
 
@@ -330,12 +271,189 @@
             });
         });
 
-        // Profile save handler
+        // Profile settings persistence
+        const PROFILE_DEFAULTS = {
+            firstname: 'Carlo', lastname: 'Reyes',
+            email: 'carlo.reyes@gmail.com', phone: '+63 917 234 5678',
+            city: 'Dagupan City, Pangasinan',
+            bio: 'Proud Pangasinanon and avid traveler. I love exploring the natural wonders of my home province and sharing them with family and friends.'
+        };
+
+        function loadProfileSettings() {
+            const data = Object.assign({}, PROFILE_DEFAULTS,
+                JSON.parse(localStorage.getItem('tara_profile') || 'null'));
+            document.getElementById('pf-firstname').value = data.firstname;
+            document.getElementById('pf-lastname').value  = data.lastname;
+            document.getElementById('pf-email').value     = data.email;
+            document.getElementById('pf-phone').value     = data.phone;
+            document.getElementById('pf-city').value      = data.city;
+            document.getElementById('pf-bio').value       = data.bio;
+            updateSidebarDisplay(data);
+        }
+
+        function updateSidebarDisplay(data) {
+            const nameEl  = document.querySelector('.sidebar-card h3');
+            const emailEl = document.querySelector('.sidebar-email');
+            const locEl   = document.querySelector('.sidebar-location');
+            if (nameEl)  nameEl.textContent  = (data.firstname + ' ' + data.lastname).trim();
+            if (emailEl) emailEl.textContent = data.email;
+            if (locEl) {
+                const textNodes = [...locEl.childNodes].filter(n => n.nodeType === 3);
+                const txt = textNodes[textNodes.length - 1];
+                if (txt) txt.textContent = ' ' + data.city;
+            }
+        }
+
         function handleSaveProfile(e) {
             e.preventDefault();
+            const data = {
+                firstname: document.getElementById('pf-firstname').value.trim(),
+                lastname:  document.getElementById('pf-lastname').value.trim(),
+                email:     document.getElementById('pf-email').value.trim(),
+                phone:     document.getElementById('pf-phone').value.trim(),
+                city:      document.getElementById('pf-city').value.trim(),
+                bio:       document.getElementById('pf-bio').value.trim()
+            };
+            localStorage.setItem('tara_profile', JSON.stringify(data));
+            updateSidebarDisplay(data);
             const msg = document.getElementById('profile-save-msg');
             msg.style.display = 'flex';
             setTimeout(() => msg.style.display = 'none', 3500);
+        }
+
+        function discardProfile() {
+            loadProfileSettings();
+        }
+
+        loadProfileSettings();
+
+        // ── BOOKING HISTORY ───────────────────────────────────
+        const ICON_CAL   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+        const ICON_PPL   = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+        const ICON_PESO  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+
+        function fmtDate(d) {
+            if (!d) return '—';
+            return new Date(d + 'T00:00:00').toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function getBookings() {
+            return JSON.parse(localStorage.getItem('tara_bookings') || '[]');
+        }
+
+        function saveBookings(arr) {
+            localStorage.setItem('tara_bookings', JSON.stringify(arr));
+        }
+
+        function resolveStatus(b) {
+            if (b.status === 'cancelled') return 'cancelled';
+            const today = new Date().toISOString().split('T')[0];
+            return b.date < today ? 'completed' : 'upcoming';
+        }
+
+        function renderBookings() {
+            const container = document.getElementById('bookings-container');
+            let bookings = getBookings();
+
+            // Auto-update status based on date and persist
+            let changed = false;
+            bookings = bookings.map(b => {
+                const resolved = resolveStatus(b);
+                if (resolved !== b.status && b.status !== 'cancelled') { b.status = resolved; changed = true; }
+                return b;
+            });
+            if (changed) saveBookings(bookings);
+
+            // Stats
+            const total    = bookings.length;
+            const upcoming = bookings.filter(b => b.status === 'upcoming').length;
+            const completed = bookings.filter(b => b.status === 'completed').length;
+            const visited  = new Set(bookings.filter(b => b.status !== 'cancelled').map(b => b.tourId)).size;
+
+            document.getElementById('stat-total').textContent    = total;
+            document.getElementById('stat-visited').textContent   = visited;
+            document.getElementById('stat-upcoming').textContent  = upcoming;
+            document.getElementById('stat-reviews').textContent   = completed;
+
+            if (!bookings.length) {
+                container.innerHTML = `
+                    <div class="booking-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <h3>No bookings yet</h3>
+                        <p>You haven't booked any tours. Explore Pangasinan and plan your first adventure!</p>
+                        <a href="plan.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;text-decoration:none;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;margin-top:4px;">
+                            Book a Tour
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = bookings.map(b => {
+                const guests = [
+                    b.adults   ? `${b.adults} Adult${b.adults   !== 1 ? 's' : ''}` : '',
+                    b.children ? `${b.children} Child${b.children !== 1 ? 'ren' : ''}` : '',
+                    b.infants  ? `${b.infants} Infant${b.infants  !== 1 ? 's' : ''}` : ''
+                ].filter(Boolean).join(', ');
+
+                const statusClass = { upcoming: 'status-upcoming', completed: 'status-completed', cancelled: 'status-cancelled' }[b.status];
+                const statusText  = { upcoming: 'Upcoming', completed: 'Completed', cancelled: 'Cancelled' }[b.status];
+
+                const tourIdForLink = b.tourId || '';
+                const detailHref = tourIdForLink ? `details.html?id=${tourIdForLink}` : 'explore.html';
+
+                let actions = '';
+                if (b.status === 'upcoming') {
+                    actions = `
+                        <a href="${detailHref}" class="btn-action">View Details</a>
+                        <button class="btn-action btn-action-danger" onclick="cancelBooking('${b.ref}')">Cancel</button>`;
+                } else if (b.status === 'completed') {
+                    actions = `
+                        <a href="${detailHref}" class="btn-action">View Details</a>
+                        <button class="btn-action btn-action-green" onclick="leaveReview('${b.tourName}')">Leave a Review</button>`;
+                } else {
+                    actions = `
+                        <a href="${detailHref}" class="btn-action">View Details</a>
+                        <a href="plan.html${tourIdForLink ? '?tour=' + tourIdForLink : ''}" class="btn-action btn-action-green">Rebook</a>`;
+                }
+
+                return `
+                <div class="booking-card" id="bc-${b.ref}">
+                    <img src="${b.tourImage}" alt="${b.tourName}" class="booking-img" onerror="this.style.background='#e5e7eb';this.removeAttribute('src')">
+                    <div class="booking-info">
+                        <h3>${b.tourName}</h3>
+                        <div class="booking-detail">${ICON_CAL} ${fmtDate(b.date)} &bull; ${b.time || '—'}</div>
+                        <div class="booking-detail">${ICON_PPL} ${guests || '—'}</div>
+                        <div class="booking-detail">${ICON_PESO} ₱${(b.total || 0).toLocaleString()} total</div>
+                        <div class="booking-footer">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            <div class="booking-actions">${actions}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function cancelBooking(ref) {
+            if (!confirm('Cancel this booking? This cannot be undone.')) return;
+            const bookings = getBookings().map(b => b.ref === ref ? { ...b, status: 'cancelled' } : b);
+            saveBookings(bookings);
+            renderBookings();
+        }
+
+        function leaveReview(tourName) {
+            alert(`Thank you for your review of ${tourName}!\nYour feedback helps other travelers discover Pangasinan.`);
+        }
+
+        // Initial render
+        renderBookings();
+
+        // ── LOGOUT ────────────────────────────────────────────
+        function doLogout() {
+            const btn = document.getElementById('logout-confirm-btn');
+            btn.textContent = 'Logging out…';
+            btn.disabled = true;
+            localStorage.removeItem('tara_session');
+            setTimeout(() => { window.location.href = 'index.html'; }, 700);
         }
     </script>
 </body>

@@ -25,8 +25,8 @@
         <div class="logo">
             <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
             <div class="logo-text">
-                <span class="green">Pangasinan</span>
-                <span class="white">Tourism</span>
+                <span class="green">Tara</span>
+                <span class="white">Pangasinan</span>
             </div>
         </div>
         <ul class="nav-links">
@@ -62,65 +62,83 @@
         <div class="container">
             <div class="saved-header">
                 <h2>Your List</h2>
-                <span class="saved-count">2 Items Saved</span>
+                <span class="saved-count" id="saved-count">0 Items Saved</span>
             </div>
-
-            <div class="explore-grid" id="savedGrid">
-                
-                <!-- Saved Item 1 -->
-                <div class="explore-card" id="saved-1">
-                    <div class="explore-card-img" style="background-image: url('https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=600');">
-                        <span class="explore-card-badge" style="background: rgba(29, 158, 117, 0.9);">Nature</span>
-                        <button class="btn-remove-save" onclick="event.preventDefault(); document.getElementById('saved-1').style.display='none';" title="Remove from saved">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        </button>
-                    </div>
-                    <div class="explore-card-body">
-                        <h3 class="explore-card-title">Hundred Islands National Park</h3>
-                        <div class="explore-card-loc">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            Alaminos City
-                        </div>
-                        <p class="explore-card-desc">A beautiful cluster of 124 islands offering pristine beaches, caves, and vibrant marine life.</p>
-                        <div class="explore-card-footer">
-                            <div class="explore-card-rating">
-                                <img src="assets/Home Page/StarYellow.svg" width="14" height="14" alt="Star">
-                                4.8 (1.2k)
-                            </div>
-                            <a href="details.html?id=hundred-islands" class="explore-card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Saved Item 2 -->
-                <div class="explore-card" id="saved-2">
-                    <div class="explore-card-img" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600');">
-                        <span class="explore-card-badge" style="background: rgba(29, 158, 117, 0.9);">Beach</span>
-                        <button class="btn-remove-save" onclick="event.preventDefault(); document.getElementById('saved-2').style.display='none';" title="Remove from saved">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        </button>
-                    </div>
-                    <div class="explore-card-body">
-                        <h3 class="explore-card-title">Patar White Beach</h3>
-                        <div class="explore-card-loc">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            Bolinao
-                        </div>
-                        <p class="explore-card-desc">Known as the Boracay of the North, featuring golden sands and spectacular sunsets.</p>
-                        <div class="explore-card-footer">
-                            <div class="explore-card-rating">
-                                <img src="assets/Home Page/HalfStarYellow.svg" width="14" height="14" alt="Half Star">
-                                4.5 (856)
-                            </div>
-                            <a href="details.html?id=patar-beach" class="explore-card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+            <div class="explore-grid" id="savedGrid"></div>
         </div>
     </section>
+
+    <script>
+    const CAT_COLORS_SAVED = {
+        Nature: '#10b981', Beach: '#0ea5e9', Historical: '#78716c',
+        Festival: '#f59e0b', Food: '#ef4444'
+    };
+
+    function getSaved() {
+        return JSON.parse(localStorage.getItem('tara_saved') || '[]');
+    }
+
+    function removeSaved(id) {
+        const s = getSaved().filter(x => x !== id);
+        localStorage.setItem('tara_saved', JSON.stringify(s));
+        renderSaved(window._spotsCache || []);
+    }
+
+    function renderSaved(spots) {
+        const savedIds = getSaved();
+        const grid  = document.getElementById('savedGrid');
+        const count = document.getElementById('saved-count');
+        const saved = spots.filter(s => savedIds.includes(s.id));
+
+        count.textContent = saved.length + (saved.length === 1 ? ' Item Saved' : ' Items Saved');
+
+        if (!saved.length) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:80px 20px;">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" style="display:block;margin:0 auto 16px;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:#374151;margin-bottom:8px;">No saved spots yet</h3>
+                    <p style="font-family:'Inter',sans-serif;font-size:14px;color:#6b7280;margin-bottom:24px;">Start exploring and click "Save" on spots you love.</p>
+                    <a href="explore.html" style="display:inline-flex;align-items:center;gap:8px;background:#1D9E75;color:#fff;padding:12px 28px;border-radius:10px;text-decoration:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;">
+                        Explore Destinations
+                    </a>
+                </div>`;
+            return;
+        }
+
+        grid.innerHTML = saved.map(s => `
+            <div class="explore-card">
+                <div class="explore-card-img" style="background-image:url('${s.image}');">
+                    <span class="explore-card-badge" style="background:${CAT_COLORS_SAVED[s.category] || '#6b7280'}">${s.category}</span>
+                    <button class="btn-remove-save" onclick="event.preventDefault();event.stopPropagation();removeSaved('${s.id}')" title="Remove from saved">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </button>
+                </div>
+                <div class="explore-card-body">
+                    <div class="explore-card-title">${s.title}</div>
+                    <div class="explore-card-loc">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        ${s.location}
+                    </div>
+                    <p class="explore-card-desc">${s.shortDesc}</p>
+                    <div class="explore-card-footer">
+                        <div class="explore-card-rating">⭐ ${s.rating} (${s.reviews})</div>
+                        <a href="details.html?id=${s.id}" class="explore-card-link">
+                            View Details
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>`).join('');
+    }
+
+    fetch('data/spots.json')
+        .then(r => r.json())
+        .then(spots => { window._spotsCache = spots; renderSaved(spots); })
+        .catch(() => {
+            document.getElementById('savedGrid').innerHTML =
+                '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;font-family:Inter,sans-serif;">Failed to load spots. Please refresh.</div>';
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="footer-section">
@@ -130,8 +148,8 @@
                     <div class="footer-logo">
                         <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
                         <div class="footer-logo-text">
-                            <span class="green">Pangasinan</span>
-                            <span class="white">Tourism</span>
+                            <span class="green">Tara</span>
+                            <span class="white">Pangasinan</span>
                         </div>
                     </div>
                     <p class="footer-desc">Experience the beauty of Pangasinan</p>
@@ -146,7 +164,7 @@
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <p class="footer-copy">&copy; 2026 Pangasinan Tourism. All rights reserved.</p>
+                <p class="footer-copy">&copy; 2026 Tara Pangasinan. All rights reserved.</p>
                 <div class="social-icons">
                     <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
                     <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
