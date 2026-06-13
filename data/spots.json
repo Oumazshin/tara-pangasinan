@@ -5,37 +5,50 @@
         "location": "Alaminos City",
         "category": "Nature",
         "rating": 4.8,
-        "reviews": 248,
+        "reviews": 4948,
         "shortDesc": "124 islands and islets scattered across the crystal-clear Lingayen Gulf.",
-        "description": "Hundred Islands National Park is one of the Philippines' most treasured natural wonders, located in Alaminos City in Pangasinan. Spanning approximately 1,844 hectares of land and sea, the park is home to 124 stunning islands and islets — only three of which are developed for tourism: Governor's Island, Children's Island, and Quezon Island.\n\nDeclared a National Park in 1940, Hundred Islands offers a rich tapestry of marine biodiversity, limestone formations, white sand beaches, and pristine turquoise waters. Whether you're a nature enthusiast, an adventure seeker, or simply in search of relaxation, the park delivers an unforgettable experience that few destinations in the country can match.\n\nThe park is best explored by boat, with local boatmen available at the Alaminos City Pier. Visitors can island-hop across multiple islets, snorkel vibrant reef systems, kayak through hidden lagoons, or simply lounge on secluded beaches surrounded by dramatic karst landscapes.",
-        "image": "https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=800&auto=format&fit=crop",
-        "lat": 16.1940,
-        "lng": 119.9900,
-        "activities": ["Island Hopping", "Snorkeling", "Kayaking", "Beach Picnic"],
+        "description": "Hundred Islands National Park is one of the Philippines' most treasured natural wonders, located in Alaminos City in Pangasinan. Spanning approximately 1,844 hectares of land and sea, the park is home to 124 stunning islands and islets — only three of which are developed for tourism: Governor's Island, Children's Island, and Quezon Island.\n\nDeclared a National Park in 1940, Hundred Islands offers a rich tapestry of marine biodiversity, limestone formations, white sand beaches, and pristine turquoise waters. Whether you're a nature enthusiast, an adventure seeker, or simply in search of relaxation, the park delivers an unforgettable experience that few destinations in the country can match.",
+        "image": "assets/images/nature/Hundred Islands.jpg",
+        "lat": 16.194,
+        "lng": 119.99,
+        "activities": [
+            "Island Hopping",
+            "Snorkeling",
+            "Kayaking",
+            "Beach Picnic"
+        ],
         "stats": [
-            { "label": "Islands", "value": "124" },
-            { "label": "Location", "value": "Alaminos City" },
-            { "label": "Best Time", "value": "Nov – May" },
-            { "label": "Rating", "value": "4.8 / 5.0" }
+            {
+                "label": "Islands",
+                "value": "124"
+            },
+            {
+                "label": "Location",
+                "value": "Alaminos City"
+            },
+            {
+                "label": "Best Time",
+                "value": "Nov – May"
+            },
+            {
+                "label": "Rating",
+                "value": "4.8 / 5.0"
+            }
         ],
         "tips": [
             "Best visited during the dry season (November to May) for calm seas and sunny skies.",
             "Bring reef-safe sunscreen to protect your skin and the park's marine ecosystems.",
             "Wear water shoes — some island rocks can be sharp underfoot.",
-            "Hire a licensed local boatman at the Alaminos City Pier for the best island tour experience.",
-            "Entrance fee: ₱200 for adults, ₱100 for children."
+            "Hire a licensed local boatman at the Alaminos City Pier for the best island tour experience."
         ],
         "hours": "Open Daily 7AM – 5PM",
         "entrance": "₱200 Adults / ₱100 Children",
         "contact": "+63 75 551-1234",
         "website": "hundredislandsni.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=800",
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-            "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800",
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-            "https://images.unsplash.com/photo-1540206063137-4a88ca974d1a?w=800"
+            "assets/images/nature/hundred-island-nature.jpg",
+            "assets/images/nature/hundred-island-2.webp",
+            "assets/images/nature/hundred-island-national-park.jpg"
         ]
     },
     {
@@ -43,38 +56,50 @@
         "title": "Bolinao Falls",
         "location": "Bolinao",
         "category": "Nature",
-        "rating": 4.7,
-        "reviews": 89,
+        "rating": 4.2,
+        "reviews": 331,
         "shortDesc": "Stunning cascading waterfalls perfect for swimming in cool refreshing waters.",
-        "description": "Bolinao Falls offers a refreshing escape with its clear, cool waters and beautiful cascading falls surrounded by lush greenery. Located in the municipality of Bolinao in Pangasinan, these falls are a favorite spot for tourists seeking a natural swimming pool away from the heat.\n\nThere are actually multiple falls in the area — Bolinao Falls 1 and Falls 2 — each with its own character and charm. The waters are crystal clear and cool, making it a perfect spot for a refreshing dip after a long drive. The surrounding landscape is lush and tropical, offering a serene environment for relaxation and nature appreciation.",
-        "image": "https://images.unsplash.com/photo-1432405972618-c60002b545d6?w=800&auto=format&fit=crop",
-        "lat": 16.3610,
+        "description": "Bolinao Falls offers a refreshing escape with its clear, cool waters and beautiful cascading falls surrounded by lush greenery. Located in the municipality of Bolinao in Pangasinan, these falls are a favorite spot for tourists seeking a natural swimming pool away from the heat.\n\nThere are multiple falls in the area, each with its own character and charm. The waters are crystal clear and cool, making it a perfect spot for a refreshing dip after a long drive.",
+        "image": "assets/images/nature/bolinao-falls-1.jpg",
+        "lat": 16.361,
         "lng": 119.8912,
-        "activities": ["Swimming", "Cliff Jumping", "Nature Walk", "Picnic"],
+        "activities": [
+            "Swimming",
+            "Cliff Jumping",
+            "Nature Walk",
+            "Picnic"
+        ],
         "stats": [
-            { "label": "Falls", "value": "2 Tiers" },
-            { "label": "Location", "value": "Bolinao" },
-            { "label": "Best Time", "value": "Year-round" },
-            { "label": "Rating", "value": "4.7 / 5.0" }
+            {
+                "label": "Falls",
+                "value": "Multiple Tiers"
+            },
+            {
+                "label": "Location",
+                "value": "Bolinao"
+            },
+            {
+                "label": "Best Time",
+                "value": "Year-round"
+            },
+            {
+                "label": "Rating",
+                "value": "4.7 / 5.0"
+            }
         ],
         "tips": [
             "Visit on weekdays to avoid weekend crowds.",
             "Bring water shoes — the rocks near the falls can be slippery.",
-            "Swimming is allowed in designated safe areas only.",
-            "Pack your own food and drinks as vendors may be limited.",
-            "Entrance fee: approximately ₱30–₱50 per person."
+            "Swimming is allowed in designated safe areas only."
         ],
         "hours": "Open Daily 7AM – 5PM",
         "entrance": "₱30 – ₱50 per person",
         "contact": "+63 75 696-0012",
         "website": "bolinao.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1432405972618-c60002b545d6?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-            "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800",
-            "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-            "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800",
-            "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800"
+            "assets/images/nature/bolinao-falls-1.jpg",
+            "assets/images/nature/bolinao-falls-2.jpg",
+            "assets/images/nature/bolinao-falls-3.jpg"
         ]
     },
     {
@@ -82,38 +107,45 @@
         "title": "Enchanted Cave",
         "location": "Bolinao",
         "category": "Nature",
-        "rating": 4.5,
-        "reviews": 76,
+        "rating": 4.2,
+        "reviews": 1054,
         "shortDesc": "Underground pool with crystal clear waters hidden deep inside a natural cave.",
-        "description": "Enchanted Cave is one of the must-visit attractions in Bolinao, Pangasinan. It is a massive cave made of coral rocks and is believed to have been underwater thousands of years ago. Inside the cave is a clear natural pool where tourists can swim in the cool, refreshing underground waters.\n\nThe cave is illuminated by natural light filtering through openings above, creating a mystical atmosphere that gives the cave its enchanting name. Visitors descend a staircase into the cave interior to reach the swimming pool. The experience is truly unique — swimming inside a living rock formation with stalactites and stalagmites all around.",
-        "image": "https://images.unsplash.com/photo-1505051508008-923feaf90263?w=800&auto=format&fit=crop",
-        "lat": 16.3800,
-        "lng": 119.8760,
-        "activities": ["Cave Swimming", "Spelunking", "Photography"],
+        "description": "Enchanted Cave is one of the must-visit attractions in Bolinao, Pangasinan. It is a massive cave made of coral rocks and is believed to have been underwater thousands of years ago. Inside the cave is a clear natural pool where tourists can swim in the cool, refreshing underground waters.",
+        "image": "assets/images/nature/enchanted-cave.jpg",
+        "lat": 16.38,
+        "lng": 119.876,
+        "activities": [
+            "Cave Swimming",
+            "Spelunking",
+            "Photography"
+        ],
         "stats": [
-            { "label": "Type", "value": "Cave Pool" },
-            { "label": "Location", "value": "Bolinao" },
-            { "label": "Best Time", "value": "Year-round" },
-            { "label": "Rating", "value": "4.5 / 5.0" }
+            {
+                "label": "Type",
+                "value": "Cave Pool"
+            },
+            {
+                "label": "Location",
+                "value": "Bolinao"
+            },
+            {
+                "label": "Best Time",
+                "value": "Year-round"
+            }
         ],
         "tips": [
             "Wear a swimsuit — you will get wet inside the cave pool.",
             "Life vests are provided and required for non-swimmers.",
-            "Keep noise to a minimum to preserve the cave's natural atmosphere.",
-            "Photography is allowed but be careful with electronics near the water.",
-            "Entrance fee: approximately ₱80–₱100 per person."
+            "Keep noise to a minimum to preserve the cave's natural atmosphere."
         ],
         "hours": "Open Daily 8AM – 5PM",
         "entrance": "₱80 – ₱100 per person",
         "contact": "+63 75 696-0022",
         "website": "bolinao.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1505051508008-923feaf90263?w=800",
-            "https://images.unsplash.com/photo-1520962880247-cfaf541c8724?w=800",
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-            "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800",
-            "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800"
+            "assets/images/nature/enchanted-cave.jpg",
+            "assets/images/nature/enchanted-cave-nature.jpg",
+            "assets/images/nature/cave.webp"
         ]
     },
     {
@@ -121,77 +153,83 @@
         "title": "Cape Bolinao Lighthouse",
         "location": "Bolinao",
         "category": "Historical",
-        "rating": 4.6,
-        "reviews": 92,
+        "rating": 4.3,
+        "reviews": 129,
         "shortDesc": "Historic lighthouse offering breathtaking panoramic views of the West Philippine Sea.",
-        "description": "The Cape Bolinao Lighthouse is one of the tallest lighthouses in the Philippines, standing at approximately 32 meters. Built in 1903 by American, British, and Filipino engineers, it was originally designed to guide ships navigating the treacherous waters of the West Philippine Sea.\n\nToday, the lighthouse serves as one of Pangasinan's most iconic landmarks and tourist attractions. Visitors can climb to the top for a magnificent 360-degree view of the West Philippine Sea, the surrounding coastline, and the lush landscape of Bolinao. The structure remains an active lighthouse managed by the Philippine Coast Guard.",
-        "image": "https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=800&auto=format&fit=crop",
-        "lat": 16.3970,
-        "lng": 119.7660,
-        "activities": ["Sightseeing", "Photography", "Sunset Watching", "Historical Tour"],
+        "description": "The Cape Bolinao Lighthouse is one of the tallest lighthouses in the Philippines, standing at approximately 32 meters. Built in 1903 by American, British, and Filipino engineers, it was originally designed to guide ships navigating the treacherous waters of the West Philippine Sea.",
+        "image": "assets/images/historical/bolinao-lighthouse-historical.jpg",
+        "lat": 16.397,
+        "lng": 119.766,
+        "activities": [
+            "Sightseeing",
+            "Photography",
+            "Sunset Watching"
+        ],
         "stats": [
-            { "label": "Height", "value": "32 meters" },
-            { "label": "Location", "value": "Bolinao" },
-            { "label": "Built", "value": "1903" },
-            { "label": "Rating", "value": "4.6 / 5.0" }
+            {
+                "label": "Height",
+                "value": "32 meters"
+            },
+            {
+                "label": "Location",
+                "value": "Bolinao"
+            },
+            {
+                "label": "Built",
+                "value": "1903"
+            }
         ],
         "tips": [
-            "Visit during sunset for the most spectacular views over the West Philippine Sea.",
-            "Wear comfortable shoes — the climb to the top involves steep stairs.",
-            "Bring a camera with a wide-angle lens to capture the panoramic views.",
-            "The area is also a good spot for dolphin and whale watching early in the morning.",
-            "No entrance fee to view the lighthouse from outside; small fee to climb."
+            "Visit during sunset for the most spectacular views.",
+            "Wear comfortable shoes — the climb involves steep stairs."
         ],
         "hours": "Open Daily 8AM – 5PM",
         "entrance": "Free (exterior) / ₱20 to climb",
         "contact": "+63 75 696-0033",
         "website": "bolinao.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=800",
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
-            "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-            "https://images.unsplash.com/photo-1548625361-9c636f3db5a8?w=800"
+            "assets/images/historical/bolinao-lighthouse-historical.jpg"
         ]
     },
     {
         "id": "lingayen-gulf",
-        "title": "Lingayen Gulf",
+        "title": "Lingayen Gulf Beach",
         "location": "Lingayen",
         "category": "Beach",
-        "rating": 4.4,
-        "reviews": 65,
+        "rating": 4.2,
+        "reviews": 730,
         "shortDesc": "Historic gulf known for its long gray sand beaches and rich wartime history.",
-        "description": "Lingayen Gulf is renowned not only for its extensive, beautiful gray sand beach but also for its historical significance as the landing site of General Douglas MacArthur's allied forces during World War II on January 9, 1945. The gulf stretches for kilometers along the western coast of Pangasinan and serves as the provincial capital's shoreline.\n\nToday, the Lingayen Beach Boulevard is a popular destination for locals and tourists alike. The long stretch of gray sand is lined with palm trees and local food stalls offering fresh seafood and local delicacies. The beach is particularly popular during sunrise and sunset, when the sky turns spectacular shades of orange and pink.",
-        "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop",
+        "description": "Lingayen Gulf is renowned not only for its extensive, beautiful gray sand beach but also for its historical significance as the landing site of General Douglas MacArthur's allied forces during World War II on January 9, 1945.",
+        "image": "assets/images/beaches/lingayen-beach.jpg",
         "lat": 16.0186,
         "lng": 120.2316,
-        "activities": ["Swimming", "Beach Walking", "History Tour", "Sunrise Watching"],
+        "activities": [
+            "Swimming",
+            "Beach Walking",
+            "History Tour"
+        ],
         "stats": [
-            { "label": "Type", "value": "Gray Sand Beach" },
-            { "label": "Location", "value": "Lingayen" },
-            { "label": "Best Time", "value": "Nov – May" },
-            { "label": "Rating", "value": "4.4 / 5.0" }
+            {
+                "label": "Type",
+                "value": "Gray Sand Beach"
+            },
+            {
+                "label": "Location",
+                "value": "Lingayen"
+            }
         ],
         "tips": [
-            "Visit early morning for a peaceful sunrise experience with fewer crowds.",
-            "The boulevard area has many seafood restaurants — try the fresh bangus (milkfish).",
-            "Visit the Capitol Building nearby for a dose of history and architecture.",
-            "The beach is free to access — no entrance fees.",
-            "Weekends can get busy with locals; weekdays are quieter."
+            "Visit early morning for a peaceful sunrise experience.",
+            "The boulevard area has many seafood restaurants."
         ],
-        "hours": "Open 24 hours (Beach Boulevard)",
+        "hours": "Open 24 hours",
         "entrance": "Free",
         "contact": "+63 75 542-7777",
         "website": "lingayen.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
-            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
-            "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800",
-            "https://images.unsplash.com/photo-1521412508565-f3f5c7bf4dbc?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
+            "assets/images/beaches/lingayen-beach.jpg",
+            "assets/images/beaches/lingayen-beach-pangasinan-2.jfif",
+            "assets/images/beaches/lingayen-beach-philippines-260nw-1164125863.webp"
         ]
     },
     {
@@ -199,38 +237,40 @@
         "title": "Manaoag Church",
         "location": "Manaoag",
         "category": "Historical",
-        "rating": 4.9,
-        "reviews": 312,
+        "rating": 4.3,
+        "reviews": 5668,
         "shortDesc": "A major pilgrimage site for Catholics, home to the miraculous Lady of Manaoag.",
-        "description": "The Minor Basilica of Our Lady of the Most Holy Rosary of Manaoag is one of the most important Catholic pilgrimage sites in the Philippines. Millions of devotees visit the basilica each year to pray to the miraculous image of Our Lady of Manaoag, believed to have been responsible for many answered prayers and miracles since its arrival in the Philippines in 1610.\n\nThe church's history dates back to the early Spanish colonial period. The original structure was built in 1696, though the current baroque-inspired church was largely reconstructed in the 20th century. The basilica complex includes the main church, a large open plaza for outdoor Masses, a museum, and numerous stalls selling religious items and local delicacies.",
-        "image": "https://images.unsplash.com/photo-1629808381862-ec8531bc9eb0?w=800&auto=format&fit=crop",
+        "description": "The Minor Basilica of Our Lady of the Most Holy Rosary of Manaoag is one of the most important Catholic pilgrimage sites in the Philippines. Millions of devotees visit the basilica each year.",
+        "image": "assets/images/historical/manaoag-historical.jpg",
         "lat": 15.9739,
         "lng": 120.4776,
-        "activities": ["Pilgrimage", "Attending Mass", "Buying Souvenirs", "Museum Visit"],
+        "activities": [
+            "Pilgrimage",
+            "Attending Mass",
+            "Buying Souvenirs"
+        ],
         "stats": [
-            { "label": "Founded", "value": "1610" },
-            { "label": "Location", "value": "Manaoag" },
-            { "label": "Type", "value": "Minor Basilica" },
-            { "label": "Rating", "value": "4.9 / 5.0" }
+            {
+                "label": "Founded",
+                "value": "1610"
+            },
+            {
+                "label": "Location",
+                "value": "Manaoag"
+            }
         ],
         "tips": [
-            "Dress modestly — shorts and sleeveless tops are not allowed inside the church.",
-            "Visit on weekdays to avoid the massive weekend pilgrim crowds.",
-            "The novena Mass is held every hour from 5AM to 7PM.",
-            "Try the local delicacies like puto and longganisa sold in the market outside.",
-            "Photography inside the main chapel is restricted; check with the church staff."
+            "Dress modestly — shorts and sleeveless tops are not allowed inside.",
+            "Visit on weekdays to avoid the massive weekend pilgrim crowds."
         ],
         "hours": "Open Daily 4AM – 9PM",
         "entrance": "Free",
         "contact": "+63 75 531-2255",
         "website": "ourladyofmanaoag.org",
         "gallery": [
-            "https://images.unsplash.com/photo-1629808381862-ec8531bc9eb0?w=800",
-            "https://images.unsplash.com/photo-1548625361-9c636f3db5a8?w=800",
-            "https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=800",
-            "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-            "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800"
+            "assets/images/historical/manaoag-historical.jpg",
+            "assets/images/historical/minor-basilica-of-our-lady-of-the-rosary-of-manaoag.webp",
+            "assets/images/historical/our-lady-of-manaoag-church.jpeg"
         ]
     },
     {
@@ -238,38 +278,40 @@
         "title": "Patar Beach",
         "location": "Bolinao",
         "category": "Beach",
-        "rating": 4.8,
-        "reviews": 150,
+        "rating": 4.5,
+        "reviews": 1731,
         "shortDesc": "Famous golden sand beach renowned for its stunning sunsets and clear blue waters.",
-        "description": "Often referred to as the 'Boracay of the North', Patar Beach in Bolinao features a long stretch of golden-brown sand facing the West Philippine Sea. The beach is known for its spectacular sunsets that paint the sky in brilliant shades of orange, red, and purple — making it one of the most photographed spots in Pangasinan.\n\nThe waters at Patar Beach are clear and calm, making it ideal for swimming, snorkeling, and water sports. The beach is backed by sand dunes and coconut trees, adding to its natural beauty. Unlike more commercialized beaches, Patar maintains a relatively unspoiled character, offering a tranquil escape from city life.",
-        "image": "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop",
+        "description": "Often referred to as the 'Boracay of the North', Patar Beach in Bolinao features a long stretch of golden-brown sand facing the West Philippine Sea. The beach is known for its spectacular sunsets.",
+        "image": "assets/images/beaches/bolinao-patar-beach-1.jpg",
         "lat": 16.3668,
         "lng": 119.7893,
-        "activities": ["Swimming", "Sunbathing", "Sunset Watching", "ATV Riding"],
+        "activities": [
+            "Swimming",
+            "Sunbathing",
+            "Sunset Watching"
+        ],
         "stats": [
-            { "label": "Type", "value": "Golden Sand Beach" },
-            { "label": "Location", "value": "Bolinao" },
-            { "label": "Best Time", "value": "Nov – May" },
-            { "label": "Rating", "value": "4.8 / 5.0" }
+            {
+                "label": "Type",
+                "value": "Golden Sand Beach"
+            },
+            {
+                "label": "Location",
+                "value": "Bolinao"
+            }
         ],
         "tips": [
-            "Arrive before 5PM for the best sunset view — bring a camera!",
-            "ATV rentals are available along the beach for exploring the sand dunes.",
-            "There are no large beach resorts; book accommodations nearby in Bolinao town.",
-            "The beach faces west, making it perfect for sunset photography.",
-            "Entrance fee: approximately ₱20 per person charged by the barangay."
+            "Arrive before 5PM for the best sunset view.",
+            "ATV rentals are available along the beach for exploring the sand dunes."
         ],
         "hours": "Open 24 hours",
-        "entrance": "₱20 per person (barangay fee)",
+        "entrance": "₱20 per person",
         "contact": "+63 75 696-0044",
         "website": "bolinao.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-            "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
-            "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800",
-            "https://images.unsplash.com/photo-1521412508565-f3f5c7bf4dbc?w=800",
-            "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"
+            "assets/images/beaches/bolinao-patar-beach-1.jpg",
+            "assets/images/beaches/bolinao-patar-beach-2.jpg",
+            "assets/images/beaches/bolinao-patar-beach.jpg"
         ]
     },
     {
@@ -277,38 +319,723 @@
         "title": "Dagupan Bangus Festival",
         "location": "Dagupan",
         "category": "Festival",
-        "rating": 4.7,
-        "reviews": 110,
+        "rating": 4.5,
+        "reviews": 7171,
         "shortDesc": "Annual vibrant celebration of the city's world-famous milkfish and local culture.",
-        "description": "The Bangus Festival is an annual celebration held every April or May in Dagupan City, honoring the milkfish (bangus) industry that the city is world-renowned for. Dagupan's bangus is considered the tastiest in the Philippines, thanks to the unique brackish water ecosystem of the Dagupan River and its connecting waterways.\n\nThe festival features colorful street dancing competitions, the iconic 'Longest Bangus Grill' attempt, live concerts, cooking demonstrations, bangus eating contests, and a trade fair showcasing Dagupan's products and culture. The event draws hundreds of thousands of visitors from across the Philippines and abroad, making it one of the biggest festivals in Luzon.",
-        "image": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800&auto=format&fit=crop",
+        "description": "The Bangus Festival is an annual celebration held every April or May in Dagupan City, honoring the milkfish (bangus) industry that the city is world-renowned for.",
+        "image": "assets/images/festivals/bangus-festival.jpg",
         "lat": 16.0433,
         "lng": 120.3333,
-        "activities": ["Street Dancing", "Food Tasting", "Concerts", "Cooking Demo"],
+        "activities": [
+            "Street Dancing",
+            "Food Tasting",
+            "Concerts"
+        ],
         "stats": [
-            { "label": "Month", "value": "April – May" },
-            { "label": "Location", "value": "Dagupan City" },
-            { "label": "Type", "value": "Cultural Festival" },
-            { "label": "Rating", "value": "4.7 / 5.0" }
+            {
+                "label": "Month",
+                "value": "April – May"
+            },
+            {
+                "label": "Location",
+                "value": "Dagupan City"
+            }
         ],
         "tips": [
-            "Book accommodations months in advance as hotels fill up fast during the festival.",
-            "Try the iconic boneless bangus (milkfish) and other local Dagupan delicacies.",
-            "The street dancing competition along A.B. Fernandez Ave is the highlight event.",
-            "Wear light, comfortable clothing — the festival takes place during the hot summer months.",
-            "Most festival events are free to attend; some concerts may have ticketed sections."
+            "Book accommodations months in advance.",
+            "Try the iconic boneless bangus."
         ],
-        "hours": "Festival runs for one week (April/May annually)",
-        "entrance": "Most events are free",
+        "hours": "Festival runs for one week (April/May)",
+        "entrance": "Free",
         "contact": "+63 75 523-1234",
         "website": "dagupan.gov.ph",
         "gallery": [
-            "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800",
-            "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800",
-            "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800",
-            "https://images.unsplash.com/photo-1555244162-803834f70033?w=800",
-            "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800",
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
+            "assets/images/festivals/bangus-festival.jpg"
+        ]
+    },
+    {
+        "id": "cabongaoan-beach",
+        "title": "Cabongaoan Beach",
+        "location": "Burgos",
+        "category": "Beach",
+        "rating": 4.6,
+        "reviews": 80,
+        "shortDesc": "Pristine white sand beach featuring the famous 'Death Pool'.",
+        "description": "Cabongaoan Beach offers a serene coastal retreat in Burgos. It is famous for its white sand and the stunning 'Death Pool', a natural tidal pool where visitors can take a thrilling plunge during low tide.",
+        "image": "assets/images/beaches/cabongaoan-beach.jpg",
+        "lat": 15.9556,
+        "lng": 119.7428,
+        "activities": [
+            "Swimming",
+            "Beach Camping",
+            "Tidal Pool Jumping"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "White Sand Beach"
+            },
+            {
+                "label": "Location",
+                "value": "Burgos"
+            }
+        ],
+        "tips": [
+            "Be cautious when visiting the Death Pool during high tide.",
+            "Bring your own camping gear if you plan to stay overnight."
+        ],
+        "hours": "Open 24 hours",
+        "entrance": "₱150 per person",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/beaches/cabongaoan-beach.jpg",
+            "assets/images/beaches/cabongaoan-beach-in-pangasinan.avif",
+            "assets/images/beaches/cabongaoan-beach-pangasinan.jpg"
+        ]
+    },
+    {
+        "id": "tambobong-beach",
+        "title": "Tambobong Beach",
+        "location": "Dasol",
+        "category": "Beach",
+        "rating": 4.8,
+        "reviews": 165,
+        "shortDesc": "A peaceful fishing village featuring crystal-clear waters and white sand.",
+        "description": "Tambobong Beach in Dasol is a hidden gem with its uncrowded, pristine white sand shores and clear waters. It's a fantastic place for island-hopping adventures to nearby islets like Colibra Island.",
+        "image": "assets/images/beaches/tambobong-beach.jpg",
+        "lat": 15.8202,
+        "lng": 119.8359,
+        "activities": [
+            "Island Hopping",
+            "Swimming",
+            "Snorkeling"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "White Sand Beach"
+            },
+            {
+                "label": "Location",
+                "value": "Dasol"
+            }
+        ],
+        "tips": [
+            "Hire a boat to explore Colibra Island.",
+            "Buy fresh seafood directly from the local fishermen."
+        ],
+        "hours": "Open 24 hours",
+        "entrance": "Free (Resort fees vary)",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/beaches/tambobong-beach.jpg",
+            "assets/images/beaches/tambobong-beach-2.webp",
+            "assets/images/beaches/tambobong-beach.webp"
+        ]
+    },
+    {
+        "id": "tondol-beach",
+        "title": "Tondol White Sand Beach",
+        "location": "Anda",
+        "category": "Beach",
+        "rating": 4.6,
+        "reviews": 604,
+        "shortDesc": "Known for having one of the longest shallow sandbars in the region.",
+        "description": "Located in the municipality of Anda, Tondol White Sand Beach is famous for its long, shallow sandbar that reveals itself during low tide, allowing visitors to walk to the nearby Tanduyong Island.",
+        "image": "assets/images/beaches/tondol-whitesand.jpg",
+        "lat": 16.2917,
+        "lng": 119.9806,
+        "activities": [
+            "Sandbar Walking",
+            "Swimming",
+            "Picnic"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "White Sandbar"
+            },
+            {
+                "label": "Location",
+                "value": "Anda"
+            }
+        ],
+        "tips": [
+            "Visit during low tide to experience walking to the neighboring island.",
+            "It's very safe for children due to the extremely shallow waters."
+        ],
+        "hours": "Open 24 hours",
+        "entrance": "₱50 per person",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/beaches/tondol-whitesand.jpg",
+            "assets/images/beaches/tondol-white-sand-beach.webp",
+            "assets/images/beaches/tondol-beach-header.webp"
+        ]
+    },
+    {
+        "id": "pangasinan-longganisa",
+        "title": "Pangasinan Longganisa",
+        "location": "Alaminos",
+        "category": "Food",
+        "rating": 4.3,
+        "reviews": 143,
+        "shortDesc": "A garlicky and distinctively seasoned local sausage famous in Alaminos.",
+        "description": "Alaminos Longganisa is a unique Filipino pork sausage identified by its distinct garlic flavor and the unique way it is segmented using grass strands (buli). It's a staple breakfast delicacy served with fried rice and eggs.",
+        "image": "assets/images/delicacies/longganisa-pangasinan.jpg",
+        "lat": 16.1557,
+        "lng": 119.9804,
+        "activities": [
+            "Food Tasting",
+            "Market Tour"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Delicacy"
+            },
+            {
+                "label": "Location",
+                "value": "Alaminos"
+            }
+        ],
+        "tips": [
+            "Best enjoyed with a splash of local spiced vinegar.",
+            "Can be bought fresh from the Alaminos public market."
+        ],
+        "hours": "Market Hours: 5AM – 6PM",
+        "entrance": "Prices vary",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/delicacies/longganisa-pangasinan.jpg",
+            "assets/images/delicacies/longganisa-pangasinan-1.jpg",
+            "assets/images/delicacies/longganisa-food.jpg"
+        ]
+    },
+    {
+        "id": "pigar-pigar",
+        "title": "Dagupan Pigar-Pigar",
+        "location": "Dagupan",
+        "category": "Food",
+        "rating": 4.3,
+        "reviews": 67,
+        "shortDesc": "A beloved Dagupan street food made of deep-fried beef and cabbage.",
+        "description": "Pigar-Pigar is a popular Dagupan delicacy originating from the streets of Galvan. It consists of thin slices of beef or carabeef deep-fried and served with generous portions of cabbage and onions.",
+        "image": "assets/images/delicacies/pigar-pigar.jpg",
+        "lat": 16.0433,
+        "lng": 120.3333,
+        "activities": [
+            "Street Food Dining",
+            "Night Market"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Street Food"
+            },
+            {
+                "label": "Location",
+                "value": "Dagupan City"
+            }
+        ],
+        "tips": [
+            "Best eaten hot with rice and a dip of soy sauce, calamansi, and chili.",
+            "Visit Galvan Street at night for the authentic experience."
+        ],
+        "hours": "Typically 5PM – 2AM",
+        "entrance": "Prices vary",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/delicacies/pigar-pigar.jpg",
+            "assets/images/delicacies/pigar-pigar-1.jfif",
+            "assets/images/delicacies/pigar-pigar-food.jpg"
+        ]
+    },
+    {
+        "id": "puto-calasiao",
+        "title": "Puto Calasiao",
+        "location": "Calasiao",
+        "category": "Food",
+        "rating": 4.5,
+        "reviews": 1021,
+        "shortDesc": "Bite-sized, sweet, and sticky rice cakes famously made in Calasiao.",
+        "description": "Puto Calasiao is a traditional Filipino steamed rice cake made from fermented semi-glutinous rice. These bite-sized treats are mildly sweet and wonderfully chewy, often paired with grated coconut or savory dishes like dinuguan.",
+        "image": "assets/images/delicacies/puto-calasio.jfif",
+        "lat": 16.0097,
+        "lng": 120.3551,
+        "activities": [
+            "Food Tasting",
+            "Pasalubong Shopping"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Rice Cake"
+            },
+            {
+                "label": "Location",
+                "value": "Calasiao"
+            }
+        ],
+        "tips": [
+            "Buy them fresh in the morning near the Calasiao Church.",
+            "Try the various flavors: pandan, ube, and cheese."
+        ],
+        "hours": "Available Daily",
+        "entrance": "Prices vary",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/delicacies/puto-calasio.jfif",
+            "assets/images/delicacies/puto-calasio-1.jfif",
+            "assets/images/delicacies/puto-and-kutsinta-calasiao.jpg"
+        ]
+    },
+    {
+        "id": "tupig",
+        "title": "Pangasinan Tupig",
+        "location": "Villasis",
+        "category": "Food",
+        "rating": 4.4,
+        "reviews": 196,
+        "shortDesc": "Grilled glutinous rice cakes wrapped in banana leaves.",
+        "description": "Tupig is a beloved Pangasinan snack made from ground glutinous rice, coconut milk, and muscovado sugar, wrapped in banana leaves and grilled over hot coals. The grilling imparts a fantastic smoky aroma.",
+        "image": "assets/images/delicacies/tupig.jfif",
+        "lat": 15.9015,
+        "lng": 120.5881,
+        "activities": [
+            "Food Tasting",
+            "Pasalubong Shopping"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Grilled Rice Cake"
+            },
+            {
+                "label": "Location",
+                "value": "Villasis/Carmen"
+            }
+        ],
+        "tips": [
+            "Eat it while it's hot for the best texture.",
+            "Easily found being sold by vendors along the MacArthur Highway."
+        ],
+        "hours": "Available Daily",
+        "entrance": "Prices vary",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/delicacies/tupig.jfif",
+            "assets/images/delicacies/tupig-1.jfif",
+            "assets/images/delicacies/tupig-food.jpg"
+        ]
+    },
+    {
+        "id": "pangasinan-bangus",
+        "title": "Dagupan Bangus",
+        "location": "Dagupan",
+        "category": "Food",
+        "rating": 4.5,
+        "reviews": 75,
+        "shortDesc": "The world-famous, sweet, and tasty milkfish of Dagupan.",
+        "description": "Dagupan Bangus is celebrated globally for its sweet taste and lack of a muddy flavor, a result of the city's pristine brackish waters. It can be prepared in various ways: grilled, daing (marinated), or sinigang.",
+        "image": "assets/images/delicacies/bangus-pangasinan.jpg",
+        "lat": 16.0433,
+        "lng": 120.3333,
+        "activities": [
+            "Seafood Dining",
+            "Market Tour"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Seafood"
+            },
+            {
+                "label": "Location",
+                "value": "Dagupan City"
+            }
+        ],
+        "tips": [
+            "Look for the authentic Dagupan Bangus seal when buying.",
+            "Best enjoyed boneless and marinated (daing)."
+        ],
+        "hours": "Available Daily",
+        "entrance": "Prices vary",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/delicacies/bangus-pangasinan.jpg",
+            "assets/images/delicacies/bangus-pangasinan-1.jpg",
+            "assets/images/delicacies/dagupan-bangus-food.jpg"
+        ]
+    },
+    {
+        "id": "bagoong-festival",
+        "title": "Lingayen Bagoong Festival",
+        "location": "Lingayen",
+        "category": "Festival",
+        "rating": 4.1,
+        "reviews": 148,
+        "shortDesc": "A festive celebration of Lingayen's prominent bagoong (shrimp paste) industry.",
+        "description": "The Bagoong Festival honors the thriving bagoong industry in Lingayen, Pangasinan. It features colorful parades, street dances, and culinary competitions utilizing the famous condiment that gives many Filipino dishes their distinct umami flavor.",
+        "image": "assets/images/festivals/bagoong-festival.jpg",
+        "lat": 16.0186,
+        "lng": 120.2316,
+        "activities": [
+            "Street Dancing",
+            "Food Tasting",
+            "Parade"
+        ],
+        "stats": [
+            {
+                "label": "Month",
+                "value": "Varies"
+            },
+            {
+                "label": "Location",
+                "value": "Lingayen"
+            }
+        ],
+        "tips": [
+            "Don't leave without buying bottles of authentic Lingayen bagoong.",
+            "Watch out for the creative culinary uses of bagoong during the cook-offs."
+        ],
+        "hours": "Event Days",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/festivals/bagoong-festival.jpg",
+            "assets/images/festivals/bagoong-festival-2024-in-lingayen-pangasinan-02.jpg",
+            "assets/images/festivals/bagoong-festival-2024-celebration-in-lingayen-pangasinan-27.jpg"
+        ]
+    },
+    {
+        "id": "pista-y-dayat",
+        "title": "Pista'y Dayat Festival",
+        "location": "Lingayen",
+        "category": "Festival",
+        "rating": 4.9,
+        "reviews": 82,
+        "shortDesc": "The 'Feast of the Sea', a massive thanksgiving celebration for a bountiful harvest.",
+        "description": "Pista'y Dayat (Feast of the Sea) is a grand festival held every May 1st in Pangasinan. Originally a local fishermen's thanksgiving, it has evolved into a massive provincial celebration featuring the Limgas na Pangasinan pageant, sandcastle building, and a grand parade along Lingayen Gulf.",
+        "image": "assets/images/festivals/pista-y-dayat-festival.jpeg",
+        "lat": 16.0186,
+        "lng": 120.2316,
+        "activities": [
+            "Beach Party",
+            "Pageants",
+            "Sandcastle Competitions"
+        ],
+        "stats": [
+            {
+                "label": "Date",
+                "value": "May 1"
+            },
+            {
+                "label": "Location",
+                "value": "Lingayen Beach"
+            }
+        ],
+        "tips": [
+            "Expect massive crowds along the Lingayen Beach Boulevard.",
+            "Enjoy the numerous trade fairs and concerts."
+        ],
+        "hours": "All Day",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/festivals/pista-y-dayat-festival.jpeg",
+            "assets/images/festivals/pista-y-festival.jpeg"
+        ]
+    },
+    {
+        "id": "puto-festival",
+        "title": "Calasiao Puto Festival",
+        "location": "Calasiao",
+        "category": "Festival",
+        "rating": 4.4,
+        "reviews": 171,
+        "shortDesc": "A joyful celebration highlighting the town's famous bite-sized rice cakes.",
+        "description": "The Puto Festival in Calasiao is a sweet celebration dedicated to their primary product, Puto Calasiao. The event features impressive mosaics made entirely of puto, eating contests, and vibrant street dances.",
+        "image": "assets/images/festivals/puto-festival.jpg",
+        "lat": 16.0097,
+        "lng": 120.3551,
+        "activities": [
+            "Street Dancing",
+            "Puto Eating Contest"
+        ],
+        "stats": [
+            {
+                "label": "Month",
+                "value": "December"
+            },
+            {
+                "label": "Location",
+                "value": "Calasiao"
+            }
+        ],
+        "tips": [
+            "Perfect time to sample new and experimental flavors of puto.",
+            "Take photos of the giant puto mosaic displays."
+        ],
+        "hours": "Event Days",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/festivals/puto-festival.jpg",
+            "assets/images/festivals/puto-festival.jfif",
+            "assets/images/festivals/pangasinan-puto-festival.jpg"
+        ]
+    },
+    {
+        "id": "talong-festival",
+        "title": "Villasis Talong Festival",
+        "location": "Villasis",
+        "category": "Festival",
+        "rating": 4.2,
+        "reviews": 64,
+        "shortDesc": "A unique festival celebrating the eggplant, the town's leading agricultural crop.",
+        "description": "Villasis is known as the vegetable bowl of Pangasinan, and the Talong (Eggplant) Festival highlights this agricultural bounty. The highlight is the street dancing where participants wear intricate costumes inspired by the purple vegetable.",
+        "image": "assets/images/festivals/talong-festival.jpg",
+        "lat": 15.9015,
+        "lng": 120.5881,
+        "activities": [
+            "Street Dancing",
+            "Cook-offs"
+        ],
+        "stats": [
+            {
+                "label": "Month",
+                "value": "January"
+            },
+            {
+                "label": "Location",
+                "value": "Villasis"
+            }
+        ],
+        "tips": [
+            "Watch the culinary competitions to learn new ways to cook eggplant.",
+            "Enjoy the colorful, purple-themed parade."
+        ],
+        "hours": "Event Days",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/festivals/talong-festival.jpg",
+            "assets/images/festivals/talong-festival-1.jpg"
+        ]
+    },
+    {
+        "id": "pangasinan-capitol",
+        "title": "Pangasinan Provincial Capitol",
+        "location": "Lingayen",
+        "category": "Historical",
+        "rating": 4.2,
+        "reviews": 104,
+        "shortDesc": "An architectural masterpiece and the seat of the provincial government.",
+        "description": "The Pangasinan Provincial Capitol Building in Lingayen is recognized as one of the most beautiful capitols in the Philippines. Constructed in 1918, this neoclassical structure features stunning columns, expansive grounds, and a rich history, standing close to the shores of the Lingayen Gulf.",
+        "image": "assets/images/historical/pangasinan-provincial-capitol.jpg",
+        "lat": 16.0186,
+        "lng": 120.2316,
+        "activities": [
+            "Architecture Tour",
+            "Photography",
+            "Park Walking"
+        ],
+        "stats": [
+            {
+                "label": "Built",
+                "value": "1918"
+            },
+            {
+                "label": "Location",
+                "value": "Lingayen"
+            }
+        ],
+        "tips": [
+            "The building is beautifully illuminated at night.",
+            "Take a stroll around the surrounding Capitol grounds and park."
+        ],
+        "hours": "Office Hours (Grounds always open)",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "pangasinan.gov.ph",
+        "gallery": [
+            "assets/images/historical/pangasinan-provincial-capitol.jpg",
+            "assets/images/historical/pangasinan-provincial-capitol-historical.jpg",
+            "assets/images/historical/pangasinan-provincial-capitol.webp"
+        ]
+    },
+    {
+        "id": "saint-james-bolinao",
+        "title": "St. James the Great Parish",
+        "location": "Bolinao",
+        "category": "Historical",
+        "rating": 4.2,
+        "reviews": 194,
+        "shortDesc": "A centuries-old stone church built out of black coral stones.",
+        "description": "St. James the Great Parish Church in Bolinao is a historic church established in 1609. What makes it unique is its construction using black coral stones. It is one of the oldest churches in the region and holds immense historical and spiritual value.",
+        "image": "assets/images/historical/saint-james-bolinao-church-2.jpg",
+        "lat": 16.3888,
+        "lng": 119.8942,
+        "activities": [
+            "Church Visit",
+            "Photography"
+        ],
+        "stats": [
+            {
+                "label": "Founded",
+                "value": "1609"
+            },
+            {
+                "label": "Location",
+                "value": "Bolinao"
+            }
+        ],
+        "tips": [
+            "Examine the unique black coral stones used in its facade.",
+            "Dress appropriately when entering."
+        ],
+        "hours": "Open Daily",
+        "entrance": "Free",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/historical/saint-james-bolinao-church-2.jpg",
+            "assets/images/historical/saint-james-the-great-parish-church-bolinao-001.jpg",
+            "assets/images/historical/stjames-parish-historical.jpg"
+        ]
+    },
+    {
+        "id": "cape-bojeador",
+        "title": "Cape Bojeador Lighthouse",
+        "location": "Ilocos Norte (Nearby)",
+        "category": "Historical",
+        "rating": 4.4,
+        "reviews": 126,
+        "shortDesc": "An iconic Spanish-era lighthouse offering spectacular ocean views.",
+        "description": "Though located just north of Pangasinan in Ilocos Norte, this majestic Spanish-colonial lighthouse is a favorite extended road-trip destination for tourists. It has been guiding ships since 1892.",
+        "image": "assets/images/historical/cape-bojeador-lighthouse.jpg",
+        "lat": 18.508,
+        "lng": 120.5973,
+        "activities": [
+            "Sightseeing",
+            "Photography"
+        ],
+        "stats": [
+            {
+                "label": "Built",
+                "value": "1892"
+            },
+            {
+                "label": "Location",
+                "value": "Burgos, I.N."
+            }
+        ],
+        "tips": [
+            "Combine this visit with a trip to the wind farms.",
+            "A small museum is located at the base."
+        ],
+        "hours": "8AM – 5PM",
+        "entrance": "Small Fee",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/historical/cape-bojeador-lighthouse.jpg",
+            "assets/images/historical/cape-bojeador-lighthouse.jfif"
+        ]
+    },
+    {
+        "id": "sky-plaza",
+        "title": "Sky Plaza",
+        "location": "Natividad",
+        "category": "Nature",
+        "rating": 4.2,
+        "reviews": 189,
+        "shortDesc": "A mountain park offering sweeping views of the Caraballo Mountains.",
+        "description": "Sky Plaza in Natividad is a park situated on a mountain slope. It serves as the starting point for those trekking up to the giant Christ the Redeemer statue. The plaza itself offers wonderful views, zip-lining, and picnic areas.",
+        "image": "assets/images/nature/sky-plaza.jpg",
+        "lat": 16.0465,
+        "lng": 120.8037,
+        "activities": [
+            "Hiking",
+            "Zipline",
+            "Pilgrimage",
+            "Sightseeing"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Mountain Park"
+            },
+            {
+                "label": "Location",
+                "value": "Natividad"
+            }
+        ],
+        "tips": [
+            "Be prepared for a steep hike if you want to reach the Christ the Redeemer statue.",
+            "Best visited early morning for cooler temperatures."
+        ],
+        "hours": "Open Daily",
+        "entrance": "Free (activities have fees)",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/nature/sky-plaza.jpg",
+            "assets/images/nature/sky-plaza-nature.jpg",
+            "assets/images/nature/sky-plaza.webp"
+        ]
+    },
+    {
+        "id": "tayug-sunflower",
+        "title": "Tayug Sunflower Eco Park",
+        "location": "Tayug",
+        "category": "Nature",
+        "rating": 4.2,
+        "reviews": 103,
+        "shortDesc": "A vibrant maze of thousands of blooming sunflowers and varied flora.",
+        "description": "The Tayug Sunflower Eco Park is a seasonal attraction that draws massive crowds with its thousands of towering sunflowers. The park also features vegetable picking, ornamental plant displays, and plenty of photo opportunities.",
+        "image": "assets/images/nature/tayug.webp",
+        "lat": 16.0272,
+        "lng": 120.7437,
+        "activities": [
+            "Photography",
+            "Flower Viewing"
+        ],
+        "stats": [
+            {
+                "label": "Type",
+                "value": "Eco Park"
+            },
+            {
+                "label": "Location",
+                "value": "Tayug"
+            }
+        ],
+        "tips": [
+            "Check their social media to confirm blooming season (usually early summer).",
+            "Bring an umbrella as there is little shade in the fields."
+        ],
+        "hours": "Seasonal (Check schedule)",
+        "entrance": "₱100 per person",
+        "contact": "N/A",
+        "website": "",
+        "gallery": [
+            "assets/images/nature/tayug.webp",
+            "assets/images/nature/tayug-nature.jpg",
+            "assets/images/nature/tayug-2.webp"
         ]
     }
 ]

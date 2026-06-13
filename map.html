@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <meta name="description" content="Interactive map of Pangasinan. Easily locate tourist spots, beaches, and historical landmarks.">
     <meta property="og:title" content="Map | Tara Pangasinan">
     <meta property="og:description" content="Interactive map of Pangasinan. Easily locate tourist spots, beaches, and historical landmarks.">
+    <meta property="og:image" content="assets/images/backgrounds/headerbg.jpg">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +18,7 @@
     <link rel="stylesheet" href="css/global/footer.css">
     <link rel="stylesheet" href="css/pages/map/main.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="icon" type="image/svg+xml" href="assets/Home Page/Logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
     <title>Map | Tara Pangasinan</title>
 </head>
 <body>
@@ -25,7 +26,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="assets/Home Page/Logo.svg" alt="Logo" width="28" height="28">
+            <img src="assets/icons/logo.svg" alt="Logo" width="28" height="28">
             <div class="logo-text">
                 <span class="green">Tara</span>
                 <span class="white">Pangasinan</span>
@@ -68,40 +69,23 @@
             <h2>Locations</h2>
             <p>Click a destination to locate it on the map.</p>
             
-            <div class="map-card active" onclick="panTo(16.2039, 120.0381)">
-                <img src="https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=400" alt="Hundred Islands" class="map-card-img">
-                <div class="map-card-info">
-                    <span class="map-card-title">Hundred Islands</span>
-                    <span class="map-card-loc">Alaminos City</span>
-                    <span class="map-card-badge">Nature</span>
-                </div>
+            <div class="map-search-wrapper">
+                <svg class="map-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="mapSearch" placeholder="Search destinations...">
             </div>
 
-            <div class="map-card" onclick="panTo(16.3051, 119.7820)">
-                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400" alt="Patar Beach" class="map-card-img">
-                <div class="map-card-info">
-                    <span class="map-card-title">Patar Beach</span>
-                    <span class="map-card-loc">Bolinao</span>
-                    <span class="map-card-badge">Beach</span>
-                </div>
+            <div class="map-filters-inline">
+                <button class="map-filter-btn active" data-category="All">All</button>
+                <button class="map-filter-btn" data-category="Nature">Nature</button>
+                <button class="map-filter-btn" data-category="Beach">Beach</button>
+                <button class="map-filter-btn" data-category="Historical">Hist.</button>
+                <button class="map-filter-btn" data-category="Festival">Fest.</button>
+                <button class="map-filter-btn" data-category="Food">Food</button>
             </div>
 
-            <div class="map-card" onclick="panTo(15.9686, 120.3544)">
-                <img src="https://images.unsplash.com/photo-1582556220815-46b5a34e0bd6?w=400" alt="Minor Basilica" class="map-card-img">
-                <div class="map-card-info">
-                    <span class="map-card-title">Minor Basilica</span>
-                    <span class="map-card-loc">Manaoag</span>
-                    <span class="map-card-badge">Culture</span>
-                </div>
-            </div>
-            
-            <div class="map-card" onclick="panTo(16.3813, 119.8942)">
-                <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=400" alt="Bolinao Falls" class="map-card-img">
-                <div class="map-card-info">
-                    <span class="map-card-title">Bolinao Falls</span>
-                    <span class="map-card-loc">Bolinao</span>
-                    <span class="map-card-badge">Nature</span>
-                </div>
+            <div id="sidebar-cards-container">
+                <!-- Dynamically populated -->
+                <div class="loading-map" style="padding:20px; text-align:center; color:#6b7280;">Loading destinations...</div>
             </div>
         </div>
 
@@ -117,7 +101,7 @@
             <div class="footer-top">
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <img src="assets/Home Page/Logo.svg" alt="Logo" width="24" height="24">
+                        <img src="assets/icons/logo.svg" alt="Logo" width="24" height="24">
                         <div class="footer-logo-text">
                             <span class="green">Tara</span>
                             <span class="white">Pangasinan</span>
@@ -137,8 +121,8 @@
             <div class="footer-bottom">
                 <p class="footer-copy">&copy; 2026 Tara Pangasinan. All rights reserved.</p>
                 <div class="social-icons">
-                    <a href="#" class="social-icon"><img src="assets/Home Page/Facebook.svg" alt="Facebook"></a>
-                    <a href="#" class="social-icon"><img src="assets/Home Page/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-icon"><img src="assets/icons/facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-icon"><img src="assets/icons/instagram.svg" alt="Instagram"></a>
                     <a href="#" class="social-icon">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
                     </a>
@@ -162,49 +146,160 @@
         
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // Map Markers Data
-        const locations = [
-            { lat: 16.2039, lng: 120.0381, title: 'Hundred Islands', color: '#1D9E75' },
-            { lat: 16.3051, lng: 119.7820, title: 'Patar Beach', color: '#1D9E75' },
-            { lat: 15.9686, lng: 120.3544, title: 'Minor Basilica of Our Lady', color: '#1D9E75' },
-            { lat: 16.3813, lng: 119.8942, title: 'Bolinao Falls 1', color: '#1D9E75' }
-        ];
-
-        // Custom Icon SVG
-        const createMarkerIcon = (color) => {
+        const createMarkerIcon = (color, category) => {
+            const iconFile = category + '.svg';
             return L.divIcon({
                 className: 'custom-leaflet-marker',
-                html: `<svg width="32" height="32" viewBox="0 0 24 24" fill="${color}" stroke="#fff" stroke-width="2">
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3" fill="#fff"></circle>
-                       </svg>`,
-                iconSize: [32, 32],
-                iconAnchor: [16, 32]
+                html: `<div style="position: relative; width: 38px; height: 38px;">
+                          <svg width="38" height="38" viewBox="0 0 24 24" fill="${color}" stroke="#fff" stroke-width="1.5" style="filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3))">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          </svg>
+                          <img src="assets/icons/${iconFile}" style="position: absolute; top: 7px; left: 11px; width: 16px; height: 16px; filter: brightness(0) invert(1); object-fit: contain;" alt="${category}">
+                       </div>`,
+                iconSize: [38, 38],
+                iconAnchor: [19, 38],
+                popupAnchor: [0, -34]
             });
         };
 
-        const markers = [];
-        locations.forEach(loc => {
-            const marker = L.marker([loc.lat, loc.lng], { icon: createMarkerIcon(loc.color) })
-                .bindPopup(`<b>${loc.title}</b>`)
-                .addTo(map);
-            markers.push(marker);
-        });
+        const categoryColors = {
+            'Nature': '#1D9E75',
+            'Beach': '#0EA5E9',
+            'Historical': '#EAB308',
+            'Festival': '#EF4444',
+            'Food': '#F97316'
+        };
 
-        // Focus first marker
-        setTimeout(() => panTo(locations[0].lat, locations[0].lng), 500);
+        let allSpots = [];
+        let markers = [];
+        let activeCategory = 'All';
+        let searchQuery = '';
 
-        function panTo(lat, lng) {
-            map.flyTo([lat, lng], 13, { duration: 1.5 });
+        // Fetch Spots
+        fetch('data/spots.json')
+            .then(response => response.json())
+            .then(data => {
+                allSpots = data;
+                renderMapAndSidebar();
+            })
+            .catch(error => {
+                console.error("Error loading spots:", error);
+                document.getElementById('sidebar-cards-container').innerHTML = '<div style="padding:20px; text-align:center; color:red;">Failed to load destinations.</div>';
+            });
+
+        function renderMapAndSidebar() {
+            const container = document.getElementById('sidebar-cards-container');
+            container.innerHTML = '';
             
-            // Remove active state from all cards
-            document.querySelectorAll('.map-card').forEach(card => card.classList.remove('active'));
+            // Clear existing markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            let filteredSpots = allSpots;
             
-            // Add active state to clicked card
-            if (event) {
-                event.currentTarget.classList.add('active');
+            if (activeCategory !== 'All') {
+                filteredSpots = filteredSpots.filter(s => s.category === activeCategory);
+            }
+
+            if (searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filteredSpots = filteredSpots.filter(s => 
+                    s.title.toLowerCase().includes(q) || 
+                    s.location.toLowerCase().includes(q) ||
+                    s.category.toLowerCase().includes(q)
+                );
+            }
+
+            if (filteredSpots.length === 0) {
+                container.innerHTML = `
+                    <div style="padding:40px 20px; text-align:center; color:#6b7280; display:flex; flex-direction:column; align-items:center; gap:12px;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        No destinations found.
+                    </div>`;
+                return;
+            }
+
+            const bounds = L.latLngBounds();
+
+            filteredSpots.forEach((spot, index) => {
+                const color = categoryColors[spot.category] || '#1D9E75';
+                
+                // Add marker
+                const marker = L.marker([spot.lat, spot.lng], { icon: createMarkerIcon(color, spot.category) })
+                    .bindPopup(`
+                        <div class="popup-card">
+                            <img src="${spot.image}" alt="${spot.title}" class="popup-img">
+                            <div class="popup-body">
+                                <h3 class="popup-title">${spot.title}</h3>
+                                <div class="popup-loc">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    ${spot.location}
+                                </div>
+                                <a href="details.html?id=${spot.id || spot.title.toLowerCase().replace(/\\s+/g, '-')}" class="popup-btn">Explore Details</a>
+                                <a href="https://www.google.com/maps/search/?api=1&query=${spot.lat},${spot.lng}" target="_blank" class="popup-directions">Get Directions</a>
+                            </div>
+                        </div>
+                    `, { closeButton: true, autoPanPadding: [20, 50] })
+                    .addTo(map);
+                markers.push(marker);
+                bounds.extend([spot.lat, spot.lng]);
+
+                // Create sidebar card
+                const card = document.createElement('div');
+                card.className = `map-card ${index === 0 ? 'active' : ''}`;
+                card.onclick = (e) => {
+                    panTo(spot.lat, spot.lng, marker);
+                    document.querySelectorAll('.map-card').forEach(c => c.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                };
+
+                const ratingHtml = spot.rating ? `
+                    <div class="map-card-rating">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="#EAB308" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span>${spot.rating} (${spot.reviews || 0})</span>
+                    </div>` : '';
+
+                card.innerHTML = `
+                    <img src="${spot.image}" alt="${spot.title}" class="map-card-img">
+                    <div class="map-card-info">
+                        <span class="map-card-title">${spot.title}</span>
+                        <span class="map-card-loc">${spot.location}</span>
+                        ${ratingHtml}
+                        <span class="map-card-badge" style="color: ${color}; background: ${color}20;">${spot.category}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Adjust map bounds
+            if (filteredSpots.length > 0) {
+                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+                setTimeout(() => markers[0].openPopup(), 500);
             }
         }
+
+        function panTo(lat, lng, marker) {
+            map.flyTo([lat, lng], 14, { duration: 1.5 });
+            if (marker) {
+                setTimeout(() => marker.openPopup(), 1000);
+            }
+        }
+
+        // Filter Logic
+        document.querySelectorAll('.map-filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                activeCategory = e.currentTarget.getAttribute('data-category');
+                renderMapAndSidebar();
+            });
+        });
+
+        // Search Logic
+        document.getElementById('mapSearch').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderMapAndSidebar();
+        });
     </script>
     <script src="js/main.js"></script>
 </body>

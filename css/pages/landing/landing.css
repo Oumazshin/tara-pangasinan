@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     color: #fff;
-    background: url('../../../assets/Home Page/HeaderBG.jpg') center/cover no-repeat;
+    background: url('../../../assets/images/backgrounds/headerbg.jpg') center/cover no-repeat;
     background-attachment: fixed;
     overflow: hidden;
 }
@@ -327,6 +327,9 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     transition: transform 0.25s, box-shadow 0.25s;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 .lf-card:hover {
     transform: translateY(-5px);
@@ -358,6 +361,7 @@
     font-size: 0.9rem;
     color: #6b7280;
     line-height: 1.7;
+    margin-bottom: 24px;
 }
 
 .lf-card-link {
@@ -369,7 +373,7 @@
     font-size: 0.88rem;
     font-weight: 600;
     text-decoration: none;
-    margin-top: 18px;
+    margin-top: auto;
     transition: gap 0.2s;
 }
 .lf-card-link:hover { gap: 8px; }

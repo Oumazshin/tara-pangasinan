@@ -1,7 +1,7 @@
 ﻿/* ------------------- INDEX HERO ------------------- */
 .hero {
     position: relative;
-    background: url('../../../assets/Home Page/HeaderBG.jpg') center/cover no-repeat;
+    background: url('../../../assets/images/backgrounds/headerbg.jpg') center/cover no-repeat;
     display: flex;
     width: 100%;
     margin: 0 auto;

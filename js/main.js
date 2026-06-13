@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var html = '<div class="stars-row" style="display:flex;align-items:center;gap:2px;">';
         for (var i = 1; i <= 5; i++) {
             if (rating >= i - 0.25) {
-                html += '<img src="assets/Home Page/StarYellow.svg" width="' + size + '" height="' + size + '" alt="Star">';
+                html += '<img src="assets/icons/staryellow.svg" width="' + size + '" height="' + size + '" alt="Star">';
             } else if (rating >= i - 0.75) {
-                html += '<img src="assets/Home Page/HalfStarYellow.svg" width="' + size + '" height="' + size + '" alt="Half Star">';
+                html += '<img src="assets/icons/halfstaryellow.svg" width="' + size + '" height="' + size + '" alt="Half Star">';
             } else {
                 html += '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
             }
