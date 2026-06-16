@@ -1,0 +1,20 @@
+# ─── Tara Pangasinan — Apache Configuration ───────────────────────────────────
+
+# Default document order
+DirectoryIndex index.html home.html
+
+# Disable directory listing (never expose file trees to the browser)
+Options -Indexes
+
+# ─── CORS (for local XAMPP development) ───────────────────────────────────────
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Accept"
+</IfModule>
+
+# ─── PHP error display (turn off in production) ───────────────────────────────
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>

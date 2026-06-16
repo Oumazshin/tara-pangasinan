@@ -3,6 +3,34 @@
 function getSavedIds() { return JSON.parse(localStorage.getItem('tara_saved') || '[]'); }
 function setSavedIds(s) { localStorage.setItem('tara_saved', JSON.stringify(s)); }
 
+function isLoggedIn() { return !!localStorage.getItem('tara_session'); }
+
+/**
+ * Hydrate the localStorage saved-IDs cache from the server.
+ * Call once per page load when logged in; silent on failure.
+ */
+function syncSavedFromServer() {
+    if (!isLoggedIn() || typeof Api === 'undefined') return Promise.resolve();
+    return Api.get('saved/list.php')
+        .then(function (data) { setSavedIds(data.saved_ids || []); })
+        .catch(function () { /* offline — keep cached */ });
+}
+
+/**
+ * Repaint every heart button on the page for a given spot id.
+ */
+function paintHeartButtons(id, isSaved) {
+    document.querySelectorAll('[data-save-id="' + id + '"]').forEach(function (btn) {
+        btn.classList.toggle('saved', isSaved);
+        btn.title = isSaved ? 'Remove from saved' : 'Save to list';
+        var svg = btn.querySelector('svg');
+        if (svg) {
+            svg.setAttribute('fill',   isSaved ? '#e63946' : 'none');
+            svg.setAttribute('stroke', isSaved ? '#e63946' : 'currentColor');
+        }
+    });
+}
+
 function showToast(msg, type) {
     type = type || 'success';
     var old = document.querySelector('.tara-toast');
@@ -21,22 +49,32 @@ function showToast(msg, type) {
 function toggleCardSave(e, id) {
     e.preventDefault();
     e.stopPropagation();
-    var s = getSavedIds();
-    var idx = s.indexOf(id);
+
+    var s       = getSavedIds();
+    var idx     = s.indexOf(id);
     var removing = idx > -1;
+
+    // Optimistic UI: flip immediately so the click feels instant
     if (removing) s.splice(idx, 1); else s.push(id);
     setSavedIds(s);
-    document.querySelectorAll('[data-save-id="' + id + '"]').forEach(function (btn) {
-        var isSaved = !removing;
-        btn.classList.toggle('saved', isSaved);
-        btn.title = isSaved ? 'Remove from saved' : 'Save to list';
-        var svg = btn.querySelector('svg');
-        if (svg) {
-            svg.setAttribute('fill',   isSaved ? '#e63946' : 'none');
-            svg.setAttribute('stroke', isSaved ? '#e63946' : 'currentColor');
-        }
-    });
+    paintHeartButtons(id, !removing);
     showToast(removing ? 'Removed from saved' : 'Saved to your list!', removing ? 'info' : 'success');
+
+    // If logged in, persist to the server as well
+    if (isLoggedIn() && typeof Api !== 'undefined') {
+        Api.post('saved/toggle.php', {
+            spot_id: id,
+            force:   removing ? 'remove' : 'save'
+        }).catch(function (err) {
+            // Roll back the UI if the server rejected
+            var rolled = getSavedIds();
+            var i = rolled.indexOf(id);
+            if (removing && i === -1)       { rolled.push(id);    setSavedIds(rolled); }
+            else if (!removing && i !== -1) { rolled.splice(i,1); setSavedIds(rolled); }
+            paintHeartButtons(id, removing);
+            showToast('Could not save: ' + err.message, 'info');
+        });
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -72,13 +110,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Session-aware profile icon: redirect to login if not logged in
-        var isLoggedIn = !!localStorage.getItem('tara_session');
+        var isLoggedInLocal = !!localStorage.getItem('tara_session');
         document.querySelectorAll('.nav-profile-icon').forEach(function (icon) {
-            if (!isLoggedIn) {
+            if (!isLoggedInLocal) {
                 icon.href  = 'login.html';
                 icon.title = 'Sign In';
             }
         });
+
+        // ─── SESSION SYNC (server is source of truth) ─────────────────
+        if (typeof Api !== 'undefined') {
+            Api.get('auth/session.php').then(function (data) {
+                if (data.logged_in) {
+                    localStorage.setItem('tara_session', '1');
+                    localStorage.setItem('tara_user', JSON.stringify(data.user));
+                } else {
+                    localStorage.removeItem('tara_session');
+                    localStorage.removeItem('tara_user');
+                }
+                var loggedIn = data.logged_in;
+                document.querySelectorAll('.nav-profile-icon').forEach(function (icon) {
+                    icon.href  = loggedIn ? 'profile.html' : 'login.html';
+                    icon.title = loggedIn ? 'My Profile' : 'Sign In';
+                });
+            }).catch(function () { /* offline / first run — leave UI as-is */ });
+
+            // ─── SAVED SPOTS HYDRATE ────────────────────────────────
+            syncSavedFromServer().then(function () {
+                var savedSet = getSavedIds();
+                savedSet.forEach(function (id) { paintHeartButtons(id, true); });
+            });
+        }
     }
 
     // ─── SCROLL-TO-TOP BUTTON ────────────────────────────────
@@ -146,11 +208,10 @@ document.addEventListener('DOMContentLoaded', function () {
             '</span></div></div></a>';
     }
 
-    // ─── DATA FETCH ───────────────────────────────────────────
+    // ─── DATA FETCH ───────────────────────────────────────────────────
     var spotsData = [];
 
-    fetch('data/spots.json')
-        .then(function (r) { return r.json(); })
+    Api.get('spots/list.php')
         .then(function (data) { spotsData = data; initPage(); })
         .catch(function (err) {
             console.error('Error loading spots:', err);
@@ -463,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Rating
         setText('sidebar-rating',  spot.rating);
         setText('sidebar-reviews', '(' + spot.reviews + ' reviews)');
-        ['review-stars-row', 'r1-stars', 'r2-stars', 'r3-stars'].forEach(function (rid) {
+        ['review-stars-row'].forEach(function (rid) {
             var el = document.getElementById(rid);
             if (el) el.innerHTML = starsHTML(spot.rating, rid === 'review-stars-row' ? 16 : 14);
         });
@@ -484,6 +545,247 @@ document.addEventListener('DOMContentLoaded', function () {
         var likeEl    = document.getElementById('you-might-like-grid');
         var likeSpots = spotsData.filter(function (s) { return s.id !== spot.id; }).slice(0, 4);
         likeEl.innerHTML = likeSpots.map(cardHTML).join('');
+
+        // ── Reviews ──────────────────────────────────────────────
+        var reviewsState = { offset: 0, limit: 10, total: 0 };
+
+        function renderReviewCard(r) {
+            // Tiny avatar from initials (no external service)
+            var initials = r.user_name.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0,2).toUpperCase();
+
+            // Owner controls — only show on reviews authored by current user
+            var ownerControls = r.is_owner
+                ? '<div class="review-owner-controls" style="margin-left:auto;display:flex;gap:8px;">' +
+                      '<button class="btn-link" onclick="startEditReview(' + r.id + ', ' + r.rating + ', this)" data-review-id="' + r.id + '" style="background:none;border:none;color:var(--brand-green);cursor:pointer;font-size:0.85rem;">Edit</button>' +
+                      '<button class="btn-link" onclick="deleteReview(' + r.id + ')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:0.85rem;">Delete</button>' +
+                  '</div>'
+                : '';
+
+            return '<div class="review-card" id="review-' + r.id + '">' +
+                '<div class="reviewer-info" style="display:flex;align-items:center;gap:12px;">' +
+                    '<div class="avatar" style="background:var(--brand-green);color:white;display:flex;align-items:center;justify-content:center;font-weight:600;">' + initials + '</div>' +
+                    '<div><strong>' + escapeHTML(r.user_name) + '</strong><span class="date">' + r.date_label + '</span></div>' +
+                    ownerControls +
+                '</div>' +
+                '<div class="review-stars">' + starsHTML(r.rating, 14) + '</div>' +
+                '<p class="review-body-text">' + escapeHTML(r.body) + '</p>' +
+            '</div>';
+        }
+
+        function escapeHTML(s) {
+            return String(s).replace(/[&<>"']/g, function(c){
+                return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+            });
+        }
+
+        function loadReviews(append) {
+            Api.get('reviews/list.php?spot_id=' + encodeURIComponent(spot.id) +
+                    '&limit=' + reviewsState.limit + '&offset=' + reviewsState.offset)
+                .then(function (data) {
+                    var container = document.getElementById('review-cards-container');
+                    var html = data.reviews.map(renderReviewCard).join('');
+
+                    if (append) {
+                        container.insertAdjacentHTML('beforeend', html);
+                    } else if (data.reviews.length === 0) {
+                        container.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:32px;">No reviews yet. Be the first!</p>';
+                    } else {
+                        container.innerHTML = html;
+                    }
+
+                    reviewsState.total = data.total;
+                    reviewsState.offset += data.reviews.length;
+                    document.getElementById('load-more-wrapper').style.display = data.has_more ? 'block' : 'none';
+                })
+                .catch(function (err) {
+                    console.error('Failed to load reviews:', err);
+                    document.getElementById('review-cards-container').innerHTML =
+                        '<p style="text-align:center;color:#dc2626;padding:32px;">Could not load reviews. Please refresh.</p>';
+                });
+        }
+
+        function setupReviewForm() {
+            var session = localStorage.getItem('tara_session');
+            if (session) {
+                document.getElementById('review-form-card').style.display = 'block';
+            } else {
+                document.getElementById('review-login-prompt').style.display = 'block';
+                return;
+            }
+
+            // Rating picker (click stars)
+            var picker = document.getElementById('rating-picker');
+            var hidden = document.getElementById('review-rating');
+            function paint(val) {
+                Array.prototype.forEach.call(picker.children, function (star, i) {
+                    star.style.color = (i < val) ? '#FFB400' : '#d1d5db';
+                });
+            }
+            paint(5);
+            picker.addEventListener('click', function (e) {
+                if (e.target.dataset.val) {
+                    hidden.value = e.target.dataset.val;
+                    paint(parseInt(e.target.dataset.val, 10));
+                }
+            });
+
+            // Submit
+            document.getElementById('review-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var msgEl = document.getElementById('review-form-msg');
+                var btn   = e.target.querySelector('button[type="submit"]');
+                var payload = {
+                    spot_id: spot.id,
+                    rating:  parseInt(hidden.value, 10),
+                    body:    document.getElementById('review-body').value.trim()
+                };
+
+                btn.disabled = true;
+                msgEl.textContent = 'Posting…';
+                msgEl.style.color = '#6b7280';
+
+                Api.post('reviews/create.php', payload)
+                    .then(function (data) {
+                        msgEl.textContent = '✓ Review posted!';
+                        msgEl.style.color = 'var(--brand-green)';
+                        document.getElementById('review-body').value = '';
+
+                        // Update visible rating + count without full reload
+                        setText('sidebar-rating',  data.new_rating);
+                        setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
+                        document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
+
+                        // Hide form (user already reviewed; one-per-user rule)
+                        setTimeout(function () {
+                            document.getElementById('review-form-card').style.display = 'none';
+                        }, 1500);
+
+                        // Refresh the reviews list with the new review at top
+                        reviewsState.offset = 0;
+                        loadReviews(false);
+                    })
+                    .catch(function (err) {
+                        msgEl.textContent = '✗ ' + err.message;
+                        msgEl.style.color = '#dc2626';
+                        btn.disabled = false;
+                    });
+            });
+        }
+
+        // ── Edit review (in-place) ───────────────────────────────
+        window.startEditReview = function(reviewId, currentRating, btnEl) {
+            var card = document.getElementById('review-' + reviewId);
+            if (!card || card.dataset.editing === '1') return;
+            card.dataset.editing = '1';
+
+            var bodyEl = card.querySelector('.review-body-text');
+            var currentBody = bodyEl.textContent;
+
+            // Replace body with editable controls; preserve original for cancel
+            var editorHTML =
+                '<div class="review-edit-form" style="margin-top:8px;">' +
+                    '<div style="display:flex;gap:4px;font-size:24px;color:#d1d5db;cursor:pointer;margin-bottom:8px;" id="edit-rating-picker-' + reviewId + '">' +
+                        [1,2,3,4,5].map(function(n){ return '<span data-val="' + n + '" style="color:' + (n <= currentRating ? '#FFB400' : '#d1d5db') + ';">★</span>'; }).join('') +
+                    '</div>' +
+                    '<input type="hidden" id="edit-rating-' + reviewId + '" value="' + currentRating + '">' +
+                    '<textarea id="edit-body-' + reviewId + '" class="form-control" rows="3" minlength="10" maxlength="1000" style="width:100%;">' + escapeHTML(currentBody) + '</textarea>' +
+                    '<div style="margin-top:8px;display:flex;gap:8px;">' +
+                        '<button class="btn-primary" style="padding:6px 16px;border-radius:8px;" onclick="submitEditReview(' + reviewId + ')">Save</button>' +
+                        '<button class="btn-outline" style="padding:6px 16px;border-radius:8px;background:white;cursor:pointer;" onclick="cancelEditReview(' + reviewId + ')" data-original-body="' + encodeURIComponent(currentBody) + '" data-original-rating="' + currentRating + '">Cancel</button>' +
+                    '</div>' +
+                '</div>';
+
+            bodyEl.style.display = 'none';
+            bodyEl.insertAdjacentHTML('afterend', editorHTML);
+
+            // Wire up the star picker
+            var picker = document.getElementById('edit-rating-picker-' + reviewId);
+            var hidden = document.getElementById('edit-rating-' + reviewId);
+            picker.addEventListener('click', function (e) {
+                if (e.target.dataset.val) {
+                    var val = parseInt(e.target.dataset.val, 10);
+                    hidden.value = val;
+                    Array.prototype.forEach.call(picker.children, function (star, i) {
+                        star.style.color = (i < val) ? '#FFB400' : '#d1d5db';
+                    });
+                }
+            });
+        };
+
+        window.cancelEditReview = function(reviewId) {
+            var card = document.getElementById('review-' + reviewId);
+            if (!card) return;
+            var editor = card.querySelector('.review-edit-form');
+            if (editor) editor.remove();
+            var bodyEl = card.querySelector('.review-body-text');
+            if (bodyEl) bodyEl.style.display = '';
+            card.dataset.editing = '';
+        };
+
+        window.submitEditReview = function(reviewId) {
+            var newRating = parseInt(document.getElementById('edit-rating-' + reviewId).value, 10);
+            var newBody   = document.getElementById('edit-body-' + reviewId).value.trim();
+
+            if (newBody.length < 10) {
+                alert('Review must be at least 10 characters.');
+                return;
+            }
+
+            Api.post('reviews/update.php', {
+                review_id: reviewId,
+                rating:    newRating,
+                body:      newBody
+            })
+                .then(function (data) {
+                    // Update the sidebar rating in case the average changed
+                    setText('sidebar-rating',  data.new_rating);
+                    setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
+                    document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
+
+                    // Refresh the list to reflect the edit
+                    reviewsState.offset = 0;
+                    loadReviews(false);
+                })
+                .catch(function (err) {
+                    alert('Could not save: ' + err.message);
+                });
+        };
+
+        // ── Delete review ────────────────────────────────────────
+        window.deleteReview = function(reviewId) {
+            if (!confirm('Delete this review? This cannot be undone.')) return;
+
+            Api.post('reviews/delete.php', { review_id: reviewId })
+                .then(function (data) {
+                    // Update sidebar (deletion changes the average)
+                    setText('sidebar-rating',  data.new_rating);
+                    setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
+                    document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
+
+                    // Show the review form again — user no longer has a review on this spot
+                    var formCard = document.getElementById('review-form-card');
+                    if (formCard) formCard.style.display = localStorage.getItem('tara_session') ? 'block' : 'none';
+
+                    // Refresh list
+                    reviewsState.offset = 0;
+                    loadReviews(false);
+                })
+                .catch(function (err) {
+                    alert('Could not delete: ' + err.message);
+                });
+        };
+
+        // Load more button
+        var loadMoreBtn = document.getElementById('btn-load-more-reviews');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function () {
+                loadReviews(true);
+            });
+        }
+
+        // Kick off
+        loadReviews(false);
+        setupReviewForm();
     }
 
     function setText(id, val) {

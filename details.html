@@ -134,36 +134,46 @@
                         </div>
                     </div>
                     <div class="review-cards">
-                        <div class="review-card">
-                            <div class="reviewer-info">
-                                <div class="avatar" style="background:url('https://i.pravatar.cc/100?img=1') center/cover;"></div>
-                                <div><strong>Maria Santos</strong><span class="date">May 2026</span></div>
-                            </div>
-                            <div class="review-stars" id="r1-stars"></div>
-                            <p>Absolutely breathtaking! We spent an entire day between islands and it was more beautiful than the last. The water is incredibly clear and the snorkeling was world-class.</p>
-                        </div>
-                        <div class="review-card">
-                            <div class="reviewer-info">
-                                <div class="avatar" style="background:url('https://i.pravatar.cc/100?img=3') center/cover;"></div>
-                                <div><strong>James Reyes</strong><span class="date">April 2026</span></div>
-                            </div>
-                            <div class="review-stars" id="r2-stars"></div>
-                            <p>A must-visit destination. The local boatmen were incredibly knowledgeable and took us to hidden spots away from the tourist crowds. Highly recommend visiting during low season.</p>
-                        </div>
-                        <div class="review-card">
-                            <div class="reviewer-info">
-                                <div class="avatar" style="background:url('https://i.pravatar.cc/100?img=5') center/cover;"></div>
-                                <div><strong>Anna Lim</strong><span class="date">March 2026</span></div>
-                            </div>
-                            <div class="review-stars" id="r3-stars"></div>
-                            <p>One of the most magical places I've ever visited. Watching the sunset from Quezon Island with the silhouettes of all the islands around you is an experience you'll never forget.</p>
-                        </div>
-                    </div>
-                    <div style="text-align:center;margin-top:32px;">
-                        <button class="btn-outline" style="padding:12px 32px;border-radius:50px;background:white;cursor:pointer;font-family:inherit;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
-                            Load More Reviews
-                        </button>
+<!-- Review form (visible only when logged in) -->
+<div id="review-form-card" class="review-card" style="display:none;background:#f9fafb;border:2px dashed var(--brand-green);margin-bottom:24px;">
+    <h3 style="margin-top:0;">Share Your Experience</h3>
+    <form id="review-form">
+        <div class="form-group">
+            <label>Your Rating</label>
+            <div id="rating-picker" style="display:flex;gap:6px;cursor:pointer;font-size:28px;color:#d1d5db;">
+                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+            </div>
+            <input type="hidden" id="review-rating" value="5">
+        </div>
+        <div class="form-group">
+            <label for="review-body">Your Review</label>
+            <textarea id="review-body" class="form-control" rows="4" minlength="10" maxlength="1000" placeholder="Tell other travelers what made your visit special..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="padding:12px 24px;border-radius:12px;">Post Review</button>
+        <div id="review-form-msg" style="margin-top:12px;font-size:0.9rem;"></div>
+    </form>
+</div>
+
+<!-- Login prompt (visible only when logged out) -->
+<div id="review-login-prompt" style="display:none;text-align:center;padding:24px;background:#f9fafb;border-radius:12px;margin-bottom:24px;">
+    <p style="margin:0;">
+        <a href="login.html" style="color:var(--brand-green);font-weight:600;">Log in</a>
+        to share your own review of this spot.
+    </p>
+</div>
+
+<!-- Reviews list (rendered by JS) -->
+<div class="review-cards" id="review-cards-container">
+    <p style="text-align:center;color:var(--text-light);padding:32px;">Loading reviews…</p>
+</div>
+
+<!-- Load more button (shown only when more reviews exist) -->
+<div style="text-align:center;margin-top:32px;display:none;" id="load-more-wrapper">
+    <button class="btn-outline" id="btn-load-more-reviews" style="padding:12px 32px;border-radius:50px;background:white;cursor:pointer;font-family:inherit;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        Load More Reviews
+    </button>
+</div>
                     </div>
                 </section>
 
@@ -294,6 +304,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/main.js"></script>
     <script>
         (function () {

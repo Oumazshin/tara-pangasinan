@@ -133,6 +133,7 @@
 
     <!-- Leaflet JS & Logic -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/api.js"></script>
     <script>
         // Initialize Map
         const map = L.map('leafletMap', {
@@ -175,15 +176,14 @@
         let activeCategory = 'All';
         let searchQuery = '';
 
-        // Fetch Spots
-        fetch('data/spots.json')
-            .then(response => response.json())
-            .then(data => {
+        // Fetch Spots from database API
+        Api.get('spots/list.php')
+            .then(function(data) {
                 allSpots = data;
                 renderMapAndSidebar();
             })
-            .catch(error => {
-                console.error("Error loading spots:", error);
+            .catch(function(error) {
+                console.error('Error loading spots:', error);
                 document.getElementById('sidebar-cards-container').innerHTML = '<div style="padding:20px; text-align:center; color:red;">Failed to load destinations.</div>';
             });
 

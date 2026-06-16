@@ -42,7 +42,7 @@
                 <p>Sign up to start booking your Pangasinan adventures.</p>
             </div>
 
-            <form action="profile.html" method="GET" id="registerForm" onsubmit="event.preventDefault(); localStorage.setItem('tara_session','1'); window.location.href='home.html';">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" class="form-control" placeholder="John Doe" required>
@@ -55,16 +55,18 @@
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                    <input type="password" id="password" class="form-control" placeholder="Create a password (min. 6 chars)" required>
                 </div>
 
                 <div class="auth-options">
                     <label>
-                        <input type="checkbox" style="accent-color: var(--brand-green);" required> I agree to the <a href="#" style="margin-left: 4px;">Terms & Conditions</a>
+                        <input type="checkbox" style="accent-color: var(--brand-green);" required> I agree to the <a href="#" style="margin-left: 4px;">Terms &amp; Conditions</a>
                     </label>
                 </div>
 
-                <button type="submit" class="btn-auth">Create Account</button>
+                <div id="registerError" style="display:none;color:#dc2626;font-size:14px;margin-bottom:12px;padding:10px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;"></div>
+
+                <button type="submit" class="btn-auth" id="registerSubmit">Create Account</button>
             </form>
 
             <div class="auth-footer">
@@ -73,5 +75,43 @@
         </div>
 
     </div>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var name     = document.getElementById('name').value.trim();
+    var email    = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+    var errEl    = document.getElementById('registerError');
+    var btn      = document.getElementById('registerSubmit');
+
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Creating account\u2026';
+
+    Api.post('auth/register.php', { name: name, email: email, password: password })
+        .then(function (data) {
+            localStorage.setItem('tara_session', '1');
+            localStorage.setItem('tara_user', JSON.stringify(data.user));
+
+            // Merge any guest-saved spots into the server
+            var guestSaves = JSON.parse(localStorage.getItem('tara_saved') || '[]');
+            var merges = guestSaves.map(function (id) {
+                return Api.post('saved/toggle.php', { spot_id: id, force: 'save' })
+                           .catch(function () { /* ignore per-item errors */ });
+            });
+            Promise.all(merges).then(function () {
+                window.location.href = 'home.html';
+            });
+        })
+        .catch(function (err) {
+            errEl.textContent = err.message;
+            errEl.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Create Account';
+        });
+});
+</script>
 </body>
 </html>

@@ -450,112 +450,12 @@
 
     <script>
     // ── DATA ──────────────────────────────────────────────────
-    const TOURS = [
-        {
-            id: 'hundred-islands',
-            name: 'Hundred Islands Boat Tour',
-            location: 'Alaminos City',
-            duration: '6–8 hours',
-            price: 1200,
-            image: 'https://images.unsplash.com/photo-1544253138-09cb9f3f4e3c?w=800&auto=format&fit=crop',
-            badge: 'Most Popular',
-            badgeColor: '#1D9E75',
-            rating: 4.8,
-            reviews: 248,
-            includes: ['Local boat crew', 'Life vest', 'Island hopping (3 islands)', 'Snorkeling equipment'],
-            meetingPoint: 'Alaminos City Pier'
-        },
-        {
-            id: 'patar-beach',
-            name: 'Patar Beach Sunset Experience',
-            location: 'Bolinao',
-            duration: '4–5 hours',
-            price: 800,
-            image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop',
-            badge: 'Beach',
-            badgeColor: '#0284c7',
-            rating: 4.7,
-            reviews: 134,
-            includes: ['Cottage rental', 'Welcome coconut drink', 'Bonfire setup', 'Sunset guided walk'],
-            meetingPoint: 'Patar Beach Entrance'
-        },
-        {
-            id: 'enchanted-cave',
-            name: 'Enchanted Cave & Falls Combo',
-            location: 'Bolinao',
-            duration: '5–6 hours',
-            price: 1500,
-            image: 'https://images.unsplash.com/photo-1505051508008-923feaf90263?w=800&auto=format&fit=crop',
-            badge: 'Adventure',
-            badgeColor: '#7c3aed',
-            rating: 4.6,
-            reviews: 97,
-            includes: ['Cave entry fee', 'Life vest', 'Falls access', 'Tour guide'],
-            meetingPoint: 'Bolinao Town Hall'
-        },
-        {
-            id: 'cape-bolinao',
-            name: 'Cape Bolinao Lighthouse Trek',
-            location: 'Bolinao',
-            duration: '3–4 hours',
-            price: 700,
-            image: 'https://images.unsplash.com/photo-1559132279-0db9cd84c68d?w=800&auto=format&fit=crop',
-            badge: 'Historical',
-            badgeColor: '#b45309',
-            rating: 4.6,
-            reviews: 92,
-            includes: ['Lighthouse climb access', 'Historical guide', 'Coastal trail walk', 'Photo stops'],
-            meetingPoint: 'Cape Bolinao Lighthouse Gate'
-        },
-        {
-            id: 'lingayen-gulf',
-            name: 'Lingayen Gulf Sunrise Tour',
-            location: 'Lingayen',
-            duration: '2–3 hours',
-            price: 500,
-            image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop',
-            badge: 'Scenic',
-            badgeColor: '#0e7490',
-            rating: 4.4,
-            reviews: 65,
-            includes: ['Sunrise viewing', 'Historical markers tour', 'Bangus (milkfish) breakfast', 'Guide'],
-            meetingPoint: 'Lingayen Beach Boulevard'
-        },
-        {
-            id: 'manaoag-church',
-            name: 'Manaoag Heritage Pilgrimage',
-            location: 'Manaoag',
-            duration: '3–4 hours',
-            price: 400,
-            image: 'https://images.unsplash.com/photo-1548625361-9c636f3db5a8?w=800&auto=format&fit=crop',
-            badge: 'Cultural',
-            badgeColor: '#be185d',
-            rating: 4.7,
-            reviews: 112,
-            includes: ['Church guided tour', 'Heritage walk', 'Candle offering', 'Local snack stop'],
-            meetingPoint: 'Manaoag Church Main Entrance'
-        }
-    ];
+    // Loaded from API on page init
+    let TOURS      = [];
+    let ADDONS     = [];
+    let TIME_SLOTS = [];
+    // PROMOS is no longer a client-side object — validated via API
 
-    const ADDONS = [
-        { id: 'snorkel', name: 'Snorkeling Gear Set', desc: 'Mask, fins, and snorkel for the full underwater experience.', price: 250 },
-        { id: 'guide', name: 'Private Guide Upgrade', desc: 'Dedicated guide just for your group throughout the tour.', price: 500 },
-        { id: 'lunch', name: 'Seafood Lunch Pack', desc: 'Fresh local seafood lunch prepared by the resort.', price: 450 },
-        { id: 'photo', name: 'Photography Package', desc: 'Professional drone + underwater photos delivered digitally.', price: 800 },
-        { id: 'transport', name: 'Round-trip Transport', desc: 'Air-conditioned van pick-up from Dagupan City.', price: 600 }
-    ];
-
-    const TIME_SLOTS = [
-        { value: '6:00 AM', label: 'Sunrise Tour', icon: '🌅' },
-        { value: '8:00 AM', label: 'Morning Tour', icon: '☀️' },
-        { value: '1:00 PM', label: 'Afternoon Tour', icon: '🌤️' }
-    ];
-
-    const PROMOS = {
-        'TARA10':      { type: 'percent', value: 10,  label: '10% off' },
-        'PANGASINAN':  { type: 'fixed',   value: 200, label: '₱200 off' },
-        'FIRSTTIME':   { type: 'percent', value: 15,  label: '15% off' }
-    };
 
     // ── STATE ─────────────────────────────────────────────────
     const state = {
@@ -577,19 +477,39 @@
 
     // ── INIT ──────────────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
-        renderTourCards();
-        renderTimeSlots();
-        renderGuestCounters();
-        renderAddonCards();
-        updateSummary();
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('tour-date').min = today;
 
-        // Pre-select tour if arriving from a details page
-        const urlTour = new URLSearchParams(window.location.search).get('tour');
-        if (urlTour && TOURS.some(t => t.id === urlTour)) {
-            selectTour(urlTour);
-        }
+        // Bootstrap from API
+        Api.get('spots/tours.php')
+            .then(function (data) {
+                TOURS      = data.tours;
+                ADDONS     = data.addons;
+                TIME_SLOTS = data.time_slots;
+
+                // Now safe to render the wizard
+                const urlTour = new URLSearchParams(window.location.search).get('tour');
+                if (urlTour && TOURS.some(t => t.id === urlTour)) {
+                    state.tourId = urlTour;
+                }
+                
+                renderTourCards();
+                renderTimeSlots();
+                renderGuestCounters();
+                renderAddonCards();
+                
+                if (state.tourId) {
+                    selectTour(state.tourId);
+                } else {
+                    updateSummary();
+                }
+            })
+            .catch(function (err) {
+                console.error('Failed to load tour data:', err);
+                document.querySelector('.wizard-wrapper').innerHTML =
+                    '<p style="text-align:center;padding:64px;color:#dc2626;">' +
+                    'Could not load tour options. Please refresh the page.</p>';
+            });
     });
 
     // ── RENDER FUNCTIONS ──────────────────────────────────────
@@ -724,25 +644,37 @@
         const code = document.getElementById(inputId).value.trim().toUpperCase();
         const msgEl = document.getElementById(msgId);
 
-        if (!code) { msgEl.textContent = ''; return; }
-
-        if (PROMOS[code]) {
-            state.promoCode = code;
-            // sync both inputs
-            document.getElementById('promo-input-sidebar').value = code;
-            document.getElementById('promo-input-step3').value   = code;
-            msgEl.textContent = '✓ Code applied: ' + PROMOS[code].label;
-            msgEl.className = 'promo-msg success';
-            updateSummary();
-        } else if (state.promoCode && code !== state.promoCode) {
+        if (!code) { 
+            msgEl.textContent = ''; 
             state.promoCode = '';
-            msgEl.textContent = '✗ Invalid promo code.';
-            msgEl.className = 'promo-msg error';
+            state.promoDiscount = 0;
             updateSummary();
-        } else {
-            msgEl.textContent = '✗ Invalid promo code.';
-            msgEl.className = 'promo-msg error';
+            return; 
         }
+
+        msgEl.textContent = 'Checking…';
+        msgEl.className = 'promo-msg';
+        msgEl.style.color = '#6b7280';
+
+        Api.post('promos/validate.php', { code: code })
+            .then(function (data) {
+                state.promoCode      = data.code;
+                state.promoDiscount  = { type: data.discount_type, value: data.discount_value };
+                document.getElementById('promo-input-sidebar').value = data.code;
+                document.getElementById('promo-input-step3').value   = data.code;
+                msgEl.textContent    = '✓ Code applied: ' + data.label;
+                msgEl.className = 'promo-msg success';
+                msgEl.style.color    = 'var(--brand-green)';
+                updateSummary();
+            })
+            .catch(function (err) {
+                state.promoCode = '';
+                state.promoDiscount = 0;
+                msgEl.textContent = '✗ ' + err.message;
+                msgEl.className = 'promo-msg error';
+                msgEl.style.color = '#dc2626';
+                updateSummary();
+            });
     }
 
     // ── COMPUTE TOTAL ─────────────────────────────────────────
@@ -760,9 +692,12 @@
         const subtotal = adultTotal + childTotal + infantTotal + addonTotal;
 
         let discount = 0;
-        if (state.promoCode && PROMOS[state.promoCode]) {
-            const p = PROMOS[state.promoCode];
-            discount = p.type === 'percent' ? Math.round(subtotal * p.value / 100) : p.value;
+        if (state.promoCode && state.promoDiscount) {
+            if (state.promoDiscount.type === 'percent') {
+                discount = Math.round(subtotal * state.promoDiscount.value / 100);
+            } else {
+                discount = Math.min(state.promoDiscount.value, subtotal);
+            }
         }
 
         return { adultTotal, childTotal, infantTotal, addonTotal, subtotal, discount, total: Math.max(0, subtotal - discount) };
@@ -941,45 +876,42 @@
         if (!document.getElementById('terms-checkbox').checked) {
             showError(4); return;
         }
-        const ref = 'TPG-' + Date.now().toString(36).toUpperCase().slice(-6);
-        const tour = TOURS.find(t => t.id === state.tourId);
-        const { discount, total } = computeTotal();
 
-        const booking = {
-            ref,
-            tourId:       state.tourId,
-            tourName:     tour.name,
-            tourImage:    tour.image,
-            tourLocation: tour.location,
-            date:         state.date,
-            time:         state.time,
-            adults:       state.adults,
-            children:     state.children,
-            infants:      state.infants,
-            addons:       [...state.addons].map(id => {
-                              const a = ADDONS.find(x => x.id === id);
-                              return a ? { id: a.id, name: a.name, price: a.price } : null;
-                          }).filter(Boolean),
-            promoCode:    state.promoCode,
-            discount,
-            total,
-            status:       'upcoming',
-            name:         state.name,
-            email:        state.email,
-            phone:        state.phone,
-            requests:     state.requests,
-            bookedAt:     new Date().toISOString()
+        const btn = document.getElementById('btn-confirm');
+        btn.disabled = true;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Booking…';
+
+        const payload = {
+            tour_id:    state.tourId,
+            date:       state.date,
+            time:       state.time,
+            adults:     state.adults,
+            children:   state.children,
+            infants:    state.infants,
+            addon_ids:  [...state.addons],
+            promo_code: state.promoCode || null,
+            name:       state.name,
+            email:      state.email,
+            phone:      state.phone,
+            requests:   state.requests
         };
 
-        // Persist to localStorage
-        const bookings = JSON.parse(localStorage.getItem('tara_bookings') || '[]');
-        bookings.unshift(booking);
-        localStorage.setItem('tara_bookings', JSON.stringify(bookings));
+        Api.post('bookings/create.php', payload)
+            .then(function (data) {
+                document.getElementById('modal-ref').textContent = data.ref;
+                document.getElementById('modal-desc').textContent =
+                    data.tour_name + ' on ' + formatDate(data.tour_date) +
+                    ' at ' + data.tour_time + '. Confirmation sent to ' + data.email + '.';
+                document.getElementById('successModal').classList.add('active');
 
-        document.getElementById('modal-ref').textContent = ref;
-        document.getElementById('modal-desc').textContent =
-            `${tour.name} on ${formatDate(state.date)} at ${state.time}. Confirmation sent to ${state.email}.`;
-        document.getElementById('successModal').classList.add('active');
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Confirm Booking';
+            })
+            .catch(function (err) {
+                alert('Booking failed: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Confirm Booking';
+            });
     }
 
     function resetWizard() {
@@ -1018,6 +950,7 @@
     }
     </script>
 
+    <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

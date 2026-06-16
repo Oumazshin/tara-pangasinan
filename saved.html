@@ -79,8 +79,13 @@
     }
 
     function removeSaved(id) {
-        const s = getSaved().filter(x => x !== id);
+        var s = getSaved().filter(function(x) { return x !== id; });
         localStorage.setItem('tara_saved', JSON.stringify(s));
+        // Sync removal to server if logged in
+        if (localStorage.getItem('tara_session') && typeof Api !== 'undefined') {
+            Api.post('saved/toggle.php', { spot_id: id, force: 'remove' })
+               .catch(function () { /* silent */ });
+        }
         renderSaved(window._spotsCache || []);
     }
 
@@ -131,13 +136,24 @@
             </div>`).join('');
     }
 
-    fetch('data/spots.json')
-        .then(r => r.json())
-        .then(spots => { window._spotsCache = spots; renderSaved(spots); })
-        .catch(() => {
-            document.getElementById('savedGrid').innerHTML =
-                '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;font-family:Inter,sans-serif;">Failed to load spots. Please refresh.</div>';
+    // Hydrate saved IDs from server if logged in, then load spots
+    function loadPage() {
+        var hydrate = (localStorage.getItem('tara_session') && typeof Api !== 'undefined')
+            ? Api.get('saved/list.php')
+                 .then(function(data) { localStorage.setItem('tara_saved', JSON.stringify(data.saved_ids || [])); })
+                 .catch(function() { /* use cached */ })
+            : Promise.resolve();
+
+        hydrate.then(function() {
+            Api.get('spots/list.php')
+                .then(function(spots) { window._spotsCache = spots; renderSaved(spots); })
+                .catch(function() {
+                    document.getElementById('savedGrid').innerHTML =
+                        '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#6b7280;font-family:Inter,sans-serif;">Failed to load spots. Please refresh.</div>';
+                });
         });
+    }
+    loadPage();
     </script>
 
     <!-- Footer -->
@@ -175,6 +191,7 @@
             </div>
         </div>
     </footer>
+    <script src="js/api.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
