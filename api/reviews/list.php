@@ -13,6 +13,7 @@ require_once __DIR__ . '/../../includes/validation.php';
 $spot_id = clean_str($_GET['spot_id'] ?? '');
 $limit   = clean_int($_GET['limit']  ?? 10, 1, 50);
 $offset  = clean_int($_GET['offset'] ?? 0, 0, 10000);
+$rating  = isset($_GET['rating']) ? clean_int($_GET['rating'], 1, 5) : 0;
 
 if (!valid_slug($spot_id)) {
     json_error('Invalid spot_id.', 400);
@@ -26,30 +27,58 @@ if (!$exists->fetchColumn()) {
 }
 
 // Total count
-$count_stmt = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE spot_id = ?');
-$count_stmt->execute([$spot_id]);
+if ($rating > 0) {
+    $count_stmt = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE spot_id = ? AND rating = ?');
+    $count_stmt->execute([$spot_id, $rating]);
+} else {
+    $count_stmt = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE spot_id = ?');
+    $count_stmt->execute([$spot_id]);
+}
 $total = (int) $count_stmt->fetchColumn();
 
 // Page of reviews — JOIN users for name; flag owner rows so frontend can show edit/delete
 $current_user_id = $_SESSION['user_id'] ?? 0;
 
-$stmt = $pdo->prepare("
-    SELECT
-        r.id,
-        r.user_id,
-        r.rating,
-        r.body,
-        r.created_at,
-        CONCAT(u.first_name, ' ', u.last_name) AS user_name
-    FROM reviews r
-    INNER JOIN users u ON u.id = r.user_id
-    WHERE r.spot_id = ?
-    ORDER BY r.created_at DESC
-    LIMIT ? OFFSET ?
-");
-$stmt->bindValue(1, $spot_id, PDO::PARAM_STR);
-$stmt->bindValue(2, $limit,   PDO::PARAM_INT);
-$stmt->bindValue(3, $offset,  PDO::PARAM_INT);
+if ($rating > 0) {
+    $stmt = $pdo->prepare("
+        SELECT
+            r.id,
+            r.user_id,
+            r.rating,
+            r.body,
+            r.photo_url,
+            r.created_at,
+            CONCAT(u.first_name, ' ', u.last_name) AS user_name
+        FROM reviews r
+        INNER JOIN users u ON u.id = r.user_id
+        WHERE r.spot_id = ? AND r.rating = ?
+        ORDER BY r.created_at DESC
+        LIMIT ? OFFSET ?
+    ");
+    $stmt->bindValue(1, $spot_id, PDO::PARAM_STR);
+    $stmt->bindValue(2, $rating,  PDO::PARAM_INT);
+    $stmt->bindValue(3, $limit,   PDO::PARAM_INT);
+    $stmt->bindValue(4, $offset,  PDO::PARAM_INT);
+} else {
+    $stmt = $pdo->prepare("
+        SELECT
+            r.id,
+            r.user_id,
+            r.rating,
+            r.body,
+            r.photo_url,
+            r.created_at,
+            CONCAT(u.first_name, ' ', u.last_name) AS user_name
+        FROM reviews r
+        INNER JOIN users u ON u.id = r.user_id
+        WHERE r.spot_id = ?
+        ORDER BY r.created_at DESC
+        LIMIT ? OFFSET ?
+    ");
+    $stmt->bindValue(1, $spot_id, PDO::PARAM_STR);
+    $stmt->bindValue(2, $limit,   PDO::PARAM_INT);
+    $stmt->bindValue(3, $offset,  PDO::PARAM_INT);
+}
 $stmt->execute();
 $reviews = $stmt->fetchAll();
 

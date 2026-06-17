@@ -11,11 +11,11 @@
 
 | Member | Role |
 |---|---|
-| Bacolor, James Clark | _[role]_ |
-| Caole, Stephanie | _[role]_ |
-| Guarin, Pauline | _[role]_ |
-| Soriano, Shouma King | _[role]_ |
-| Lituco, Jessica Jhoanne | _[role]_ |
+| Bacolor, James Clark | Frontend Lead & UI/UX |
+| Caole, Stephanie | UI/UX Designer |
+| Guarin, Pauline | Documentation Lead |
+| Soriano, Shouma King | Backend Lead |
+| Lituco, Jessica Jhoanne | UI/UX Designer |
 
 ---
 
@@ -208,8 +208,7 @@ This repository ships with three documentation surfaces:
 | Document | Purpose | Audience |
 |---|---|---|
 | `README.md` (this file) | Project orientation, setup, API overview | Anyone opening the repo |
-| `docs/PROJECT_OVERVIEW.md` | High-level project context, goals, scope | Course instructor, panel |
-| `docs/DESIGN_GUIDELINES.md` | Visual design system reference | Frontend developers |
+| `docs/FRONTEND_DOCUMENTATION.md` | Frontend architecture, design system, and recent updates | Frontend developers |
 | `docs/Backend/` | Implementation modules 00–12 (architecture → testing) | Developers building or auditing the system |
 | `docs/Backend/12-DOCUMENTATION.md` | **Formal 13-section project documentation per the course rubric** | Course rubric evaluators |
 

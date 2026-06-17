@@ -127,6 +127,7 @@ CREATE TABLE reviews (
     spot_id         VARCHAR(80)     NOT NULL,
     rating          TINYINT UNSIGNED NOT NULL,   -- 1 to 5
     body            TEXT            NOT NULL,
+    photo_url       VARCHAR(500)    DEFAULT NULL,
     created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users(id)  ON DELETE CASCADE,

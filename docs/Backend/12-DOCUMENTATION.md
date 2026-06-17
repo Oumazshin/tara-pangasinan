@@ -43,11 +43,11 @@ in Partial Fulfillment of the Requirements for the Course
 
 | Name | Role |
 |---|---|
-| Bacolor, James Clark | [ROLE — e.g. Backend Lead] |
-| Caole, Stephanie     | [ROLE] |
-| Guarin, Pauline      | [ROLE] |
-| Soriano, Shouma King | [ROLE] |
-| Lituco, Jessica Jhoanne | [ROLE] |
+| Bacolor, James Clark | Frontend Lead & UI/UX |
+| Caole, Stephanie     | UI/UX Designer |
+| Guarin, Pauline      | Documentation Lead |
+| Soriano, Shouma King | Backend Lead |
+| Lituco, Jessica Jhoanne | UI/UX Designer |
 
 **Submitted to:** [PROFESSOR'S NAME]
 **Date:** June 18, 2026

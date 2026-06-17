@@ -18,31 +18,7 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="assets/icons/logo.svg" alt="Logo" width="28" height="28">
-            <div class="logo-text">
-                <span class="green">Tara</span>
-                <span class="white">Pangasinan</span>
-            </div>
-        </div>
-        <ul class="nav-links">
-            <li><a href="home.html">Home</a></li>
-            <li><a href="explore.html" class="active">Explore</a></li>
-            <li><a href="map.html">Map</a></li>
-            <li><a href="about.html">About</a></li>
-        </ul>
-        <div class="nav-action">
-            <a href="plan.html" class="btn-primary-outline">Plan Your Visit</a>
-        
-            <a href="profile.html" class="nav-profile-icon" title="My Profile">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </a>
-        </div>
-        <div class="hamburger">
-            <span></span><span></span><span></span>
-        </div>
-    </nav>
+    <header id="navbar-placeholder"></header>
 
     <!-- Hero -->
     <header class="explore-hero">
@@ -84,7 +60,7 @@
     <main class="explore-body">
         <div class="explore-body-inner">
             <div class="explore-meta">
-                <p class="explore-count">Showing <strong id="exploreCount">8</strong> destinations</p>
+                <p class="explore-count">Showing <strong id="exploreCount">4</strong> destinations</p>
                 <div class="explore-view-toggle">
                     <button class="view-btn active" id="gridViewBtn" title="Grid view">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -96,8 +72,87 @@
             </div>
 
             <div class="explore-grid" id="exploreGrid">
-                <!-- Populated by JS -->
-                <div class="explore-empty">Loading destinations...</div>
+                <!-- Hardcoded fallback cards -->
+                <a href="details.html?id=patar-beach" class="explore-card" data-category="Beach">
+                    <div class="explore-card-img" style="background-image:url('assets/images/beaches/bolinao-patar-beach-1.jpg')">
+                        <span class="explore-card-badge" style="background:#0ea5e9">Beach</span>
+                    </div>
+                    <div class="explore-card-body">
+                        <div class="explore-card-title">Patar Beach</div>
+                        <div class="explore-card-loc">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Bolinao
+                        </div>
+                        <div class="explore-card-footer">
+                            <div class="explore-card-rating">
+                                <div class="stars-row" style="display:flex;align-items:center;gap:2px;">
+                                    <img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/halfstaryellow.svg" width="13" height="13" alt="Half Star">
+                                </div>
+                                <span style="margin-left:3px;font-size:13px;">4.8</span>
+                            </div>
+                            <span class="explore-card-link">View Details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                </a>
+                <a href="details.html?id=bolinao-falls" class="explore-card" data-category="Nature">
+                    <div class="explore-card-img" style="background-image:url('assets/images/nature/bolinao-falls-1.jpg')">
+                        <span class="explore-card-badge" style="background:#10b981">Nature</span>
+                    </div>
+                    <div class="explore-card-body">
+                        <div class="explore-card-title">Bolinao Falls</div>
+                        <div class="explore-card-loc">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Bolinao
+                        </div>
+                        <div class="explore-card-footer">
+                            <div class="explore-card-rating">
+                                <div class="stars-row" style="display:flex;align-items:center;gap:2px;">
+                                    <img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/halfstaryellow.svg" width="13" height="13" alt="Half Star">
+                                </div>
+                                <span style="margin-left:3px;font-size:13px;">4.7</span>
+                            </div>
+                            <span class="explore-card-link">View Details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                </a>
+                <a href="details.html?id=lingayen-gulf" class="explore-card" data-category="Beach">
+                    <div class="explore-card-img" style="background-image:url('assets/images/beaches/lingayen-beach.jpg')">
+                        <span class="explore-card-badge" style="background:#0ea5e9">Beach</span>
+                    </div>
+                    <div class="explore-card-body">
+                        <div class="explore-card-title">Lingayen Gulf</div>
+                        <div class="explore-card-loc">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Lingayen
+                        </div>
+                        <div class="explore-card-footer">
+                            <div class="explore-card-rating">
+                                <div class="stars-row" style="display:flex;align-items:center;gap:2px;">
+                                    <img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/halfstaryellow.svg" width="13" height="13" alt="Half Star">
+                                </div>
+                                <span style="margin-left:3px;font-size:13px;">4.6</span>
+                            </div>
+                            <span class="explore-card-link">View Details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                </a>
+                <a href="details.html?id=manaoag-church" class="explore-card" data-category="Historical">
+                    <div class="explore-card-img" style="background-image:url('assets/images/historical/manaoag-historical.jpg')">
+                        <span class="explore-card-badge" style="background:#78716c">Historical</span>
+                    </div>
+                    <div class="explore-card-body">
+                        <div class="explore-card-title">Manaoag Church</div>
+                        <div class="explore-card-loc">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Manaoag
+                        </div>
+                        <div class="explore-card-footer">
+                            <div class="explore-card-rating">
+                                <div class="stars-row" style="display:flex;align-items:center;gap:2px;">
+                                    <img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star"><img src="assets/icons/staryellow.svg" width="13" height="13" alt="Star">
+                                </div>
+                                <span style="margin-left:3px;font-size:13px;">4.9</span>
+                            </div>
+                            <span class="explore-card-link">View Details <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <div class="explore-pagination" id="explorePagination"></div>
@@ -125,41 +180,9 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer-section">
-        <div class="footer-wrapper">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <img src="assets/icons/logo.svg" alt="Logo" width="24" height="24">
-                        <div class="footer-logo-text">
-                            <span class="green">Tara</span>
-                            <span class="white">Pangasinan</span>
-                        </div>
-                    </div>
-                    <p class="footer-desc">Experience the beauty of Pangasinan</p>
-                </div>
-                <div class="footer-links">
-                    <a href="home.html">Home</a>
-                    <a href="explore.html">Explore</a>
-                    <a href="map.html">Map</a>
-                    <a href="about.html">About</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-            </div>
-            <div class="footer-divider"></div>
-            <div class="footer-bottom">
-                <p class="footer-copy">&copy; 2026 Tara Pangasinan. All rights reserved.</p>
-                <div class="social-icons">
-                    <a href="#" class="social-icon"><img src="assets/icons/facebook.svg" alt="Facebook"></a>
-                    <a href="#" class="social-icon"><img src="assets/icons/instagram.svg" alt="Instagram"></a>
-                    <a href="#" class="social-icon">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D1D5DB" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2C5.12 19.5 12 19.5 12 19.5s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <footer id="footer-placeholder"></footer>
 
+    <script src="js/components.js"></script>
     <script src="js/api.js"></script>
     <script src="js/main.js"></script>
     <script>

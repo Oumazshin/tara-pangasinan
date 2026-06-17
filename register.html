@@ -20,7 +20,7 @@
     <div class="auth-split-layout">
         
         <!-- Left Side: Image -->
-        <div class="auth-image-side" style="background: url('assets/images/backgrounds/headerbg.jpg') center/cover no-repeat;">
+        <div class="auth-image-side">
             <div class="auth-image-text">
                 <h2>Your Journey Begins</h2>
                 <p>Create a free account to unlock exclusive tours, save your favorite spots, and build your ultimate Pangasinan itinerary.</p>
@@ -55,7 +55,28 @@
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Create a password (min. 6 chars)" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" class="form-control" placeholder="Create a password (min. 6 chars)" required>
+                        <button type="button" class="password-toggle" tabindex="-1" onclick="togglePassword('password', this)" aria-label="Show password">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm_password" class="form-control" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" tabindex="-1" onclick="togglePassword('confirm_password', this)" aria-label="Show password">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="auth-options">
@@ -77,14 +98,35 @@
     </div>
 <script src="js/api.js"></script>
 <script>
+function togglePassword(inputId, btnEl) {
+    var input = document.getElementById(inputId);
+    var svg = btnEl.querySelector('svg');
+    if (input.type === 'password') {
+        input.type = 'text';
+        // Eye-off icon (slash through eye)
+        svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+    } else {
+        input.type = 'password';
+        // Eye icon
+        svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+    }
+}
+
 document.getElementById('registerForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    var name     = document.getElementById('name').value.trim();
-    var email    = document.getElementById('email').value.trim();
-    var password = document.getElementById('password').value;
-    var errEl    = document.getElementById('registerError');
-    var btn      = document.getElementById('registerSubmit');
+    var name            = document.getElementById('name').value.trim();
+    var email           = document.getElementById('email').value.trim();
+    var password        = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirm_password').value;
+    var errEl           = document.getElementById('registerError');
+    var btn             = document.getElementById('registerSubmit');
+
+    if (password !== confirmPassword) {
+        errEl.textContent = 'Passwords do not match.';
+        errEl.style.display = 'block';
+        return;
+    }
 
     errEl.style.display = 'none';
     btn.disabled = true;

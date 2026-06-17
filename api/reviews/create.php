@@ -13,13 +13,47 @@ require_once __DIR__ . '/../../includes/validation.php';
 
 require_login(); // 401 if not authenticated
 
-$payload = read_json_body();
+$payload = $_POST;
 require_fields($payload, ['spot_id', 'rating', 'body']);
 
 $spot_id = clean_str($payload['spot_id']);
 $rating  = clean_int($payload['rating'], 1, 5);
 $body    = clean_str($payload['body']);
 $user_id = $_SESSION['user_id'];
+
+// ── Photo Upload ──────────────────────────────────────────────
+$photo_url = null;
+if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+    $file = $_FILES['photo'];
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        json_error('Error uploading photo.', 400);
+    }
+    if ($file['size'] > 5 * 1024 * 1024) {
+        json_error('Photo must be less than 5MB.', 400);
+    }
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+    
+    $allowed_mimes = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+    if (!isset($allowed_mimes[$mime])) {
+        json_error('Photo must be a JPG, PNG, or WEBP image.', 400);
+    }
+    
+    $ext = $allowed_mimes[$mime];
+    $filename = 'rev_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $ext;
+    
+    $upload_dir = __DIR__ . '/../../assets/images/reviews/';
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    
+    $target_path = $upload_dir . $filename;
+    if (!move_uploaded_file($file['tmp_name'], $target_path)) {
+        json_error('Failed to save uploaded photo.', 500);
+    }
+    $photo_url = 'assets/images/reviews/' . $filename;
+}
 
 // ── Validation ────────────────────────────────────────────────
 if (!valid_slug($spot_id)) {
@@ -46,10 +80,10 @@ try {
 
     // Insert review (UNIQUE(user_id, spot_id) will throw if duplicate)
     $ins = $pdo->prepare("
-        INSERT INTO reviews (user_id, spot_id, rating, body, created_at)
-        VALUES (?, ?, ?, ?, NOW())
+        INSERT INTO reviews (user_id, spot_id, rating, body, photo_url, created_at)
+        VALUES (?, ?, ?, ?, ?, NOW())
     ");
-    $ins->execute([$user_id, $spot_id, $rating, $body]);
+    $ins->execute([$user_id, $spot_id, $rating, $body, $photo_url]);
     $review_id = (int) $pdo->lastInsertId();
 
     // Recompute aggregate stats on the spot

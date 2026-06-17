@@ -1,4 +1,4 @@
-﻿/* ------------------- NAVBAR ------------------- */
+/* ------------------- NAVBAR ------------------- */
 .navbar {
     position: fixed;
     top: 0;
@@ -67,16 +67,13 @@
     color: var(--white);
     font-weight: 500;
     font-size: 0.95rem;
+    position: relative;
+    padding-bottom: 4px;
+    transition: color 0.3s ease;
 }
 
 .navbar.scrolled .nav-links a {
-    font-family: 'Outfit', sans-serif;
     color: var(--text);
-}
-
-.nav-links a {
-    position: relative;
-    padding-bottom: 4px;
 }
 
 .nav-links a.active {
@@ -84,15 +81,21 @@
     font-weight: 700;
 }
 
-.nav-links a.active::after {
+.nav-links a::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 0;
     height: 3px;
     background: var(--brand-green);
     border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
 }
 
 .nav-links a:hover {

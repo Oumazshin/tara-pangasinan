@@ -21,7 +21,7 @@ $user_id   = $_SESSION['user_id'];
 
 // ── Verify ownership ────────────────────────────────────────
 $check = $pdo->prepare("
-    SELECT id, spot_id FROM reviews
+    SELECT id, spot_id, photo_url FROM reviews
     WHERE id = ? AND user_id = ?
     LIMIT 1
 ");
@@ -31,6 +31,14 @@ if (!$row) {
     json_error('Review not found.', 404);
 }
 $spot_id = $row['spot_id'];
+$photo_url = $row['photo_url'];
+
+if ($photo_url) {
+    $file_path = __DIR__ . '/../../' . $photo_url;
+    if (file_exists($file_path)) {
+        unlink($file_path);
+    }
+}
 
 // ── Delete + recompute, in one transaction ──────────────────
 try {

@@ -29,6 +29,7 @@ h6 {
 a {
     text-decoration: none;
     color: inherit;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .container {
@@ -97,6 +98,16 @@ a {
     background: rgba(44,44,42,0.06);
     border-color: rgba(44,44,42,0.45);
     transform: translateY(-1px);
+}
+
+/* Accessibility: Focus States */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--brand-green);
+    outline-offset: 3px;
 }
 
 /* ── SCROLL-TO-TOP BUTTON ────────────────────────────────── */
