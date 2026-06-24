@@ -122,59 +122,35 @@ The following are explicitly **outside** the scope of this project:
 
 ## 5. System Features
 
-The system is organized into **eight functional modules** corresponding to user-visible capability areas:
+The system is organized into eight functional modules corresponding to user-visible capability areas. Each module is designed to provide a seamless and secure experience for both guests and authenticated users.
 
 ### 5.1 Authentication Module
-- Email + password registration with `password_hash()` storage
-- Login with `password_verify()` (constant-time comparison)
-- Session-based authentication via PHP `$_SESSION`
-- Logout with full session destruction
-- Live session check via `/api/auth/session.php`
+The Authentication Module provides a secure foundation for user identity management. When new users register, their credentials are protected using industry-standard bcrypt hashing via PHP's `password_hash()` function, ensuring that plaintext passwords are never stored in the database. During the login process, the system employs `password_verify()` to perform a constant-time comparison, effectively mitigating timing attacks. Once authenticated, user sessions are securely managed through PHP's native `$_SESSION` mechanism. Furthermore, the module provides complete session lifecycle management, including robust logout functionality that fully destroys the active session, as well as a live session-checking API endpoint to maintain synchronized state between the client interface and the server.
 
 ### 5.2 Destination Catalog Module
-- Listing of all spots with search, sort (by popularity, rating, name), and category filter
-- Detailed spot page with description, photo gallery, activities, visitor tips, statistics, hours, contact information, and location coordinates
-- Interactive map with all spots plotted
+The Destination Catalog acts as the primary discovery interface for the application. It presents a comprehensive listing of all available tourist spots, equipped with robust search and sorting capabilities. Users can easily organize destinations by popularity, user rating, or name, and apply category filters to narrow down their options. Selecting a destination reveals a detailed spot page that immerses the user with a descriptive overview, a photo gallery, available activities, visitor tips, and contextual statistics. To aid in practical planning, the module also displays operating hours, contact information, and integrates an interactive map that pinpoints the geographic coordinates of each destination.
 
-### 5.3 Reviews Module *(Full CRUD demonstration)*
-- **Create:** Logged-in users may post a rating + body (10–1000 characters)
-- **Read:** Public listing of all reviews per spot, newest first, paginated 10 at a time
-- **Update:** Inline editing of own review with star picker and textarea
-- **Delete:** Soft confirmation prompt, then hard delete with aggregate recompute
-- One-review-per-user-per-spot enforced by UNIQUE constraint
-- Aggregate spot rating and review count recomputed transactionally in every mutating operation
+### 5.3 Reviews Module
+Demonstrating a complete CRUD (Create, Read, Update, Delete) lifecycle, the Reviews Module empowers users to share their authentic experiences. Logged-in users are permitted to create a review consisting of a star rating and a textual body ranging from 10 to 1,000 characters. To maintain the integrity of the rating system, a unique constraint ensures that each user can only submit one review per spot. The public can seamlessly read these reviews, which are presented in a paginated format prioritizing the newest entries. If a user wishes to modify their feedback, they can update their own review through an intuitive inline editing interface. Should they choose to remove their feedback, a soft confirmation prompt precedes the hard deletion. Crucially, any mutating operation—whether creating, updating, or deleting a review—triggers a transactional recalculation of the spot's aggregate rating and review count, ensuring the catalog always reflects accurate data.
 
 ### 5.4 Saved Spots Module
-- Heart icon toggle on any spot card persists save/unsave to database
-- Saved page (`saved.html`) shows the logged-in user's list
-- Guest users retain saves in `localStorage` as a fallback
+The Saved Spots Module introduces a personalized curation feature for travelers. By interacting with a prominent heart icon on any spot card, users can toggle a destination into their favorites. For authenticated users, this action persistently saves the selection to the relational database, ensuring their curated list remains accessible across different devices and sessions. The dedicated "Saved" interface presents a consolidated view of these favorited spots. To ensure an inclusive user experience, guest users are also accommodated; their saved spots are temporarily retained in the browser's `localStorage` as a fallback mechanism.
 
 ### 5.5 Bookings Module
-- Six-step booking wizard: select tour → date + time → guest count → add-ons → review summary → confirmation
-- Three time slots: Sunrise (6 AM), Morning (8 AM), Afternoon (1 PM)
-- Five optional add-ons (snorkel gear, private guide, lunch pack, photo package, transport)
-- Three promo codes validated server-side (TARA10 = 10%, PANGASINAN = ₱200 fixed, FIRSTTIME = 15%)
-- Server-side total recomputation prevents client-supplied price manipulation
-- Guest bookings allowed (nullable `user_id`); registered users see booking history
-- Cancellation with timestamped audit trail (`cancelled_at` column)
+The Bookings Module facilitates end-to-end tour reservations through a streamlined, six-step booking wizard. Customers begin by selecting a specific tour, followed by their preferred date and one of three predefined time slots (Sunrise at 6 AM, Morning at 8 AM, or Afternoon at 1 PM). The flow continues with specifying the guest count and optionally attaching add-ons such as snorkel gear, a private guide, or transport services. During the review stage, users can apply server-validated promotional codes that automatically calculate percentage or fixed discounts. To completely prevent client-side price manipulation, the system rigorously recomputes all totals on the server before finalizing the transaction. The module is accessible to guests via a nullable user reference, while registered users gain the added benefit of a dedicated booking history portal where they can monitor and seamlessly cancel upcoming reservations.
 
 ### 5.6 Profile Module
-- Editable user details: first name, last name, email, phone, city, biography
-- Email uniqueness check (409 Conflict on duplicate)
-- Inline password change requiring current-password verification
+The Profile Module serves as a centralized hub for account personalization and management. Users can easily update their personal details, including their first name, last name, email address, phone number, city, and a short biography. To prevent account conflicts, the system performs a strict email uniqueness check and returns a standard HTTP 409 Conflict response if a duplicate is detected. Additionally, the module facilitates secure password changes through an inline form that strictly requires the verification of the user's current password before applying any updates.
 
 ### 5.7 Contact Module
-- Subject category dropdown (Tour Inquiry, Customer Support, Partnership, Other)
-- Honeypot field invisible to humans, exploitable only by naive bots
-- IP-based rate limiting: 5 submissions per hour per IP
-- Submissions persisted to `contact_messages` table for admin review
+The Contact Module provides a structured communication channel between site visitors and the administrative team. Users can categorize their inquiries using a predefined subject dropdown, encompassing Tour Inquiries, Customer Support, Partnerships, and other general messages. To combat automated spam without degrading the user experience, the form is fortified with an invisible honeypot field that traps naive bots. Furthermore, the system enforces a strict IP-based rate limit, restricting submissions to five messages per hour per IP address. All valid submissions are safely persisted to the database for subsequent administrative review.
 
 ### 5.8 Map Module
-- Leaflet.js client-side library renders an OpenStreetMap base layer
-- Spots plotted using latitude and longitude from the `spots` table
-- Marker click opens a popup with thumbnail, name, and link to details
+The Map Module provides a spatial context to the application's catalog. Utilizing the Leaflet.js client-side library, it renders a performant OpenStreetMap base layer without relying on proprietary mapping APIs. Every tourist spot from the database is accurately plotted onto this map using precisely stored latitude and longitude coordinates. When a user interacts with a map marker, a dynamic popup reveals a thumbnail image, the destination's name, and a direct navigational link to its comprehensive details page, seamlessly bridging the geographic overview with deep content exploration.
 
 ---
+
+
 
 ## 6. Use Case Diagram
 
@@ -249,12 +225,187 @@ The system is organized into **eight functional modules** corresponding to user-
 
 ## 7. Entity Relationship Diagram (ERD)
 
-> **Drawing instructions.** Convert the textual ERD below into a visual using draw.io's "Entity Relation" shape library. Use crow's-foot notation for cardinalities. Export the image and insert here.
+The following Entity Relationship Diagram (ERD) visualizes the structural schema of the database. It outlines the core entities, their primary attributes, and the intricate network of relationships that bind them together.
 
-### 7.1 Entities and Attributes (summary; full attributes in Section 8)
+### 7.1 Visual ERD
 
-| Entity | Primary Key | Notes |
-|---|---|---|
+```mermaid
+erDiagram
+    USERS ||--o{ REVIEWS : "writes"
+    USERS ||--o{ BOOKINGS : "places"
+    USERS ||--o{ SAVED_SPOTS : "saves"
+
+    SPOTS ||--o{ REVIEWS : "receives"
+    SPOTS ||--o{ SAVED_SPOTS : "saved as"
+    SPOTS ||--o{ SPOT_ACTIVITIES : "has"
+    SPOTS ||--o{ SPOT_GALLERY : "has"
+    SPOTS ||--o{ SPOT_TIPS : "has"
+    SPOTS ||--o{ SPOT_STATS : "has"
+
+    TOURS ||--o{ BOOKINGS : "booked via"
+
+    PROMOS |o--o{ BOOKINGS : "applied to"
+
+    BOOKINGS ||--o{ BOOKING_ADDONS : "contains"
+    ADDONS ||--o{ BOOKING_ADDONS : "added in"
+    
+    USERS {
+        INT id PK
+        VARCHAR email UK
+        VARCHAR password_hash
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR phone
+        VARCHAR city
+        TEXT bio
+        VARCHAR avatar_url
+        DATETIME created_at
+        DATETIME updated_at
+    }
+
+    SPOTS {
+        VARCHAR id PK
+        VARCHAR title
+        VARCHAR location
+        ENUM category
+        DECIMAL rating
+        INT reviews_count
+        VARCHAR short_desc
+        TEXT description
+        VARCHAR image
+        DECIMAL lat
+        DECIMAL lng
+        VARCHAR hours
+        VARCHAR entrance
+        VARCHAR contact
+        VARCHAR website
+        DATETIME created_at
+    }
+
+    SPOT_ACTIVITIES {
+        INT id PK
+        VARCHAR spot_id FK
+        VARCHAR activity
+        TINYINT sort_order
+    }
+
+    SPOT_GALLERY {
+        INT id PK
+        VARCHAR spot_id FK
+        VARCHAR image_url
+        TINYINT sort_order
+    }
+
+    SPOT_TIPS {
+        INT id PK
+        VARCHAR spot_id FK
+        VARCHAR tip
+        TINYINT sort_order
+    }
+
+    SPOT_STATS {
+        INT id PK
+        VARCHAR spot_id FK
+        VARCHAR label
+        VARCHAR value
+        TINYINT sort_order
+    }
+
+    SAVED_SPOTS {
+        INT user_id PK,FK
+        VARCHAR spot_id PK,FK
+        DATETIME saved_at
+    }
+
+    REVIEWS {
+        INT id PK
+        INT user_id FK
+        VARCHAR spot_id FK
+        TINYINT rating
+        TEXT body
+        VARCHAR photo_url
+        DATETIME created_at
+    }
+
+    TOURS {
+        VARCHAR id PK
+        VARCHAR name
+        VARCHAR location
+        VARCHAR duration
+        DECIMAL price
+        VARCHAR image
+        VARCHAR badge
+        VARCHAR badge_color
+        DECIMAL rating
+        INT reviews_count
+        VARCHAR meeting_point
+        TEXT includes
+        DATETIME created_at
+    }
+
+    ADDONS {
+        VARCHAR id PK
+        VARCHAR name
+        VARCHAR description
+        DECIMAL price
+    }
+
+    PROMOS {
+        VARCHAR code PK
+        ENUM type
+        DECIMAL value
+        VARCHAR label
+        TINYINT is_active
+        DATETIME expires_at
+    }
+
+    BOOKINGS {
+        INT id PK
+        VARCHAR reference UK
+        INT user_id FK "Nullable"
+        VARCHAR tour_id FK
+        DATE tour_date
+        VARCHAR tour_time
+        TINYINT adults
+        TINYINT children
+        TINYINT infants
+        VARCHAR promo_code FK "Nullable"
+        DECIMAL discount
+        DECIMAL total
+        ENUM status
+        VARCHAR contact_name
+        VARCHAR contact_email
+        VARCHAR contact_phone
+        TEXT requests
+        DATETIME booked_at
+        DATETIME cancelled_at
+    }
+
+    BOOKING_ADDONS {
+        INT booking_id PK,FK
+        VARCHAR addon_id PK,FK
+        DECIMAL price_charged
+    }
+
+    CONTACT_MESSAGES {
+        INT id PK
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR email
+        VARCHAR subject
+        TEXT message
+        DATETIME submitted_at
+        VARCHAR ip_address
+        TINYINT is_read
+    }
+```
+
+### 7.2 Relationship Overview
+The schema operates on 14 distinct tables that are intricately connected via 13 physical foreign key relationships. The design relies heavily on one-to-many structures (e.g., one user creating many reviews) and effectively resolves complex many-to-many relationships (e.g., users saving spots, bookings utilizing add-ons) through dedicated junction tables. This robust interconnectedness ensures data integrity and supports the dynamic nature of the application.
+
+---
+
+|---|---|
 | `users` | `id` | Stores `password_hash` only, never plaintext. |
 | `spots` | `id` (slug VARCHAR) | Catalog of destinations. |
 | `spot_activities` | `id` | Child of `spots`. |
@@ -345,12 +496,203 @@ The system is organized into **eight functional modules** corresponding to user-
 
 ## 8. Data Dictionary
 
-Full column reference for every table. Types follow MySQL conventions.
+The Data Dictionary provides a comprehensive definition of every column across the database's 14 tables. The schema utilizes standard MySQL data types and enforces strict constraints to guarantee data integrity.
 
 ### 8.1 `users`
+**Relation Name:** Users
 
-| Column | Type | Constraints | Description |
-|---|---|---|---|
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| | email | VARCHAR | 255 | | UNIQUE, NOT NULL | Login identifier. | user@example.com |
+| | password_hash | VARCHAR | 255 | | NOT NULL | Bcrypt-hashed password. | $2y$10$abc... |
+| | first_name | VARCHAR | 100 | | NOT NULL | User's given name. | Juan |
+| | last_name | VARCHAR | 100 | | NOT NULL | User's family name. | Dela Cruz |
+| | phone | VARCHAR | 30 | | DEFAULT NULL | Contact number. | 09123456789 |
+| | city | VARCHAR | 150 | | DEFAULT NULL | Home city. | Dagupan |
+| | bio | TEXT | 65535 | | DEFAULT NULL | Short biography. | Love traveling! |
+| | avatar_url | VARCHAR | 500 | | DEFAULT NULL | Profile picture URL. | /img/user.jpg |
+| | created_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Registration timestamp. | 2026-06-25 10:00:00 |
+| | updated_at | DATETIME | | | NOT NULL, ON UPDATE CURRENT_TIMESTAMP | Last modification time. | 2026-06-25 12:00:00 |
+
+### 8.2 `spots`
+**Relation Name:** Spots
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | VARCHAR | 80 | | NOT NULL | URL-friendly slug. | hundred-islands |
+| | title | VARCHAR | 200 | | NOT NULL | Display name. | Hundred Islands |
+| | location | VARCHAR | 150 | | NOT NULL | City or municipality. | Alaminos |
+| | category | ENUM | | Nature, Beach, Historical, Festival, Food | NOT NULL | Destination category. | Nature |
+| | rating | DECIMAL | 2,1 | | NOT NULL, DEFAULT 0.0 | Average review rating. | 4.5 |
+| | reviews_count | INT UNSIGNED | 10 | | NOT NULL, DEFAULT 0 | Cached review count. | 120 |
+| | short_desc | VARCHAR | 500 | | NOT NULL | Card-sized teaser. | A beautiful national park. |
+| | description | TEXT | 65535 | | NOT NULL | Full HTML description. | This park features... |
+| | image | VARCHAR | 500 | | NOT NULL | Hero image URL. | /img/spots/hi.jpg |
+| | lat | DECIMAL | 10,7 | | DEFAULT NULL | Latitude coordinate. | 16.2023 |
+| | lng | DECIMAL | 10,7 | | DEFAULT NULL | Longitude coordinate. | 120.0274 |
+| | hours | VARCHAR | 150 | | DEFAULT NULL | Visitor operating hours. | 6:00 AM - 5:00 PM |
+| | entrance | VARCHAR | 150 | | DEFAULT NULL | Entrance fee information. | Php 100 |
+| | contact | VARCHAR | 80 | | DEFAULT NULL | Official contact number. | 09112223333 |
+| | website | VARCHAR | 255 | | DEFAULT NULL | Official website URL. | https://example.com |
+| | created_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Insertion timestamp. | 2026-06-25 10:00:00 |
+
+### 8.3 `spot_activities`
+**Relation Name:** Spot Activities
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Associated spot slug. | hundred-islands |
+| | activity | VARCHAR | 150 | | NOT NULL | Name of the activity. | Island Hopping |
+| | sort_order | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Display sorting index. | 1 |
+
+### 8.4 `spot_gallery`
+**Relation Name:** Spot Gallery
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Associated spot slug. | hundred-islands |
+| | image_url | VARCHAR | 500 | | NOT NULL | Path to the gallery image. | /img/gallery/1.jpg |
+| | sort_order | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Display sorting index. | 2 |
+
+### 8.5 `spot_tips`
+**Relation Name:** Spot Tips
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Associated spot slug. | hundred-islands |
+| | tip | VARCHAR | 500 | | NOT NULL | Visitor advice or tip. | Bring sunblock. |
+| | sort_order | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Display sorting index. | 3 |
+
+### 8.6 `spot_stats`
+**Relation Name:** Spot Statistics
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Associated spot slug. | hundred-islands |
+| | label | VARCHAR | 80 | | NOT NULL | Statistic label. | Islands Count |
+| | value | VARCHAR | 150 | | NOT NULL | Statistic value. | 124 |
+| | sort_order | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Display sorting index. | 4 |
+
+### 8.7 `saved_spots`
+**Relation Name:** Saved Spots
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK, FK | user_id | INT UNSIGNED | 10 | | NOT NULL, ON DELETE CASCADE | ID of the saving user. | 15 |
+| PK, FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Slug of the saved spot. | hundred-islands |
+| | saved_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Timestamp of save action. | 2026-06-25 10:30:00 |
+
+### 8.8 `reviews`
+**Relation Name:** Reviews
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| FK | user_id | INT UNSIGNED | 10 | | NOT NULL, ON DELETE CASCADE | ID of the reviewing user. | 15 |
+| FK | spot_id | VARCHAR | 80 | | NOT NULL, ON DELETE CASCADE | Slug of the reviewed spot. | hundred-islands |
+| | rating | TINYINT UNSIGNED | 3 | 1, 2, 3, 4, 5 | NOT NULL, CHECK (rating BETWEEN 1 AND 5) | Given star rating. | 5 |
+| | body | TEXT | 65535 | | NOT NULL | Content of the review. | It was a great trip! |
+| | photo_url | VARCHAR | 500 | | DEFAULT NULL | Optional review photo. | /img/reviews/1.jpg |
+| | created_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Submission timestamp. | 2026-06-25 11:00:00 |
+
+### 8.9 `tours`
+**Relation Name:** Tours
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | VARCHAR | 80 | | NOT NULL | URL-friendly slug. | hundred-islands-tour |
+| | name | VARCHAR | 200 | | NOT NULL | Display name of the tour. | Hundred Islands Day Tour |
+| | location | VARCHAR | 150 | | NOT NULL | Tour operating location. | Alaminos |
+| | duration | VARCHAR | 80 | | NOT NULL | Tour duration string. | 8 Hours |
+| | price | DECIMAL | 10,2 | | NOT NULL | Base price of the tour. | 1500.00 |
+| | image | VARCHAR | 500 | | NOT NULL | Promotional image URL. | /img/tours/hi.jpg |
+| | badge | VARCHAR | 80 | | DEFAULT NULL | Special label text. | Bestseller |
+| | badge_color | VARCHAR | 20 | | DEFAULT NULL | CSS color class/code. | success |
+| | rating | DECIMAL | 2,1 | | NOT NULL, DEFAULT 0.0 | Average tour rating. | 4.8 |
+| | reviews_count | INT UNSIGNED | 10 | | NOT NULL, DEFAULT 0 | Count of tour reviews. | 50 |
+| | meeting_point | VARCHAR | 200 | | NOT NULL | Designated assembly area. | Lucap Wharf |
+| | includes | TEXT | 65535 | | NOT NULL | JSON array of inclusions. | ["Boat","Guide"] |
+| | created_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Creation timestamp. | 2026-06-20 09:00:00 |
+
+### 8.10 `addons`
+**Relation Name:** Add-ons
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | VARCHAR | 40 | | NOT NULL | Slug identifier. | snorkel-gear |
+| | name | VARCHAR | 150 | | NOT NULL | Display name. | Snorkel Gear |
+| | description | VARCHAR | 500 | | NOT NULL | Brief description. | High quality mask. |
+| | price | DECIMAL | 10,2 | | NOT NULL | Extra cost of add-on. | 250.00 |
+
+### 8.11 `promos`
+**Relation Name:** Promo Codes
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | code | VARCHAR | 40 | | NOT NULL | Unique promotional code. | TARA10 |
+| | type | ENUM | | percent, fixed | NOT NULL | Discount calculation type. | percent |
+| | value | DECIMAL | 10,2 | | NOT NULL | Discount amount. | 10.00 |
+| | label | VARCHAR | 120 | | NOT NULL | Descriptive display text. | 10% Off |
+| | is_active | TINYINT | 1 | 0, 1 | NOT NULL, DEFAULT 1 | Boolean active status. | 1 |
+| | expires_at | DATETIME | | | DEFAULT NULL | Optional expiry date. | 2026-12-31 23:59:59 |
+
+### 8.12 `bookings`
+**Relation Name:** Bookings
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| | reference | VARCHAR | 40 | | UNIQUE, NOT NULL | Public tracking ID. | TPG-AB12C3 |
+| FK | user_id | INT UNSIGNED | 10 | | DEFAULT NULL, ON DELETE SET NULL | Guest/User association. | 15 |
+| FK | tour_id | VARCHAR | 80 | | NOT NULL, ON DELETE RESTRICT | Associated booked tour. | hundred-islands-tour |
+| | tour_date | DATE | | | NOT NULL | Scheduled date. | 2026-07-01 |
+| | tour_time | VARCHAR | 20 | | NOT NULL | Scheduled time slot. | 8:00 AM |
+| | adults | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Count of adult guests. | 2 |
+| | children | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Count of child guests. | 1 |
+| | infants | TINYINT UNSIGNED | 3 | | NOT NULL, DEFAULT 0 | Count of infant guests. | 0 |
+| FK | promo_code | VARCHAR | 40 | | DEFAULT NULL, ON DELETE SET NULL | Applied promo code. | TARA10 |
+| | discount | DECIMAL | 10,2 | | NOT NULL, DEFAULT 0.00 | Total discount computed. | 150.00 |
+| | total | DECIMAL | 10,2 | | NOT NULL | Final charged amount. | 1350.00 |
+| | status | ENUM | | upcoming, completed, cancelled | NOT NULL, DEFAULT 'upcoming' | Lifecycle state. | upcoming |
+| | contact_name | VARCHAR | 150 | | NOT NULL | Primary contact person. | Juan Dela Cruz |
+| | contact_email | VARCHAR | 255 | | NOT NULL | Communication email. | juan@example.com |
+| | contact_phone | VARCHAR | 30 | | NOT NULL | Communication phone. | 09123456789 |
+| | requests | TEXT | 65535 | | DEFAULT NULL | Special customer requests. | Need a vegetarian meal. |
+| | booked_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Initial reservation time. | 2026-06-25 14:00:00 |
+| | cancelled_at | DATETIME | | | DEFAULT NULL | Cancellation timestamp. | 2026-06-26 10:00:00 |
+
+### 8.13 `booking_addons`
+**Relation Name:** Booking Add-ons
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK, FK | booking_id | INT UNSIGNED | 10 | | NOT NULL, ON DELETE CASCADE | The target booking ID. | 1 |
+| PK, FK | addon_id | VARCHAR | 40 | | NOT NULL, ON DELETE RESTRICT | The target addon slug. | snorkel-gear |
+| | price_charged | DECIMAL | 10,2 | | NOT NULL | Snapshot of addon cost. | 250.00 |
+
+### 8.14 `contact_messages`
+**Relation Name:** Contact Messages
+
+| Key | Attribute Name | Data Type | Data Size | Allowable Values | Other Constraints | Description | Sample Value |
+|---|---|---|---|---|---|---|---|
+| PK | id | INT UNSIGNED | 10 | | AUTO_INCREMENT | Surrogate primary key. | 1 |
+| | first_name | VARCHAR | 100 | | NOT NULL | Sender's given name. | Maria |
+| | last_name | VARCHAR | 100 | | NOT NULL | Sender's family name. | Clara |
+| | email | VARCHAR | 255 | | NOT NULL | Sender's email. | maria@example.com |
+| | subject | VARCHAR | 80 | | NOT NULL | Nature of inquiry. | Tour Inquiry |
+| | message | TEXT | 65535 | | NOT NULL | Full textual message. | Can I bring my dog? |
+| | submitted_at | DATETIME | | | NOT NULL, DEFAULT CURRENT_TIMESTAMP | Receive timestamp. | 2026-06-25 15:00:00 |
+| | ip_address | VARCHAR | 45 | | DEFAULT NULL | Sender's IP (rate limiting).| 192.168.1.1 |
+| | is_read | TINYINT | 1 | 0, 1 | NOT NULL, DEFAULT 0 | Read receipt status. | 0 |
+
+---
+
+|---|---|---|
 | `id` | INT UNSIGNED | PK, AUTO_INCREMENT | Surrogate primary key. |
 | `email` | VARCHAR(255) | UNIQUE, NOT NULL | Login identifier. |
 | `password_hash` | VARCHAR(255) | NOT NULL | Bcrypt-hashed password. |
