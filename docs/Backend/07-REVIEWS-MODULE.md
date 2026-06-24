@@ -37,12 +37,17 @@ This phase replaces the three hardcoded review cards on `details.html` (lines 13
 
 | Method | Endpoint | Auth | Purpose |
 |---|---|---|---|
-| `GET` | `/api/reviews/list.php?spot_id=hundred-islands&limit=10&offset=0` | No | List reviews for a spot, newest first. |
-| `POST` | `/api/reviews/create.php` | **Yes** | Insert one review for current user. |
+| `GET`    | `/api/reviews/list.php?spot_id=hundred-islands&limit=10&offset=0` | No   | **Read** — list reviews for a spot, newest first. |
+| `POST`   | `/api/reviews/create.php` | **Yes** | **Create** — insert one review for current user. |
+| `POST`   | `/api/reviews/update.php` | **Yes** | **Update** — edit current user's existing review. |
+| `POST`   | `/api/reviews/delete.php` | **Yes** | **Delete** — remove current user's review. |
 
-### Why these two?
+> **Why this module demonstrates full CRUD.** The Reviews resource is the cleanest example of all four operations on a single entity. Create posts a new row, Read lists existing rows, Update modifies the row the current user owns, and Delete removes it (with the spot's aggregate stats recomputed in each mutating operation). This makes it easy to point to during the demo when the panel asks where CRUD is.
+
+### Why these endpoints?
 - **`list.php`** is public — anyone visiting `details.html?id=hundred-islands` (even guests) sees real reviews.
 - **`create.php`** requires login because anonymous reviews are spam bait, and we need a `user_id` to enforce "one review per user per spot" (the `UNIQUE(user_id, spot_id)` constraint on `reviews` from Phase 02).
+- **`update.php`** and **`delete.php`** require login *and* enforce ownership — users can only modify or remove the reviews they themselves authored. Cross-user tampering returns 404 (not 403) to avoid leaking review IDs.
 
 ---
 
@@ -79,6 +84,7 @@ This phase replaces the three hardcoded review cards on `details.html` (lines 13
  */
 require_once __DIR__ . '/../../includes/db.php';
 require_once __DIR__ . '/../../includes/response.php';
+require_once __DIR__ . '/../../includes/session.php';   // bootstrap session so we can read $_SESSION['user_id']
 require_once __DIR__ . '/../../includes/validation.php';
 
 $spot_id = clean_str($_GET['spot_id'] ?? '');
@@ -101,10 +107,13 @@ $count_stmt = $pdo->prepare('SELECT COUNT(*) FROM reviews WHERE spot_id = ?');
 $count_stmt->execute([$spot_id]);
 $total = (int) $count_stmt->fetchColumn();
 
-// Page of reviews — JOIN users for name
+// Page of reviews — JOIN users for name; flag owner rows so frontend can show edit/delete
+$current_user_id = $_SESSION['user_id'] ?? 0;
+
 $stmt = $pdo->prepare("
     SELECT
         r.id,
+        r.user_id,
         r.rating,
         r.body,
         r.created_at,
@@ -122,10 +131,12 @@ $stmt->bindValue(3, $offset,  PDO::PARAM_INT);
 $stmt->execute();
 $reviews = $stmt->fetchAll();
 
-// Add human-readable date label ("May 2026")
+// Add human-readable date label ("May 2026") + owner flag
 foreach ($reviews as &$r) {
     $r['rating']     = (int) $r['rating'];
+    $r['is_owner']   = ((int) $r['user_id'] === $current_user_id);
     $r['date_label'] = date('F Y', strtotime($r['created_at']));
+    unset($r['user_id']); // don't leak user IDs to the client
 }
 unset($r);
 
@@ -234,6 +245,168 @@ json_success([
 
 ---
 
+### File 3: `api/reviews/update.php`
+
+```php
+<?php
+/**
+ * POST /api/reviews/update.php
+ * Body: { "review_id": 14, "rating": 4, "body": "Updated text..." }
+ *
+ * Updates a review owned by the current user. The spot's aggregate rating
+ * is recomputed in the same transaction so display stays in sync.
+ */
+require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/response.php';
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/validation.php';
+
+require_login();
+
+$payload = read_json_body();
+require_fields($payload, ['review_id', 'rating', 'body']);
+
+$review_id = clean_int($payload['review_id'], 1);
+$rating    = clean_int($payload['rating'], 1, 5);
+$body      = clean_str($payload['body']);
+$user_id   = $_SESSION['user_id'];
+
+// ── Validation ───────────────────────────────────────────────
+$body_len = mb_strlen($body);
+if ($body_len < 10) {
+    json_error('Review must be at least 10 characters.', 400);
+}
+if ($body_len > 1000) {
+    json_error('Review cannot exceed 1000 characters.', 400);
+}
+
+// ── Verify ownership (404 not 403 to avoid ID enumeration) ──
+$check = $pdo->prepare("
+    SELECT id, spot_id FROM reviews
+    WHERE id = ? AND user_id = ?
+    LIMIT 1
+");
+$check->execute([$review_id, $user_id]);
+$row = $check->fetch();
+if (!$row) {
+    json_error('Review not found.', 404);
+}
+$spot_id = $row['spot_id'];
+
+// ── Update + recompute aggregate, in one transaction ────────
+try {
+    $pdo->beginTransaction();
+
+    $upd = $pdo->prepare("
+        UPDATE reviews
+        SET rating = ?, body = ?
+        WHERE id = ?
+    ");
+    $upd->execute([$rating, $body, $review_id]);
+
+    $agg = $pdo->prepare("
+        UPDATE spots SET
+            rating        = (SELECT ROUND(AVG(rating), 1) FROM reviews WHERE spot_id = ?),
+            reviews_count = (SELECT COUNT(*)              FROM reviews WHERE spot_id = ?)
+        WHERE id = ?
+    ");
+    $agg->execute([$spot_id, $spot_id, $spot_id]);
+
+    $pdo->commit();
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    throw $e;
+}
+
+$new = $pdo->prepare('SELECT rating, reviews_count FROM spots WHERE id = ?');
+$new->execute([$spot_id]);
+$updated = $new->fetch();
+
+json_success([
+    'review_id'     => $review_id,
+    'new_rating'    => (float) $updated['rating'],
+    'reviews_count' => (int)   $updated['reviews_count'],
+], 'Review updated.');
+```
+
+---
+
+### File 4: `api/reviews/delete.php`
+
+```php
+<?php
+/**
+ * POST /api/reviews/delete.php
+ * Body: { "review_id": 14 }
+ *
+ * Deletes a review owned by the current user. The spot's aggregate rating
+ * is recomputed afterward so display stays in sync.
+ */
+require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/response.php';
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/validation.php';
+
+require_login();
+
+$payload = read_json_body();
+require_fields($payload, ['review_id']);
+
+$review_id = clean_int($payload['review_id'], 1);
+$user_id   = $_SESSION['user_id'];
+
+// ── Verify ownership ────────────────────────────────────────
+$check = $pdo->prepare("
+    SELECT id, spot_id FROM reviews
+    WHERE id = ? AND user_id = ?
+    LIMIT 1
+");
+$check->execute([$review_id, $user_id]);
+$row = $check->fetch();
+if (!$row) {
+    json_error('Review not found.', 404);
+}
+$spot_id = $row['spot_id'];
+
+// ── Delete + recompute, in one transaction ──────────────────
+try {
+    $pdo->beginTransaction();
+
+    $pdo->prepare("DELETE FROM reviews WHERE id = ?")->execute([$review_id]);
+
+    // After deletion, the spot may have 0 reviews — handle that case
+    $agg = $pdo->prepare("
+        UPDATE spots SET
+            rating        = COALESCE(
+                (SELECT ROUND(AVG(rating), 1) FROM reviews WHERE spot_id = ?),
+                0.0
+            ),
+            reviews_count = (SELECT COUNT(*) FROM reviews WHERE spot_id = ?)
+        WHERE id = ?
+    ");
+    $agg->execute([$spot_id, $spot_id, $spot_id]);
+
+    $pdo->commit();
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    throw $e;
+}
+
+$new = $pdo->prepare('SELECT rating, reviews_count FROM spots WHERE id = ?');
+$new->execute([$spot_id]);
+$updated = $new->fetch();
+
+json_success([
+    'review_id'     => $review_id,
+    'new_rating'    => (float) $updated['rating'],
+    'reviews_count' => (int)   $updated['reviews_count'],
+], 'Review deleted.');
+```
+
+> **Defense talking point — Ownership enforcement and CRUD completeness.** Both `update.php` and `delete.php` first verify the review belongs to the authenticated user by including `user_id = ?` in the lookup query. If the row doesn't match, we return 404 (not 403) — this prevents an attacker from probing valid review IDs by observing which return permission errors. With Create (`create.php`), Read (`list.php`), Update (`update.php`), and Delete (`delete.php`), the Reviews resource demonstrates the full CRUD cycle on a single entity, with aggregate consistency maintained transactionally in every mutating operation.
+
+---
+
 ## Frontend Integration
 
 ### Step 1 — Replace hardcoded review cards in `details.html`
@@ -294,13 +467,23 @@ var reviewsState = { offset: 0, limit: 10, total: 0 };
 function renderReviewCard(r) {
     // Tiny avatar from initials (no external service)
     var initials = r.user_name.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0,2).toUpperCase();
-    return '<div class="review-card">' +
-        '<div class="reviewer-info">' +
+
+    // Owner controls — only show on reviews authored by current user
+    var ownerControls = r.is_owner
+        ? '<div class="review-owner-controls" style="margin-left:auto;display:flex;gap:8px;">' +
+              '<button class="btn-link" onclick="startEditReview(' + r.id + ', ' + r.rating + ', this)" data-review-id="' + r.id + '" style="background:none;border:none;color:var(--brand-green);cursor:pointer;font-size:0.85rem;">Edit</button>' +
+              '<button class="btn-link" onclick="deleteReview(' + r.id + ')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:0.85rem;">Delete</button>' +
+          '</div>'
+        : '';
+
+    return '<div class="review-card" id="review-' + r.id + '">' +
+        '<div class="reviewer-info" style="display:flex;align-items:center;gap:12px;">' +
             '<div class="avatar" style="background:var(--brand-green);color:white;display:flex;align-items:center;justify-content:center;font-weight:600;">' + initials + '</div>' +
             '<div><strong>' + escapeHTML(r.user_name) + '</strong><span class="date">' + r.date_label + '</span></div>' +
+            ownerControls +
         '</div>' +
         '<div class="review-stars">' + starsHTML(r.rating, 14) + '</div>' +
-        '<p>' + escapeHTML(r.body) + '</p>' +
+        '<p class="review-body-text">' + escapeHTML(r.body) + '</p>' +
     '</div>';
 }
 
@@ -404,6 +587,109 @@ function setupReviewForm() {
     });
 }
 
+// ── Edit review (in-place) ───────────────────────────────
+function startEditReview(reviewId, currentRating, btnEl) {
+    var card = document.getElementById('review-' + reviewId);
+    if (!card || card.dataset.editing === '1') return;
+    card.dataset.editing = '1';
+
+    var bodyEl = card.querySelector('.review-body-text');
+    var currentBody = bodyEl.textContent;
+
+    // Replace body with editable controls; preserve original for cancel
+    var editorHTML =
+        '<div class="review-edit-form" style="margin-top:8px;">' +
+            '<div style="display:flex;gap:4px;font-size:24px;color:#d1d5db;cursor:pointer;margin-bottom:8px;" id="edit-rating-picker-' + reviewId + '">' +
+                [1,2,3,4,5].map(function(n){ return '<span data-val="' + n + '" style="color:' + (n <= currentRating ? '#FFB400' : '#d1d5db') + ';">★</span>'; }).join('') +
+            '</div>' +
+            '<input type="hidden" id="edit-rating-' + reviewId + '" value="' + currentRating + '">' +
+            '<textarea id="edit-body-' + reviewId + '" class="form-control" rows="3" minlength="10" maxlength="1000" style="width:100%;">' + escapeHTML(currentBody) + '</textarea>' +
+            '<div style="margin-top:8px;display:flex;gap:8px;">' +
+                '<button class="btn-primary" style="padding:6px 16px;border-radius:8px;" onclick="submitEditReview(' + reviewId + ')">Save</button>' +
+                '<button class="btn-outline" style="padding:6px 16px;border-radius:8px;background:white;cursor:pointer;" onclick="cancelEditReview(' + reviewId + ', this)" data-original-body="' + encodeURIComponent(currentBody) + '" data-original-rating="' + currentRating + '">Cancel</button>' +
+            '</div>' +
+        '</div>';
+
+    bodyEl.style.display = 'none';
+    bodyEl.insertAdjacentHTML('afterend', editorHTML);
+
+    // Wire up the star picker
+    var picker = document.getElementById('edit-rating-picker-' + reviewId);
+    var hidden = document.getElementById('edit-rating-' + reviewId);
+    picker.addEventListener('click', function (e) {
+        if (e.target.dataset.val) {
+            var val = parseInt(e.target.dataset.val, 10);
+            hidden.value = val;
+            Array.prototype.forEach.call(picker.children, function (star, i) {
+                star.style.color = (i < val) ? '#FFB400' : '#d1d5db';
+            });
+        }
+    });
+}
+
+function cancelEditReview(reviewId) {
+    var card = document.getElementById('review-' + reviewId);
+    if (!card) return;
+    var editor = card.querySelector('.review-edit-form');
+    if (editor) editor.remove();
+    var bodyEl = card.querySelector('.review-body-text');
+    if (bodyEl) bodyEl.style.display = '';
+    card.dataset.editing = '';
+}
+
+function submitEditReview(reviewId) {
+    var newRating = parseInt(document.getElementById('edit-rating-' + reviewId).value, 10);
+    var newBody   = document.getElementById('edit-body-' + reviewId).value.trim();
+
+    if (newBody.length < 10) {
+        alert('Review must be at least 10 characters.');
+        return;
+    }
+
+    Api.post('reviews/update.php', {
+        review_id: reviewId,
+        rating:    newRating,
+        body:      newBody
+    })
+        .then(function (data) {
+            // Update the sidebar rating in case the average changed
+            setText('sidebar-rating',  data.new_rating);
+            setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
+            document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
+
+            // Refresh the list to reflect the edit
+            reviewsState.offset = 0;
+            loadReviews(false);
+        })
+        .catch(function (err) {
+            alert('Could not save: ' + err.message);
+        });
+}
+
+// ── Delete review ────────────────────────────────────────
+function deleteReview(reviewId) {
+    if (!confirm('Delete this review? This cannot be undone.')) return;
+
+    Api.post('reviews/delete.php', { review_id: reviewId })
+        .then(function (data) {
+            // Update sidebar (deletion changes the average)
+            setText('sidebar-rating',  data.new_rating);
+            setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
+            document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
+
+            // Show the review form again — user no longer has a review on this spot
+            var formCard = document.getElementById('review-form-card');
+            if (formCard) formCard.style.display = localStorage.getItem('tara_session') ? 'block' : 'none';
+
+            // Refresh list
+            reviewsState.offset = 0;
+            loadReviews(false);
+        })
+        .catch(function (err) {
+            alert('Could not delete: ' + err.message);
+        });
+}
+
 // Load more button
 document.getElementById('btn-load-more-reviews').addEventListener('click', function () {
     loadReviews(true);
@@ -465,6 +751,27 @@ setupReviewForm();
 3. **Expect:** Rating recomputes (e.g. 4.5 → 4.6, count → 13).
 4. Verify in MySQL: `SELECT rating, reviews_count FROM spots WHERE id = 'hundred-islands';` — matches displayed value.
 
+### Test 7 — Update review (own)
+1. After posting a review, find it in the list — confirm **Edit** and **Delete** buttons appear next to your name.
+2. Click **Edit**. The card switches to an inline editor with the current rating + body.
+3. Change rating to 3 and edit the text. Click **Save**.
+4. **Expect:** Card returns to read-only with new values. Sidebar rating recomputes.
+5. Verify in MySQL: `SELECT rating, body FROM reviews WHERE id = ?;` matches the new values.
+
+### Test 8 — Update review (someone else's — should fail)
+1. Note another user's review ID via DevTools or DB.
+2. From Postman or the console, POST `{review_id: <other_id>, rating: 1, body: "tampered"}` to `update.php`.
+3. **Expect:** 404 — *"Review not found."* (404, not 403, to avoid ID enumeration.)
+
+### Test 9 — Delete review
+1. Click **Delete** on your own review. Confirm the dialog.
+2. **Expect:** Review disappears from the list. Sidebar rating drops accordingly. Review form re-appears (you no longer have a review on this spot).
+3. Verify in MySQL: row is gone; aggregate recomputed.
+
+### Test 10 — Delete last review on a spot
+1. As the only reviewer of a spot, delete your review.
+2. **Expect:** `spots.reviews_count = 0`, `spots.rating = 0.0` (handled via `COALESCE` in the recompute).
+
 ---
 
 ## File Structure After Phase 7
@@ -473,13 +780,15 @@ setupReviewForm();
 api/
 ├── auth/                 (Phase 04)
 ├── reviews/
-│   ├── list.php          ✓ NEW
-│   └── create.php        ✓ NEW
+│   ├── list.php          ✓ NEW (Read)
+│   ├── create.php        ✓ NEW (Create)
+│   ├── update.php        ✓ NEW (Update)
+│   └── delete.php        ✓ NEW (Delete)
 ├── saved/                (Phase 06)
 └── spots/                (Phase 05)
 details.html              (review section replaced)
 js/
-└── main.js               (+ loadReviews, setupReviewForm)
+└── main.js               (+ loadReviews, setupReviewForm, startEditReview, deleteReview)
 ```
 
 ---
@@ -488,9 +797,15 @@ js/
 
 - [ ] Reviews on every spot's `details.html` are loaded from the DB, not hardcoded.
 - [ ] Logged-in users see the review form; guests see a login prompt.
-- [ ] Posting a review updates `spots.rating` and `spots.reviews_count` via transaction.
+- [ ] **Create:** Posting a review updates `spots.rating` and `spots.reviews_count` via transaction.
+- [ ] **Read:** Listing returns paginated reviews with `is_owner` flag on the requester's rows.
+- [ ] **Update:** Users can edit their own review inline; aggregate rating recomputes.
+- [ ] **Delete:** Users can delete their own review; aggregate rating recomputes (and goes to 0.0 if last review on a spot).
+- [ ] Cross-user tampering (updating or deleting someone else's review) returns 404 to prevent ID enumeration.
 - [ ] Same user cannot review the same spot twice (409 returned via UNIQUE constraint).
 - [ ] "Load More" pagination works without page reload.
-- [ ] Rating in the sidebar updates instantly after posting.
+- [ ] Rating in the sidebar updates instantly after every mutating operation.
+
+> **Rubric note.** This module is the single cleanest demonstration of all four CRUD operations on one resource. During the demo, point the panel at the Reviews section on `details.html` and walk them through Create → Read → Update → Delete in order. That's 15 rubric points addressed in roughly 90 seconds of demonstration.
 
 Continue to **[`08-BOOKINGS-MODULE.md`](./08-BOOKINGS-MODULE.md)** to wire up the tour booking wizard.

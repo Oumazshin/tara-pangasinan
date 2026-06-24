@@ -1,2 +1,7 @@
 /* Shares all auth styles with the login page */
 @import "../login/main.css";
+
+/* Register page gets its own distinct scenic background */
+.auth-image-side {
+    background-image: url('../../../assets/images/nature/hundred-island-national-park.jpg');
+}

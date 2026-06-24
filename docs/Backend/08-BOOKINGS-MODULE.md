@@ -15,7 +15,11 @@ This phase wires the tour booking wizard on `plan.html` to the database. Booking
 | Booking reference (`TPG-XXXXXX`) is generated client-side. | Generated server-side and returned in the response. |
 | Profile page reads `tara_bookings` localStorage array. | Reads `/api/bookings/list.php` for the logged-in user. |
 | No way to cancel a booking. | `POST /api/bookings/cancel.php` updates status to `cancelled` and stamps `cancelled_at`. |
+| No way to edit a booking after submission. | `POST /api/bookings/update.php` lets users change date, time, guests, addons, and promo before the tour date. |
+| Cancelled bookings sit in history forever. | `POST /api/bookings/delete.php` hard-deletes cancelled bookings (the user's choice to remove them). |
 | Promo codes work because the JS knows them. | Validated server-side — secret discount values are never sent to the client. |
+
+> **CRUD completeness.** With these additions, the Bookings resource demonstrates the full CRUD lifecycle on a complex, multi-table entity: **C**reate (`create.php`), **R**ead (`list.php`), **U**pdate (real edit via `update.php`, plus soft-update via `cancel.php`), **D**elete (`delete.php` for cancelled rows). Combined with the Reviews resource (Phase 07), the project demonstrates CRUD on two resources of distinct complexity profiles — Reviews is simple user-generated content; Bookings carries business rules, server-side pricing, and multi-table state.
 
 ---
 
@@ -25,13 +29,14 @@ This phase wires the tour booking wizard on `plan.html` to the database. Booking
 - `api/bookings/create.php`
 - `api/bookings/list.php`
 - `api/bookings/cancel.php`
+- `api/bookings/update.php`         — NEW (real edit)
+- `api/bookings/delete.php`         — NEW (hard delete for cancelled)
 - `api/promos/validate.php`
-- `api/spots/tours.php`           — list available tours + add-ons
+- `api/spots/tours.php`             — list available tours + add-ons
 
 **Edited files**
 - `plan.html` — replace `TOURS`/`ADDONS`/`PROMOS` arrays with API calls; rewrite `submitBooking()` to POST
-- `profile.html` — replace localStorage booking history with API-driven list
-- `sql/seed-lookups.sql` — already seeded in Phase 02; double-check rows exist
+- `profile.html` — replace localStorage booking history with API-driven list; add **Edit** modal + **Remove from history** controls
 
 **Touched tables** — `tours`, `addons`, `promos`, `bookings`, `booking_addons`
 
@@ -54,9 +59,11 @@ This phase wires the tour booking wizard on `plan.html` to the database. Booking
 |---|---|---|---|
 | `GET`  | `/api/spots/tours.php`              | No  | List active tours + add-ons + time slots. |
 | `POST` | `/api/promos/validate.php`          | No  | Check promo code and return discount info. |
-| `POST` | `/api/bookings/create.php`          | No* | Create a booking. * Guest bookings allowed; `user_id` is nullable. |
-| `GET`  | `/api/bookings/list.php`            | Yes | List current user's bookings (upcoming + past). |
-| `POST` | `/api/bookings/cancel.php`          | Yes | Cancel a booking (sets `status = 'cancelled'`, stamps `cancelled_at`). |
+| `POST` | `/api/bookings/create.php`          | No* | **Create** — make a booking. * Guest bookings allowed; `user_id` is nullable. |
+| `GET`  | `/api/bookings/list.php`            | Yes | **Read** — list current user's bookings (upcoming + past). |
+| `POST` | `/api/bookings/update.php`          | Yes | **Update** — edit an upcoming booking (date/time/guests/addons/promo). |
+| `POST` | `/api/bookings/cancel.php`          | Yes | Soft-update — flip status to `cancelled`, stamp `cancelled_at`. |
+| `POST` | `/api/bookings/delete.php`          | Yes | **Delete** — hard-delete a cancelled booking (purge from history). |
 
 > **Why allow guest bookings?** The current frontend never gates `plan.html` behind login. Forcing auth at submit would break UX. The schema uses `user_id NULL`, so guests get a confirmation reference but no profile history.
 
@@ -511,6 +518,259 @@ json_success(['booking_id' => $booking_id], 'Booking cancelled.');
 
 ---
 
+### File 6: `api/bookings/update.php`
+
+```php
+<?php
+/**
+ * POST /api/bookings/update.php
+ *
+ * Body: {
+ *   "booking_id": 42,
+ *   "date":       "2026-07-20",
+ *   "time":       "8:00 AM",
+ *   "adults":     3,
+ *   "children":   1,
+ *   "infants":    0,
+ *   "addon_ids":  ["snorkel"],
+ *   "promo_code": "TARA10" | null,
+ *   "phone":      "+63 917 xxx xxxx",
+ *   "requests":   "Updated dietary notes..."
+ * }
+ *
+ * Edits an UPCOMING booking owned by the current user. The price is
+ * recomputed server-side using the same logic as create.php. Addons are
+ * replaced wholesale inside a transaction. The tour itself cannot be
+ * changed (that's effectively a new booking).
+ */
+require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/response.php';
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/validation.php';
+
+require_login();
+
+$payload = read_json_body();
+require_fields($payload, ['booking_id', 'date', 'time', 'adults']);
+
+$booking_id = clean_int($payload['booking_id'], 1);
+$user_id    = $_SESSION['user_id'];
+
+// ── Verify ownership + editable status ───────────────────────
+$check = $pdo->prepare("
+    SELECT id, tour_id, status, tour_date
+    FROM bookings
+    WHERE id = ? AND user_id = ?
+    LIMIT 1
+");
+$check->execute([$booking_id, $user_id]);
+$row = $check->fetch();
+
+if (!$row) {
+    json_error('Booking not found.', 404);
+}
+if ($row['status'] !== 'upcoming') {
+    json_error('Only upcoming bookings can be edited.', 400);
+}
+
+$tour_id = $row['tour_id']; // tour is locked; not editable
+
+// ── Parse + clean inputs ─────────────────────────────────────
+$date      = clean_str($payload['date']);
+$time      = clean_str($payload['time']);
+$adults    = clean_int($payload['adults'],   1, 20);
+$children  = clean_int($payload['children'] ?? 0, 0, 20);
+$infants   = clean_int($payload['infants']  ?? 0, 0, 20);
+$addon_ids = is_array($payload['addon_ids'] ?? null) ? $payload['addon_ids'] : [];
+$promo     = isset($payload['promo_code']) ? strtoupper(trim($payload['promo_code'])) : '';
+$phone     = clean_str($payload['phone']    ?? '');
+$requests  = clean_str($payload['requests'] ?? '');
+
+// ── Validation (same rules as create.php) ────────────────────
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+    json_error('Invalid date format.', 400);
+}
+if (strtotime($date) < strtotime('+1 day midnight')) {
+    json_error('Tours must be at least one day in the future.', 400);
+}
+
+$allowed_times = ['6:00 AM', '8:00 AM', '1:00 PM'];
+if (!in_array($time, $allowed_times, true)) {
+    json_error('Invalid time slot.', 400);
+}
+
+// ── Look up tour (locked from original booking) ──────────────
+$tour_stmt = $pdo->prepare("SELECT id, price FROM tours WHERE id = ? LIMIT 1");
+$tour_stmt->execute([$tour_id]);
+$tour = $tour_stmt->fetch();
+if (!$tour) {
+    // Tour was deleted since booking — should never happen given ON DELETE RESTRICT,
+    // but guard anyway.
+    json_error('Original tour no longer available.', 410);
+}
+
+// ── Look up new addons ──────────────────────────────────────
+$addon_rows = [];
+if ($addon_ids) {
+    $addon_ids = array_filter(array_map('clean_str', $addon_ids), 'valid_slug');
+    if ($addon_ids) {
+        $placeholders = implode(',', array_fill(0, count($addon_ids), '?'));
+        $a_stmt = $pdo->prepare("SELECT id, price FROM addons WHERE id IN ($placeholders)");
+        $a_stmt->execute($addon_ids);
+        $addon_rows = $a_stmt->fetchAll();
+    }
+}
+
+// ── Validate (possibly new) promo ────────────────────────────
+$promo_row = null;
+if ($promo !== '') {
+    $p_stmt = $pdo->prepare("
+        SELECT code, type, value
+        FROM promos
+        WHERE code = ?
+          AND is_active = 1
+          AND (expires_at IS NULL OR expires_at >= CURDATE())
+        LIMIT 1
+    ");
+    $p_stmt->execute([$promo]);
+    $promo_row = $p_stmt->fetch();
+}
+
+// ── Recompute pricing server-side ────────────────────────────
+$tour_price = (int) $tour['price'];
+$guests     = $adults + $children;
+
+$subtotal = $tour_price * $guests;
+foreach ($addon_rows as $a) {
+    $subtotal += (int) $a['price'] * $guests;
+}
+
+$discount = 0;
+if ($promo_row) {
+    if ($promo_row['type'] === 'percent') {
+        $discount = (int) round($subtotal * ((int) $promo_row['value']) / 100);
+    } else {
+        $discount = min((int) $promo_row['value'], $subtotal);
+    }
+}
+$total = max(0, $subtotal - $discount);
+
+// ── Atomic update: booking row + replace addons ──────────────
+try {
+    $pdo->beginTransaction();
+
+    // Update the booking row
+    $upd = $pdo->prepare("
+        UPDATE bookings SET
+            tour_date     = ?,
+            tour_time     = ?,
+            adults        = ?,
+            children      = ?,
+            infants       = ?,
+            promo_code    = ?,
+            discount      = ?,
+            total         = ?,
+            contact_phone = ?,
+            requests      = ?
+        WHERE id = ?
+    ");
+    $upd->execute([
+        $date, $time, $adults, $children, $infants,
+        $promo_row['code'] ?? null, $discount, $total,
+        $phone, $requests,
+        $booking_id
+    ]);
+
+    // Replace addons: delete old, insert new
+    $pdo->prepare("DELETE FROM booking_addons WHERE booking_id = ?")
+        ->execute([$booking_id]);
+
+    if ($addon_rows) {
+        $ba = $pdo->prepare("
+            INSERT INTO booking_addons (booking_id, addon_id, price_charged)
+            VALUES (?, ?, ?)
+        ");
+        foreach ($addon_rows as $a) {
+            $ba->execute([$booking_id, $a['id'], $a['price']]);
+        }
+    }
+
+    $pdo->commit();
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    throw $e;
+}
+
+json_success([
+    'booking_id' => $booking_id,
+    'tour_date'  => $date,
+    'tour_time'  => $time,
+    'guests'     => $guests,
+    'subtotal'   => $subtotal,
+    'discount'   => $discount,
+    'total'      => $total,
+], 'Booking updated.');
+```
+
+> **Defense talking point — Tour locking.** The endpoint accepts `booking_id` but never accepts `tour_id` from the client. We read the existing `tour_id` from the database and use that. This prevents a user from "editing" their booking to a different tour (which would effectively bypass any tour-availability checks at the create step). Changing tours is a new booking, not an edit.
+>
+> **Defense talking point — Wholesale addon replacement.** Inside the transaction we `DELETE FROM booking_addons WHERE booking_id = ?` and then re-insert the new selection. This is simpler and more correct than diffing old vs. new — there are at most five addons per booking, so the delete+insert pattern is cheap. Wrapped in a transaction, it's also safe: if the new INSERTs fail, the rollback restores the original addons.
+
+---
+
+### File 7: `api/bookings/delete.php`
+
+```php
+<?php
+/**
+ * POST /api/bookings/delete.php
+ * Body: { "booking_id": 42 }
+ *
+ * Hard-deletes a CANCELLED booking. Upcoming and completed bookings cannot
+ * be deleted — they're business records. The cascade on booking_addons
+ * cleans up child rows automatically.
+ */
+require_once __DIR__ . '/../../includes/db.php';
+require_once __DIR__ . '/../../includes/response.php';
+require_once __DIR__ . '/../../includes/auth.php';
+require_once __DIR__ . '/../../includes/validation.php';
+
+require_login();
+
+$payload = read_json_body();
+require_fields($payload, ['booking_id']);
+
+$booking_id = clean_int($payload['booking_id'], 1);
+$user_id    = $_SESSION['user_id'];
+
+// Confirm ownership + correct status
+$check = $pdo->prepare("
+    SELECT id, status FROM bookings
+    WHERE id = ? AND user_id = ?
+    LIMIT 1
+");
+$check->execute([$booking_id, $user_id]);
+$row = $check->fetch();
+
+if (!$row) {
+    json_error('Booking not found.', 404);
+}
+if ($row['status'] !== 'cancelled') {
+    json_error('Only cancelled bookings can be removed from history.', 400);
+}
+
+// booking_addons has ON DELETE CASCADE → child rows clean themselves up
+$pdo->prepare("DELETE FROM bookings WHERE id = ?")->execute([$booking_id]);
+
+json_success(['deleted_id' => $booking_id], 'Booking removed from history.');
+```
+
+> **Defense talking point — Why hard-delete is restricted to cancelled.** Upcoming bookings are commitments to a future date; deleting one silently would lose the operations team's visibility. Completed bookings are revenue records; deleting one would break financial audit. By restricting `delete.php` to `status = 'cancelled'`, we preserve the audit trail while giving users the agency to clean up their own history.
+>
+> **Defense talking point — Cascade discipline.** The `booking_addons` FK is declared `ON DELETE CASCADE`. We don't have to manually `DELETE FROM booking_addons WHERE booking_id = ?` before deleting the parent — the database does it for us. This is exactly why we use real foreign keys instead of leaving cleanup to PHP.
+
+---
+
 ## Frontend Integration
 
 ### Step 1 — Replace JS constants in `plan.html`
@@ -705,9 +965,20 @@ function renderBookingCard(b) {
     var addonsList  = b.addons.length
         ? '<div style="font-size:0.85rem;color:#6b7280;margin-top:6px;">+ ' + b.addons.map(function(a){ return a.name; }).join(', ') + '</div>'
         : '';
-    var cancelBtn = (b.status === 'upcoming')
-        ? '<button class="btn-outline" onclick="cancelBooking(' + b.id + ')" style="margin-left:auto;padding:8px 16px;border-radius:8px;cursor:pointer;">Cancel</button>'
-        : '';
+
+    // Status-conditional controls
+    var controls = '';
+    if (b.status === 'upcoming') {
+        controls =
+            '<div style="margin-left:auto;display:flex;flex-direction:column;gap:6px;">' +
+                '<button class="btn-primary"  onclick=\'openEditModal(' + JSON.stringify(b).replace(/'/g, "&#39;") + ')\' style="padding:8px 16px;border-radius:8px;cursor:pointer;">Edit</button>' +
+                '<button class="btn-outline"  onclick="cancelBooking(' + b.id + ')" style="padding:8px 16px;border-radius:8px;cursor:pointer;background:white;">Cancel</button>' +
+            '</div>';
+    } else if (b.status === 'cancelled') {
+        controls =
+            '<button class="btn-outline" onclick="deleteBooking(' + b.id + ')" ' +
+            'style="margin-left:auto;padding:8px 16px;border-radius:8px;cursor:pointer;background:white;color:#dc2626;border-color:#dc2626;">Remove from history</button>';
+    }
 
     return '<div class="booking-card" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;display:flex;gap:16px;">' +
         '<img src="' + b.tour_image + '" style="width:100px;height:100px;border-radius:8px;object-fit:cover;flex-shrink:0;">' +
@@ -720,12 +991,12 @@ function renderBookingCard(b) {
             '<div style="font-size:0.85rem;margin-top:4px;">Ref: <code>' + b.ref + '</code> · ₱' + b.total.toLocaleString() + '</div>' +
             addonsList +
         '</div>' +
-        cancelBtn +
+        controls +
     '</div>';
 }
 
 function cancelBooking(bookingId) {
-    if (!confirm('Cancel this booking? This cannot be undone.')) return;
+    if (!confirm('Cancel this booking? This will mark it as cancelled but keep it in your history.')) return;
 
     Api.post('bookings/cancel.php', { booking_id: bookingId })
         .then(function () {
@@ -736,11 +1007,205 @@ function cancelBooking(bookingId) {
         });
 }
 
+function deleteBooking(bookingId) {
+    if (!confirm('Permanently remove this cancelled booking from your history? This cannot be undone.')) return;
+
+    Api.post('bookings/delete.php', { booking_id: bookingId })
+        .then(function () {
+            loadBookings(); // refresh
+        })
+        .catch(function (err) {
+            alert('Could not remove: ' + err.message);
+        });
+}
+
 // Auto-load on page load
 loadBookings();
 ```
 
 > **Note:** Your `profile.html` should have a `<div id="bookings-list"></div>` already, or one of the existing booking tab containers — search the existing markup for `tara_bookings` usage. Adjust the ID to match the container you find.
+
+---
+
+### Step 5 — Add the Edit Modal markup to `profile.html`
+
+Append this modal markup somewhere near the end of `profile.html`, just before the closing `</body>` tag. It's hidden by default and shown by `openEditModal()`.
+
+```html
+<!-- Edit Booking Modal -->
+<div id="editBookingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:white;border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h2 style="margin:0;">Edit Booking</h2>
+            <button onclick="closeEditModal()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#6b7280;">×</button>
+        </div>
+
+        <div id="edit-booking-tour-info" style="background:#f9fafb;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:0.9rem;color:#6b7280;">
+            <!-- tour name + ref shown here, locked -->
+        </div>
+
+        <form id="edit-booking-form" onsubmit="submitEditBooking(event)">
+            <input type="hidden" id="edit-booking-id">
+
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label for="edit-date">Date</label>
+                    <input type="date" id="edit-date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-time">Time</label>
+                    <select id="edit-time" class="form-control" required>
+                        <option value="6:00 AM">6:00 AM — Sunrise</option>
+                        <option value="8:00 AM">8:00 AM — Morning</option>
+                        <option value="1:00 PM">1:00 PM — Afternoon</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label for="edit-adults">Adults</label>
+                    <input type="number" id="edit-adults" class="form-control" min="1" max="20" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-children">Children</label>
+                    <input type="number" id="edit-children" class="form-control" min="0" max="20">
+                </div>
+                <div class="form-group">
+                    <label for="edit-infants">Infants</label>
+                    <input type="number" id="edit-infants" class="form-control" min="0" max="20">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Add-ons</label>
+                <div id="edit-addons" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9rem;">
+                    <!-- addon checkboxes inserted by JS -->
+                </div>
+            </div>
+
+            <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label for="edit-promo">Promo Code</label>
+                    <input type="text" id="edit-promo" class="form-control" placeholder="Optional">
+                </div>
+                <div class="form-group">
+                    <label for="edit-phone">Contact Phone</label>
+                    <input type="tel" id="edit-phone" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-requests">Special Requests</label>
+                <textarea id="edit-requests" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div id="edit-msg" style="margin-bottom:12px;font-size:0.9rem;"></div>
+
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button type="button" class="btn-outline"  onclick="closeEditModal()" style="padding:10px 20px;border-radius:8px;background:white;cursor:pointer;">Discard</button>
+                <button type="submit" class="btn-primary" style="padding:10px 20px;border-radius:8px;">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+```
+
+### Step 6 — Add the Edit Modal handlers to `profile.html`
+
+Add these functions to the script block in `profile.html` (alongside `loadBookings` from Step 4). They use the addon list cached on `window.ALL_ADDONS` — populated from a one-time fetch of `/api/spots/tours.php`.
+
+```javascript
+// One-time fetch of available addons (cached on window for the modal)
+Api.get('spots/tours.php').then(function (data) {
+    window.ALL_ADDONS = data.addons;
+}).catch(function () { window.ALL_ADDONS = []; });
+
+function openEditModal(booking) {
+    document.getElementById('edit-booking-id').value = booking.id;
+    document.getElementById('edit-booking-tour-info').innerHTML =
+        '<strong>' + booking.tour_name + '</strong> · Ref <code>' + booking.ref + '</code><br>' +
+        '<span style="color:#6b7280;">Tour cannot be changed. Cancel and rebook to switch tours.</span>';
+
+    document.getElementById('edit-date').value     = booking.tour_date;
+    document.getElementById('edit-time').value     = booking.tour_time;
+    document.getElementById('edit-adults').value   = booking.adults;
+    document.getElementById('edit-children').value = booking.children;
+    document.getElementById('edit-infants').value  = booking.infants;
+    document.getElementById('edit-promo').value    = booking.promo_code || '';
+    document.getElementById('edit-phone').value    = booking.phone || '';
+    document.getElementById('edit-requests').value = booking.requests || '';
+
+    // Render addon checkboxes with current booking's addons pre-checked
+    var bookedAddonIds = booking.addons.map(function (a) { return a.addon_id; });
+    var addonsHtml = (window.ALL_ADDONS || []).map(function (a) {
+        var checked = bookedAddonIds.indexOf(a.id) >= 0 ? 'checked' : '';
+        return '<label style="display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #e5e7eb;border-radius:8px;cursor:pointer;">' +
+                  '<input type="checkbox" value="' + a.id + '" class="edit-addon-cb" ' + checked + '>' +
+                  '<span>' + a.name + ' (₱' + a.price + ')</span>' +
+               '</label>';
+    }).join('');
+    document.getElementById('edit-addons').innerHTML = addonsHtml;
+
+    // Set min date to tomorrow
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('edit-date').min = tomorrow.toISOString().split('T')[0];
+
+    document.getElementById('edit-msg').textContent = '';
+    document.getElementById('editBookingModal').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('editBookingModal').style.display = 'none';
+}
+
+function submitEditBooking(e) {
+    e.preventDefault();
+    var msgEl = document.getElementById('edit-msg');
+    var btn   = e.target.querySelector('button[type="submit"]');
+
+    var checkedAddonIds = Array.prototype.slice
+        .call(document.querySelectorAll('.edit-addon-cb:checked'))
+        .map(function (cb) { return cb.value; });
+
+    var payload = {
+        booking_id: parseInt(document.getElementById('edit-booking-id').value, 10),
+        date:       document.getElementById('edit-date').value,
+        time:       document.getElementById('edit-time').value,
+        adults:     parseInt(document.getElementById('edit-adults').value, 10),
+        children:   parseInt(document.getElementById('edit-children').value, 10) || 0,
+        infants:    parseInt(document.getElementById('edit-infants').value, 10) || 0,
+        addon_ids:  checkedAddonIds,
+        promo_code: document.getElementById('edit-promo').value.trim() || null,
+        phone:      document.getElementById('edit-phone').value.trim(),
+        requests:   document.getElementById('edit-requests').value.trim()
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    Api.post('bookings/update.php', payload)
+        .then(function (data) {
+            msgEl.textContent = '✓ Updated. New total: ₱' + data.total.toLocaleString();
+            msgEl.style.color = 'var(--brand-green)';
+            setTimeout(function () {
+                closeEditModal();
+                loadBookings();
+            }, 900);
+        })
+        .catch(function (err) {
+            msgEl.textContent = '✗ ' + err.message;
+            msgEl.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = 'Save Changes';
+        });
+}
+```
+
+> **Why a modal instead of reusing the wizard?** The booking wizard in `plan.html` has its own state machine and progress UI. Re-using it for edits would require splitting the wizard's logic into "create mode" and "edit mode" paths — high complexity, high bug risk, and the wizard's progressive disclosure doesn't fit the "I just want to change my guest count" use case. A dedicated modal on `profile.html` is much smaller, much easier to test, and matches the user's intent (a quick edit, not a re-entered booking).
+>
+> **Why include `promo_code` in the modal?** Users sometimes forget to enter their promo at original booking time. Edit is the natural place to add one. The server re-validates regardless of whether it changed.
 
 ---
 
@@ -790,6 +1255,45 @@ loadBookings();
 3. POST to `/api/bookings/cancel.php` with `{ booking_id: 42 }`.
 4. **Expect:** 404 (not 403) — User B cannot enumerate User A's bookings.
 
+### Test 9 — Update booking (happy path)
+1. From booking history, click **Edit** on an upcoming booking.
+2. **Expect:** Modal opens, fields pre-filled with the current values, tour name shown but not editable.
+3. Change adults from 2 to 4, add the snorkel addon if not already present, apply promo `TARA10`. Click **Save Changes**.
+4. **Expect:** Success message with new total. Modal closes after ~1s. Card refreshes with new totals.
+5. Verify in MySQL: `bookings.adults = 4`, `bookings.discount > 0`, `booking_addons` has one row per checked addon.
+
+### Test 10 — Update booking (validation)
+1. In the Edit modal, set the date to today or yesterday.
+2. **Expect:** Backend returns 400 *"Tours must be at least one day in the future."*
+3. Try `adults: 0` → 400.
+4. Try changing the date to a string like `"hello"` → 400 *"Invalid date format."*
+
+### Test 11 — Update only allowed on upcoming
+1. After cancelling a booking, find its ID.
+2. POST to `/api/bookings/update.php` with that ID via Postman.
+3. **Expect:** 400 *"Only upcoming bookings can be edited."*
+
+### Test 12 — Tour ID cannot be changed
+1. From DevTools → Network, capture an `update.php` request.
+2. Modify the payload to inject `"tour_id": "different-tour-id"` and re-send.
+3. **Expect:** Backend ignores the field entirely (it never reads `tour_id` from the payload). The booking still references its original tour in the database.
+
+### Test 13 — Delete cancelled booking (happy path)
+1. Cancel a booking first (Test 7).
+2. On the cancelled card, click **Remove from history**. Confirm the prompt.
+3. **Expect:** Card disappears from the list. Reloading shows the same.
+4. Verify in MySQL: `SELECT * FROM bookings WHERE id = ?;` returns no row. `SELECT * FROM booking_addons WHERE booking_id = ?;` also empty (ON DELETE CASCADE).
+
+### Test 14 — Delete restricted to cancelled
+1. POST to `/api/bookings/delete.php` with the ID of an upcoming booking.
+2. **Expect:** 400 *"Only cancelled bookings can be removed from history."*
+3. Same for a completed booking → 400.
+
+### Test 15 — Cross-user delete
+1. Log in as User A, cancel a booking. Note its ID.
+2. Log in as User B. POST `delete.php` with User A's booking_id.
+3. **Expect:** 404 — same enumeration-prevention pattern.
+
 ---
 
 ## File Structure After Phase 8
@@ -798,9 +1302,11 @@ loadBookings();
 api/
 ├── auth/                    (Phase 04)
 ├── bookings/
-│   ├── create.php           ✓ NEW
-│   ├── list.php             ✓ NEW
-│   └── cancel.php           ✓ NEW
+│   ├── create.php           ✓ NEW (Create)
+│   ├── list.php             ✓ NEW (Read)
+│   ├── update.php           ✓ NEW (Update — real edit)
+│   ├── cancel.php           ✓ NEW (soft-update: status flip)
+│   └── delete.php           ✓ NEW (Delete — hard delete cancelled rows)
 ├── promos/
 │   └── validate.php         ✓ NEW
 ├── reviews/                 (Phase 07)
@@ -810,7 +1316,7 @@ api/
     ├── list.php             (Phase 05)
     └── tours.php            ✓ NEW
 plan.html                    (TOURS/ADDONS/PROMOS replaced with API calls)
-profile.html                 (booking history reads /api/bookings/list.php)
+profile.html                 (history + Edit modal + Remove-from-history buttons)
 ```
 
 ---
@@ -818,12 +1324,17 @@ profile.html                 (booking history reads /api/bookings/list.php)
 ## Done When
 
 - [ ] `plan.html` no longer contains hardcoded `TOURS`/`ADDONS`/`PROMOS` arrays.
-- [ ] Successful booking inserts a row in `bookings` (`reference` populated, `booked_at` stamped) and matching rows in `booking_addons` (with `price_charged`).
+- [ ] **Create:** Successful booking inserts a row in `bookings` (`reference` populated, `booked_at` stamped) and matching rows in `booking_addons` (with `price_charged`).
 - [ ] Booking reference `TPG-XXXXXX` is server-generated.
-- [ ] Profile page shows real bookings from DB; localStorage path is dead code.
+- [ ] **Read:** Profile page shows real bookings from DB; localStorage path is dead code.
+- [ ] **Update (real):** Users can edit upcoming bookings via the modal — date, time, guests, addons, promo. Total recomputes server-side. Tour ID is locked.
+- [ ] **Update (soft):** Cancel button on upcoming bookings stamps `cancelled_at` and flips status.
+- [ ] **Delete:** Cancelled bookings can be permanently removed via Remove-from-history button. Upcoming and completed bookings cannot be deleted (400 returned).
 - [ ] Promo codes validated server-side; invalid codes cannot leak through the DOM.
 - [ ] Total is recomputed server-side; client-supplied prices are ignored.
-- [ ] Cancelling stamps `cancelled_at` in the DB.
-- [ ] Users cannot cancel other users' bookings.
+- [ ] Users cannot edit, cancel, or delete other users' bookings (404 returned).
+- [ ] `booking_addons` cleans up via `ON DELETE CASCADE` when parent booking is deleted.
+
+> **Rubric note.** Phase 08 makes Bookings the project's second full-CRUD demonstration after Reviews. During the demo, walk through Create → Read → Update (real edit, *not just* cancel) → Delete on a single booking record to show the complete lifecycle on a complex multi-table resource.
 
 Continue to **[`09-CONTACT-MODULE.md`](./09-CONTACT-MODULE.md)** to make the contact form actually deliver messages.

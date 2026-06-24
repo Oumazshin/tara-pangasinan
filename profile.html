@@ -62,7 +62,7 @@
             <section class="profile-section" id="panel-bookings">
                 <h2>Booking History</h2>
                 <div id="bookings-container">
-                    <!-- Dynamically rendered from localStorage -->
+                    <!-- Dynamically rendered from API: api/bookings/list.php -->
                 </div>
             </section>
 
@@ -74,30 +74,30 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="pf-firstname">First Name</label>
-                            <input type="text" id="pf-firstname" class="form-control" value="Carlo">
+                            <input type="text" id="pf-firstname" class="form-control" placeholder="First name">
                         </div>
                         <div class="form-group">
                             <label for="pf-lastname">Last Name</label>
-                            <input type="text" id="pf-lastname" class="form-control" value="Reyes">
+                            <input type="text" id="pf-lastname" class="form-control" placeholder="Last name">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="pf-email">Email Address</label>
-                        <input type="email" id="pf-email" class="form-control" value="carlo.reyes@gmail.com">
+                        <input type="email" id="pf-email" class="form-control" placeholder="Email address">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="pf-phone">Phone Number</label>
-                            <input type="tel" id="pf-phone" class="form-control" value="+63 917 234 5678">
+                            <input type="tel" id="pf-phone" class="form-control" placeholder="e.g. +63 917 234 5678">
                         </div>
                         <div class="form-group">
                             <label for="pf-city">City / Municipality</label>
-                            <input type="text" id="pf-city" class="form-control" value="Dagupan City, Pangasinan">
+                            <input type="text" id="pf-city" class="form-control" placeholder="City / Municipality">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="pf-bio">About Me</label>
-                        <textarea id="pf-bio" class="form-control form-textarea" rows="4">Proud Pangasinanon and avid traveler. I love exploring the natural wonders of my home province and sharing them with family and friends.</textarea>
+                        <textarea id="pf-bio" class="form-control form-textarea" rows="4" placeholder="Tell us a bit about yourself"></textarea>
                     </div>
 
                     <div class="form-section-divider">
@@ -129,7 +129,7 @@
 
                     <div class="form-success" id="profile-save-msg" style="display:none;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                        Profile updated successfully!
+                        <span>Profile updated successfully!</span>
                     </div>
                 </form>
             </section>
@@ -139,14 +139,14 @@
         <!-- RIGHT: Sidebar -->
         <div class="content-right">
             <div class="sidebar-card">
-                <div class="sidebar-avatar" style="background-image: url('https://i.pravatar.cc/150?img=68');"></div>
-                <h3>Carlo Reyes</h3>
-                <p class="sidebar-email">carlo.reyes@gmail.com</p>
-                <p class="sidebar-location">
+                <div class="sidebar-avatar" id="sidebar-avatar" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:white;background:var(--brand-green);"></div>
+                <h3 id="sidebar-name">Loading…</h3>
+                <p class="sidebar-email" id="sidebar-email"></p>
+                <p class="sidebar-location" id="sidebar-location-p">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
-                    Dagupan City, Pangasinan
+                    <span id="sidebar-city"></span>
                 </p>
-                <p class="sidebar-member-since">Member since January 2025</p>
+                <p class="sidebar-member-since" id="sidebar-member-since"></p>
 
                 <div class="sidebar-links">
                     <a href="#" class="sidebar-link active" data-panel="bookings">
@@ -261,60 +261,141 @@
             });
         });
 
-        // Profile settings persistence
-        const PROFILE_DEFAULTS = {
-            firstname: 'Carlo', lastname: 'Reyes',
-            email: 'carlo.reyes@gmail.com', phone: '+63 917 234 5678',
-            city: 'Dagupan City, Pangasinan',
-            bio: 'Proud Pangasinanon and avid traveler. I love exploring the natural wonders of my home province and sharing them with family and friends.'
-        };
+        // ── PROFILE SETTINGS (API-driven) ────────────────────────
+        // Keep a local snapshot so "Discard" works without re-fetching
+        var cachedProfile = null;
 
         function loadProfileSettings() {
-            const data = Object.assign({}, PROFILE_DEFAULTS,
-                JSON.parse(localStorage.getItem('tara_profile') || 'null'));
-            document.getElementById('pf-firstname').value = data.firstname;
-            document.getElementById('pf-lastname').value  = data.lastname;
-            document.getElementById('pf-email').value     = data.email;
-            document.getElementById('pf-phone').value     = data.phone;
-            document.getElementById('pf-city').value      = data.city;
-            document.getElementById('pf-bio').value       = data.bio;
-            updateSidebarDisplay(data);
+            Api.get('profile/get.php')
+                .then(function (data) {
+                    cachedProfile = data.user;
+                    applyProfileToForm(cachedProfile);
+                    updateSidebarDisplay(cachedProfile);
+                })
+                .catch(function (err) {
+                    if (err.code === 'AUTH_REQUIRED') {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    console.error('Could not load profile:', err);
+                    alert('Could not load your profile. Please try again.');
+                });
+        }
+
+        // API uses snake_case (first_name); DOM IDs use no separator (pf-firstname).
+        // This function bridges the two naming conventions.
+        function applyProfileToForm(data) {
+            document.getElementById('pf-firstname').value = data.first_name || '';
+            document.getElementById('pf-lastname').value  = data.last_name  || '';
+            document.getElementById('pf-email').value     = data.email      || '';
+            document.getElementById('pf-phone').value     = data.phone      || '';
+            document.getElementById('pf-city').value      = data.city       || '';
+            document.getElementById('pf-bio').value       = data.bio        || '';
+
+            // Always clear password fields after a (re)load
+            document.getElementById('pf-current-pw').value = '';
+            document.getElementById('pf-new-pw').value     = '';
+            document.getElementById('pf-confirm-pw').value = '';
         }
 
         function updateSidebarDisplay(data) {
-            const nameEl  = document.querySelector('.sidebar-card h3');
-            const emailEl = document.querySelector('.sidebar-email');
-            const locEl   = document.querySelector('.sidebar-location');
-            if (nameEl)  nameEl.textContent  = (data.firstname + ' ' + data.lastname).trim();
-            if (emailEl) emailEl.textContent = data.email;
-            if (locEl) {
-                const textNodes = [...locEl.childNodes].filter(n => n.nodeType === 3);
-                const txt = textNodes[textNodes.length - 1];
-                if (txt) txt.textContent = ' ' + data.city;
+            var fullName = ((data.first_name || '') + ' ' + (data.last_name || '')).trim();
+
+            // Name + email + city
+            var nameEl = document.getElementById('sidebar-name');
+            var emailEl = document.getElementById('sidebar-email');
+            var cityEl = document.getElementById('sidebar-city');
+            if (nameEl)  nameEl.textContent  = fullName || 'User';
+            if (emailEl) emailEl.textContent = data.email || '';
+            if (cityEl)  cityEl.textContent  = data.city || '';
+
+            // Initials avatar
+            var avatarEl = document.getElementById('sidebar-avatar');
+            if (avatarEl) {
+                var initials = ((data.first_name || ' ')[0] + (data.last_name || ' ')[0]).toUpperCase();
+                avatarEl.textContent = initials;
+            }
+
+            // Member since — format created_at from API (e.g. "2026-06-23 14:52:11" → "June 2026")
+            var memberEl = document.getElementById('sidebar-member-since');
+            if (memberEl && data.created_at) {
+                var d = new Date(data.created_at.replace(' ', 'T'));
+                var monthName = d.toLocaleString('en-US', { month: 'long' });
+                memberEl.textContent = 'Member since ' + monthName + ' ' + d.getFullYear();
             }
         }
 
         function handleSaveProfile(e) {
             e.preventDefault();
-            const data = {
-                firstname: document.getElementById('pf-firstname').value.trim(),
-                lastname:  document.getElementById('pf-lastname').value.trim(),
-                email:     document.getElementById('pf-email').value.trim(),
-                phone:     document.getElementById('pf-phone').value.trim(),
-                city:      document.getElementById('pf-city').value.trim(),
-                bio:       document.getElementById('pf-bio').value.trim()
+
+            const currentPw = document.getElementById('pf-current-pw').value;
+            const newPw     = document.getElementById('pf-new-pw').value;
+            const confirmPw = document.getElementById('pf-confirm-pw').value;
+
+            // Client-side password sanity check before the round-trip
+            if (newPw || currentPw || confirmPw) {
+                if (newPw !== confirmPw) {
+                    alert('New password and confirmation do not match.');
+                    return;
+                }
+            }
+
+            // Translate DOM IDs (pf-firstname) → API field names (first_name)
+            const payload = {
+                first_name: document.getElementById('pf-firstname').value.trim(),
+                last_name:  document.getElementById('pf-lastname').value.trim(),
+                email:      document.getElementById('pf-email').value.trim(),
+                phone:      document.getElementById('pf-phone').value.trim(),
+                city:       document.getElementById('pf-city').value.trim(),
+                bio:        document.getElementById('pf-bio').value.trim()
             };
-            localStorage.setItem('tara_profile', JSON.stringify(data));
-            updateSidebarDisplay(data);
-            const msg = document.getElementById('profile-save-msg');
-            msg.style.display = 'flex';
-            setTimeout(() => msg.style.display = 'none', 3500);
+
+            if (currentPw && newPw) {
+                payload.current_password = currentPw;
+                payload.new_password     = newPw;
+            }
+
+            const btn = e.target.querySelector('.btn-save-profile');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.textContent = 'Saving\u2026';
+
+            Api.post('profile/update.php', payload)
+                .then(function (data) {
+                    cachedProfile = data.user;
+                    applyProfileToForm(cachedProfile);
+                    updateSidebarDisplay(cachedProfile);
+
+                    const msg = document.getElementById('profile-save-msg');
+                    if (msg) {
+                        msg.style.display = 'flex';
+                        const span = msg.querySelector('span');
+                        if (span) {
+                            span.textContent = data.password_changed
+                                ? 'Profile and password updated.'
+                                : 'Profile updated.';
+                        }
+                        setTimeout(function () { msg.style.display = 'none'; }, 3500);
+                    }
+                })
+                .catch(function (err) {
+                    alert('Could not save: ' + err.message);
+                })
+                .finally(function () {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHTML;
+                });
         }
 
         function discardProfile() {
-            loadProfileSettings();
+            if (cachedProfile) {
+                applyProfileToForm(cachedProfile);
+            } else {
+                loadProfileSettings();
+            }
         }
 
+        // Kick off
         loadProfileSettings();
 
         // ── BOOKING HISTORY ───────────────────────────────────

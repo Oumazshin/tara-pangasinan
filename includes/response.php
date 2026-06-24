@@ -41,8 +41,12 @@ function json_success($data = null, string $message = ''): void
  * @param int    $status HTTP status code (400, 401, 404, 422, 409, 500 …)
  * @param mixed  $extra  Optional extra detail (e.g. array of missing fields)
  */
-function json_error(string $error, string $code = 'error', int $status = 400, $extra = null): void
+function json_error(string $error, $code = 'error', int $status = 400, $extra = null): void
 {
+    if (is_int($code)) {
+        $status = $code;
+        $code = 'error';
+    }
     $payload = [
         'success' => false,
         'error'   => $error,

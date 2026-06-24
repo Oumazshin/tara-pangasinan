@@ -49,10 +49,14 @@ Run through this list end-to-end the night before the presentation. Tick each bo
 - [ ] Seed at least **12 reviews** across various spots so the rating numbers look plausible (run `sql/seed.php` again or insert manually).
 - [ ] Seed **2 example bookings** on the demo account so the profile page isn't empty:
   ```sql
-  INSERT INTO bookings (ref, user_id, tour_id, tour_date, tour_time, adults, children, infants, total, status, name, email, created_at)
+  INSERT INTO bookings
+      (reference, user_id, tour_id, tour_date, tour_time, adults, children, infants,
+       total, status, contact_name, contact_email, contact_phone, booked_at)
   VALUES
-    ('TPG-DEMO01', 1, 'hundred-islands', '2026-07-15', '8:00 AM', 2, 1, 0, 3600, 'upcoming', 'Demo User', 'demo@panel.test', NOW()),
-    ('TPG-DEMO02', 1, 'patar-beach',     '2026-04-10', '1:00 PM', 2, 0, 0, 1600, 'completed', 'Demo User', 'demo@panel.test', '2026-03-20 12:00:00');
+      ('TPG-DEMO01', 1, 'hundred-islands', '2026-07-15', '8:00 AM', 2, 1, 0,
+       3600, 'upcoming',  'Demo User', 'demo@panel.test', '+63 917 000 0000', NOW()),
+      ('TPG-DEMO02', 1, 'patar-beach',     '2026-04-10', '1:00 PM', 2, 0, 0,
+       1600, 'completed', 'Demo User', 'demo@panel.test', '+63 917 000 0000', '2026-03-20 12:00:00');
   ```
 - [ ] Clear browser cache + localStorage before the demo. The site should behave the same in a clean browser.
 
@@ -60,94 +64,143 @@ Run through this list end-to-end the night before the presentation. Tick each bo
 
 ## Demo Script (10–12 minutes)
 
-This script is paced for a panel that wants to see the project work, not be lectured. Talk while you click — don't pause for the page to load mid-sentence.
+This script is structured around the **five presentation topics required by the official rubric**: (1) Problem & solution overview, (2) Live demonstration, (3) Key features & workflows, (4) Technical challenges & solutions, (5) Lessons learned. Topics 2 and 3 are interleaved during the walkthrough — you demonstrate features while you demonstrate the app. Talk while you click; don't pause mid-sentence waiting for pages to load.
 
 ### 0. Setup (before walking in)
 Open three browser tabs in advance:
 1. `http://localhost/tara-pangasinan/home.html` (the site)
-2. `http://localhost/phpmyadmin` (selected on `tara_pangasinan` DB, showing the `users` table empty list)
+2. `http://localhost/phpmyadmin` (selected on `tara_pangasinan` DB, showing the `users` table)
 3. DevTools docked at the bottom on tab 1, **Network** tab active
 
-### 1. Introduction — 30 seconds
-> "Good morning, panel. We're Group 5. Our project, **Tara Pangasinan**, is a tourism web application that helps travelers discover and book tours across Pangasinan. The frontend is HTML, CSS, JavaScript. The backend is PHP and MySQL. The two layers talk to each other through AJAX requests carrying JSON. We'll walk you through it page by page."
+---
 
-### 2. Homepage + Featured Spots — 1 minute
-> *Click around home.html.*
->
-> "When the homepage loads, JavaScript makes an AJAX request to `/api/spots/list.php`. That PHP script queries our `spots` table with two normalized JOINs — for activities and gallery images — and returns a JSON payload. We render the cards from that payload."
->
-> *Show the Network tab → `list.php` → Response.*
+### TOPIC 1 — Problem & Proposed Solution — 1.5 minutes
 
-### 3. Explore + Details — 1.5 minutes
-> *Click Explore → click a card.*
+> "Good morning, panel. We're Group 5. Pangasinan attracts over a million tourists a year — Hundred Islands, Patar Beach, Manaoag Church — but information about these destinations is fragmented across social-media pages, blogs, and government microsites. There's no single place to compare options, read genuine reviews, and book a tour in one flow.
 >
-> "On the details page, you see Visitor Reviews at the bottom. These are *real* reviews from our `reviews` table, joined against `users`. Watch what happens when I post a new one."
+> **Tara Pangasinan** is our proposed solution: a single, mobile-friendly web application that consolidates destination information, lets travelers read and contribute reviews, and enables direct tour booking. It's built entirely on the course's required stack — HTML, CSS, vanilla JavaScript with AJAX, PHP with PDO, and MySQL — with no front-end frameworks. Every line of code in our project maps to something we covered in class.
 >
-> *Log in (use prepared `demo@panel.test`). Open a spot. Type a review. Submit.*
->
-> "Notice the star rating in the sidebar updated from 4.5 to 4.6 instantly — that's because the server recomputed the average inside a transaction and returned the new value in the response."
->
-> *Open phpMyAdmin → `reviews` table → show the new row.*
+> We'll spend the next ten minutes walking you through the running system, calling out the key features, then close with the technical challenges we hit and what we learned."
 
-### 4. Save / Unsave (AJAX Demo) — 1 minute
-> *Hover over a spot card. Click the heart icon. Show the heart fill.*
->
-> "Clicking the heart fires a POST to `/api/saved/toggle.php`. The UI updates *optimistically* — the heart fills before we even hear back from the server. If the request fails, we'd roll it back. This is the same pattern used by Twitter and Instagram."
->
-> *Go to Saved page. Show the spot is there. Click heart again. Refresh. Spot is gone.*
+---
 
-### 5. Booking Wizard (the showpiece) — 3 minutes
+### TOPIC 2 + 3 — Live Demonstration & Key Features — 7 to 8 minutes
+
+> _The demonstration order shows the panel **two** clean CRUD walkthroughs: Reviews on a simple resource (2b), then Bookings on a complex resource (2d). Mention this explicitly — it's worth pointing to both._
+
+#### 2a. Homepage + Catalog (1 min)
+> *Click around `home.html`. Open DevTools Network tab.*
+>
+> "The homepage fetches featured spots from `/api/spots/list.php`. That endpoint runs a single MySQL query joined to four child tables — `spot_activities`, `spot_gallery`, `spot_tips`, `spot_stats` — and returns the result as JSON. No matter how many spots we add, this stays at exactly five queries thanks to `IN`-clause batching."
+>
+> *Click Explore. Show filter + sort working.*
+
+#### 2b. Details Page + Full CRUD on Reviews (2.5 min — **rubric showcase**)
+> *Click a spot card.*
+>
+> "I'll log in as our demo user, then I'll walk you through all four CRUD operations on the Reviews resource. This is where the rubric's CRUD points are most clearly visible."
+>
+> *Log in. Return to the spot.*
+>
+> **CREATE.** *Click 5 stars. Type a review. Submit.*
+> "POST to `/api/reviews/create.php`. The handler verifies the user is logged in, validates the rating between 1 and 5, the body between 10 and 1000 characters, then inserts the review and recomputes the spot's average rating inside the same transaction. Notice the sidebar rating just updated."
+>
+> **READ.** *Scroll up so the new review is visible at the top of the list.*
+> "Reading is `/api/reviews/list.php`. It joins against `users` so we always show the current display name, never a stale snapshot."
+>
+> **UPDATE.** *Click Edit on your own review. Change the rating and text. Save.*
+> "Update is `/api/reviews/update.php`. The handler checks the review belongs to the requesting user — otherwise we'd return 404, not 403, to prevent ID enumeration. Aggregate rating recomputes again."
+>
+> **DELETE.** *Click Delete. Confirm.*
+> "And delete. The review is gone, the aggregate recomputes — including the edge case where the spot ends up with zero reviews and we fall back to 0.0."
+>
+> "That's Create, Read, Update, and Delete on a single resource, with transactional aggregate consistency in every mutating call. Each operation enforces ownership at the server, not the client."
+
+#### 2c. Save / Unsave (45 seconds)
+> *Browse to a card. Click the heart.*
+>
+> "The heart filled before the network request finished — that's optimistic UI. The POST hits `/api/saved/toggle.php`. Logged-out visitors still get the experience through localStorage; the database becomes the source of truth once they log in."
+>
+> *Refresh. Click heart again to unsave.*
+
+#### 2d. Booking Wizard + Server-Side Total Enforcement + Full CRUD (3 min)
 > *Click Plan a Trip. Pick a tour.*
 >
-> "The booking wizard pulls available tours, add-ons, and time slots from `/api/spots/tours.php`. Watch the promo code — I'm typing TARA10."
+> "The wizard pulls tours, add-ons, and time slots from `/api/spots/tours.php`. Watch what happens with promo codes."
 >
-> *Type code, click Apply.*
+> *Type TARA10, click Apply.*
 >
-> "That just hit `/api/promos/validate.php`. The discount amount comes from the server, not the JavaScript. This matters because…"
+> "That call hits `/api/promos/validate.php`. The discount value comes from the server, not the client."
 >
-> *Open DevTools → Sources → show `plan.html` JS.*
+> *Open DevTools → Sources. Show plan.html JS.*
 >
-> "…there's no `PROMOS` object in the client code anymore. A user who reads our source can no longer discover hidden discount codes. This is a real security improvement over the localStorage version of this project."
+> "There's no `PROMOS` array in the client code anymore. A user reading our source can't enumerate hidden discount codes. They have to *try* each code and observe the server response."
 >
 > *Complete the wizard. Click Confirm.*
 >
-> "The booking is now in our `bookings` table with a `TPG-` reference. The total was recomputed server-side — even if a malicious user changed the `total` field in the request body, the server ignores it and uses the database's values."
+> "**That was CREATE.** The booking is now in our `bookings` table with a `TPG-` reference generated server-side. The total was recomputed on the server using DB prices — even if I had edited the request to send `total: 1`, the server would have ignored it."
 >
-> *Show the new row in phpMyAdmin.*
+> *Navigate to Profile, point at the new card.*
+>
+> "**That's READ.** Profile fetches `/api/bookings/list.php` with a JOIN against tours and a separate query for addons — 2 queries regardless of how many bookings the user has."
+>
+> *Click Edit on the booking. Modal opens.*
+>
+> "**This is UPDATE.** I can change the date, guest count, addons, or apply a promo I forgot the first time. Notice the tour name at the top — that field is locked. Changing the tour would effectively be a new booking, so the endpoint refuses to read `tour_id` from the client payload."
+>
+> *Change guest count, add an addon, click Save Changes.*
+>
+> "Server recomputes the total — same logic as Create. The addons table gets wiped and rewritten inside a single transaction, so we're never in a half-updated state."
+>
+> *Click Cancel on the same card. Confirm.*
+>
+> "Cancellation is a soft-update: status flips, `cancelled_at` gets a timestamp, the row stays."
+>
+> *Click Remove from history. Confirm.*
+>
+> "**And that's DELETE.** Hard-delete is restricted to cancelled rows only — upcoming and completed bookings can't be removed because they're audit records. The `booking_addons` rows clean themselves up via `ON DELETE CASCADE`."
+>
+> *Show phpMyAdmin — row is gone.*
+>
+> "Same CRUD lifecycle as Reviews, but on a more complex resource with business rules, server-side pricing, and audit-trail protection."
 
-### 6. Profile + Booking History — 1 minute
-> *Go to Profile.*
+#### 2e. Profile Edit (30 seconds)
+> *Stay on Profile. Edit your bio or city. Save.*
 >
-> "The profile page reads `/api/profile/get.php` to fill the form. Booking history reads `/api/bookings/list.php`."
->
-> *Show the booking just made. Click Cancel.*
->
-> "Cancel hits `/api/bookings/cancel.php`. The endpoint checks that the booking actually belongs to the logged-in user — if it didn't, it returns 404, not 403, to prevent leaking that other users' bookings exist."
->
-> *Edit profile name. Save. Refresh. Confirm it persisted.*
+> "Profile uses `/api/profile/get.php` and `/api/profile/update.php`. Password changes require the current password — verified with `password_verify()`, which is constant-time, so we can't leak the password through timing differences."
 
-### 7. Security & Architecture Talking Points — 1.5 minutes
-> *Stay on profile.html. Open DevTools → Application → Cookies.*
+#### 2f. Contact Form (30 seconds)
+> *Click Contact. Fill a quick message. Submit.*
 >
-> "Authentication uses PHP sessions. The session cookie is HttpOnly, SameSite=Lax, and the password is stored as a bcrypt hash, not plaintext. Login uses `password_verify`, which is constant-time — it doesn't leak the password through timing differences."
+> "Contact uses a honeypot field — hidden off-screen at left:-9999px — to block naive bots without a CAPTCHA. We also rate-limit submissions to five per hour per IP using the `idx_ip_submitted` index. Submissions land in the `contact_messages` table for admin review."
 >
-> *Open phpMyAdmin → users table → show `password_hash` column → click one cell.*
->
-> "This is what we store. Nobody who breaches our database can read user passwords."
->
-> *Switch to plan.html network tab in DevTools.*
->
-> "Every endpoint uses prepared statements through PDO. No string concatenation anywhere — SQL injection is impossible by construction, even on inputs we don't validate. We tested this with classic payloads like `' OR '1'='1` — they get stored as literal strings, never executed."
+> *Show the row in phpMyAdmin.*
 
-### 8. Contact Form (closing the loop) — 30 seconds
-> *Click Contact. Fill in a quick message. Submit.*
->
-> "Contact uses a honeypot field to block dumb bots without needing CAPTCHA. The IP gets rate-limited to 5 messages an hour."
->
-> *Show the row in `contact_messages`.*
+---
 
-### 9. Close — 30 seconds
-> "Everything you saw is HTML, CSS, vanilla JavaScript with AJAX, PHP with PDO, MySQL with proper indexes, and JSON as the wire format — the exact tech stack the course covered. We avoided frameworks deliberately so each layer is auditable. Happy to answer any questions."
+### TOPIC 4 — Technical Challenges & Solutions — 1.5 minutes
+
+> "We hit three substantive technical challenges during development.
+>
+> **First, schema column drift.** Eight days into the project, we discovered our implementation modules had drifted from the canonical schema — `firstname` instead of `first_name`, `ref` instead of `reference`. Rather than patch around it, we did an audit pass, settled on snake_case as the canon, and refactored every PHP endpoint and JS file to match. The lesson here is to define your schema first and then enforce it everywhere — drift is silent until it explodes at integration time.
+>
+> **Second, the localStorage-to-session migration.** Profile data, saved spots, and bookings were all originally in localStorage. Moving to a database meant rethinking authentication state — when is the session the source of truth, when is localStorage just a UI cache? Our resolution was that `localStorage.tara_session` is a UI mirror written by `/api/auth/session.php`, never trusted, and the actual auth check always runs server-side via `require_login()`.
+>
+> **Third, server-side total enforcement on bookings.** The original client-side `submitBooking()` computed the total in JavaScript. We rewrote it so the server independently recomputes prices using the database, ignoring whatever the client sends as `total`. This defends against a class of price-manipulation attacks that hardcoded-JavaScript implementations cannot prevent. It also added complexity — the client now displays one number and trusts the server's confirmation, which required a round-trip in the success modal."
+
+---
+
+### TOPIC 5 — Lessons Learned — 45 seconds
+
+> "Three things we'll carry forward.
+>
+> One — **normalization pays for itself**. Activities, gallery images, tips, and stats all started as JSON columns. Moving them to separate tables with foreign keys took an afternoon and gave us individually editable rows, ordered retrieval, and referential integrity — for the same query cost.
+>
+> Two — **prepared statements aren't optional**. Once we built the habit early, SQL injection became impossible by construction. There's not a single instance of string concatenation into SQL anywhere in our codebase. You can grep for it.
+>
+> Three — **defense in depth is real**. Email uniqueness is checked in PHP *and* by a UNIQUE constraint. Review ownership is checked in PHP *and* by a UNIQUE composite key. The honeypot is one of several anti-spam layers. When one layer fails, the others hold.
+>
+> Everything you saw is HTML, CSS, vanilla JavaScript with AJAX, PHP with PDO, MySQL with proper indexes, and JSON over the wire — the exact stack this course covered. We're happy to answer any questions."
 
 ---
 
@@ -195,10 +248,13 @@ Open three browser tabs in advance:
 
 ## Submission Checklist
 
+The official Submission Guidelines require **three deliverables**: source code, compiled/deployment link if applicable, and complete documentation. Make sure all three are in the bundle before you zip.
+
 Before you zip the folder for submission:
 
 - [ ] Final commit: `Initial release for defense — June 18, 2026`.
-- [ ] `docs/` folder is included in the zip (this folder you're reading).
+- [ ] **Documentation deliverable.** Export `12-DOCUMENTATION.md` to PDF (or DOCX). All `[PLACEHOLDER]` values filled in. Use Case Diagram and ERD drawn as images. At least one screenshot per page in § 10.2. All Testing Results in § 11 marked PASS/FAIL based on real testing. **(See `12-DOCUMENTATION.md` for the template.)**
+- [ ] `docs/` folder is included in the zip (this folder you're reading, plus the exported PDF/DOCX).
 - [ ] `sql/schema.sql` exports cleanly. Re-import it on a blank database to confirm.
 - [ ] `sql/seed.php` runs without errors against a fresh, schema-only database.
 - [ ] `README.md` at the project root has setup instructions for anyone who clones the repo.
@@ -237,9 +293,41 @@ After the panel finishes:
 
 ---
 
+## Rubric Self-Assessment
+
+Before submitting, walk through the official 100-point rubric and score yourselves honestly. If a row is below "Excellent (100%)", note what's missing and decide whether to fix it now or accept the points lost.
+
+| # | Criterion | Pts | Self-score | Evidence |
+|---|---|---|---|---|
+| 1 | UI/UX (responsive, professional, easy navigation) | 20 | _/20 | Existing frontend; test responsive design mode on Chrome at 375, 768, 1440 px |
+| 2 | Functionality & Features (all required features work) | 25 | _/25 | All 12 pages load; all 8 modules pass the test plan |
+| 3 | Database Design & Integration (normalization, FKs) | 15 | _/15 | 14 tables in 3NF with FKs, ENUMs, UNIQUE, CHECK; see `02-DATABASE.md` + `12-DOCUMENTATION.md` § 9 |
+| 4 | CRUD Operations (all four work) | 15 | _/15 | Reviews resource demonstrates C/R/U/D explicitly; see `07-REVIEWS-MODULE.md` |
+| 5 | Coding Standards (organized, readable, comments) | 10 | _/10 | PSR-style PHP; consistent snake_case; comments on every endpoint |
+| 6 | Documentation (complete, professional, diagrams) | 10 | _/10 | `12-DOCUMENTATION.md` has all 13 required sections; diagrams drawn |
+| 7 | Presentation & Demonstration (clear, confident) | 5 | _/5 | This document's demo script aligns to the rubric's 5 required topics |
+| | **TOTAL (target: 96+ Outstanding)** | **100** | _**/100** | |
+
+### Common Point-Losers — Avoid These
+
+- **No Use Case Diagram drawn** → instant -2 to -5 from Documentation
+- **No ERD as a visual** → instant -2 to -5 from Documentation
+- **Testing Results table left empty / mostly `[PASS/FAIL]` placeholders** → -3 to -5 from Documentation
+- **Demo glitches** (XAMPP not running, DB not seeded, console errors) → -5 to -10 from Presentation **and** Functionality
+- **Update or Delete review broken** → -5 from CRUD (this is why we test it specifically)
+- **Edit Booking modal silently broken** → -5 from CRUD (test it the day before; modal state is the trickiest part of the project)
+- **Inline `style="..."` everywhere instead of CSS** → -1 to -3 from Coding Standards
+- **Missing comments on PHP files** → -1 from Coding Standards
+
+---
+
+Continue to **[`12-DOCUMENTATION.md`](./12-DOCUMENTATION.md)** for the formal 13-section documentation deliverable required by the rubric.
+
+---
+
 ## You're Done.
 
-You've built a real, working, end-to-end web application — frontend, backend, database, and the AJAX layer that ties them together. Every page does something. Every endpoint is secured. Every query is parameterized. Every form validates server-side. Every feature has tests.
+You've built a real, working, end-to-end web application — frontend, backend, database, and the AJAX layer that ties them together. Every page does something. Every endpoint is secured. Every query is parameterized. Every form validates server-side. Every feature has tests. The formal documentation is complete.
 
 This is a portfolio-quality project. Be proud of it during the defense.
 

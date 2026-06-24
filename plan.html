@@ -73,6 +73,15 @@
                         <!-- JS-rendered -->
                     </div>
 
+                    <div id="load-more-tours-wrapper" style="text-align:center;margin-top:24px;display:none;">
+                        <button class="btn-outline" onclick="loadMoreTours()" type="button" style="padding:10px 24px;border-radius:50px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;background:white;">
+                            Load More Tours
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-left:4px;">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </button>
+                    </div>
+
                     <div class="step-error" id="err-1">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
                         Please select a tour to continue.
@@ -405,6 +414,7 @@
     const state = {
         step: 1,
         tourId: null,
+        tourLimit: 8,
         date: '',
         time: '',
         adults: 2,
@@ -435,6 +445,11 @@
                 const urlTour = new URLSearchParams(window.location.search).get('tour');
                 if (urlTour && TOURS.some(t => t.id === urlTour)) {
                     state.tourId = urlTour;
+                    // Automatically expand the load limit so the selected tour is visible
+                    const tourIndex = TOURS.findIndex(t => t.id === urlTour);
+                    if (tourIndex >= state.tourLimit) {
+                        state.tourLimit = Math.ceil((tourIndex + 1) / 8) * 8;
+                    }
                 }
                 
                 renderTourCards();
@@ -443,7 +458,12 @@
                 renderAddonCards();
                 
                 if (state.tourId) {
-                    selectTour(state.tourId);
+                    const id = state.tourId;
+                    state.tourId = null; // Clear temporarily to bypass the toggle-off logic
+                    selectTour(id);
+                    if (urlTour) {
+                        nextStep(1);
+                    }
                 } else {
                     updateSummary();
                 }
@@ -459,13 +479,15 @@
     // ── RENDER FUNCTIONS ──────────────────────────────────────
     function renderTourCards() {
         const grid = document.getElementById('tour-grid');
-        grid.innerHTML = TOURS.map(t => `
+        const visibleTours = TOURS.slice(0, state.tourLimit);
+        
+        grid.innerHTML = visibleTours.map(t => `
             <div class="tour-card ${state.tourId === t.id ? 'selected' : ''}" onclick="selectTour('${t.id}')" id="tc-${t.id}">
                 <div class="tour-card-check">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="tour-card-img" style="background-image:url('${t.image}')">
-                    <span class="tour-card-badge" style="background:${t.badgeColor}">${t.badge}</span>
+                    <span class="tour-card-badge" style="background:${t.badge_color}">${t.badge}</span>
                 </div>
                 <div class="tour-card-body">
                     <p class="tour-card-name">${t.name}</p>
@@ -475,11 +497,23 @@
                     </p>
                     <div class="tour-card-meta">
                         <p class="tour-card-price">₱${t.price.toLocaleString()} <span>/person</span></p>
-                        <span class="tour-card-rating">⭐ ${t.rating} (${t.reviews})</span>
+                        <span class="tour-card-rating">⭐ ${t.rating} (${t.reviews_count})</span>
                     </div>
                 </div>
             </div>
         `).join('');
+
+        const loadMoreWrapper = document.getElementById('load-more-tours-wrapper');
+        if (state.tourLimit < TOURS.length) {
+            loadMoreWrapper.style.display = 'block';
+        } else {
+            loadMoreWrapper.style.display = 'none';
+        }
+    }
+
+    function loadMoreTours() {
+        state.tourLimit += 8;
+        renderTourCards();
     }
 
     function renderTimeSlots() {
@@ -524,7 +558,7 @@
                 </div>
                 <div class="addon-info">
                     <p class="addon-name">${a.name}</p>
-                    <p class="addon-desc">${a.desc}</p>
+                    <p class="addon-desc">${a.description}</p>
                     <p class="addon-price">+₱${a.price.toLocaleString()}/group</p>
                 </div>
             </div>
@@ -533,10 +567,16 @@
 
     // ── STATE UPDATERS ────────────────────────────────────────
     function selectTour(id) {
+        // Toggle: clicking the already-selected card deselects it
+        if (state.tourId === id) {
+            state.tourId = null;
+            document.querySelectorAll('.tour-card').forEach(c => c.classList.remove('selected'));
+            updateSummary();
+            return;
+        }
         state.tourId = id;
         document.querySelectorAll('.tour-card').forEach(c => c.classList.remove('selected'));
         document.getElementById('tc-' + id).classList.add('selected');
-        document.querySelector('#tc-' + id + ' .tour-card-check').style.display = 'flex';
         hideError(1);
         updateSummary();
     }
@@ -791,7 +831,7 @@
         document.getElementById('review-tour-duration').textContent = tour.duration;
         document.getElementById('review-date').textContent          = formatDate(state.date);
         document.getElementById('review-time').textContent          = state.time;
-        document.getElementById('review-meeting').textContent       = tour.meetingPoint;
+        document.getElementById('review-meeting').textContent       = tour.meeting_point;
         document.getElementById('review-name').textContent          = state.name;
         document.getElementById('review-email').textContent         = state.email;
 
@@ -894,8 +934,8 @@
     }
     </script>
 
-    <script src="js/components.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/components.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

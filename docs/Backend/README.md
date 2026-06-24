@@ -6,6 +6,25 @@ The plan is split into **modular phases**. Each phase produces working, demonstr
 
 ---
 
+## Official Project Rubric (100 points)
+
+This plan is aligned to the **PUP CCIS Web Development Project Rubric** released for COMP-20163. The rubric awards points across seven criteria:
+
+| # | Criterion | Pts | Where addressed in this plan |
+|---|---|---|---|
+| 1 | UI/UX (responsive, consistent, easy navigation) | 20 | Existing frontend; no backend impact |
+| 2 | Functionality & Features | 25 | All 11 module phases (`04` – `10`) |
+| 3 | Database Design & Integration | 15 | Phase `02` (14 normalized tables) + Phase `03` (PDO) |
+| 4 | CRUD Operations | 15 | Phase `07` Reviews and Phase `08` Bookings both demonstrate full Create/Read/Update/Delete — Reviews on a simple user-content resource, Bookings on a complex multi-table resource with business rules |
+| 5 | Coding Standards & Best Practices | 10 | Prepared statements throughout; conventions in Phase `03` and `README` |
+| 6 | Documentation | 10 | Phase `12` (formal 13-section deliverable) |
+| 7 | Presentation & Demonstration | 5 | Phase `11` (demo script aligned to rubric topics) |
+| | **TOTAL** | **100** | |
+
+> **Grade interpretation:** 96–100 Outstanding · 90–95 Excellent · 85–89 Very Good · 80–84 Good · 75–79 Satisfactory · Below 75 Needs Improvement
+
+---
+
 ## Course Tech Stack Coverage
 
 | Requirement | Where it lives | Status after backend |
@@ -21,16 +40,17 @@ The plan is split into **modular phases**. Each phase produces working, demonstr
 
 ---
 
-## Suggested 4-Day Sprint (Deadline: June 18, 2026)
+## Suggested 5-Day Sprint (Deadline: June 18, 2026)
 
 | Day | Phases | What you can demo at end of day |
 |---|---|---|
 | **Day 1** | 01 Setup → 02 Database → 03 Core | XAMPP running, DB seeded, API responds with JSON |
 | **Day 2** | 04 Auth → 05 Spots | Users can register/login; spots load from DB |
-| **Day 3** | 07 Reviews → 09 Contact → 08 Bookings | Reviews persist; contact form works; bookings save to DB |
+| **Day 3** | 07 Reviews → 09 Contact → 08 Bookings | Reviews persist with full CRUD; contact form works; bookings save to DB |
 | **Day 4** | 06 Saved → 10 Profile → 11 Checklist | Full localStorage → DB migration; polish for demo |
+| **Day 5** | 12 Documentation + dress rehearsal | Formal 13-section document complete; demo rehearsed |
 
-If time is tight, **the minimum viable backend** for the rubric is: **01 + 02 + 03 + 04 + 05 + 09**. The rest are powerful enhancements.
+If time is tight, **the minimum viable backend** for the rubric is: **01 + 02 + 03 + 04 + 05 + 07 + 09** (this still hits CRUD via Reviews, plus Auth, Spots, and Contact). **Phase 12 is mandatory** — without the formal documentation deliverable, the project loses 10 points automatically.
 
 ---
 
@@ -40,7 +60,7 @@ If time is tight, **the minimum viable backend** for the rubric is: **01 + 02 + 
 |---|---|---|
 | [`00-ARCHITECTURE.md`](./00-ARCHITECTURE.md) | High-level system design, request flow, folder layout | Read first |
 | [`01-SETUP.md`](./01-SETUP.md) | XAMPP installation, project re-mount, .htaccess, env config | Day 1 |
-| [`02-DATABASE.md`](./02-DATABASE.md) | Full MySQL schema (8 tables) + seed from `spots.json` | Day 1 |
+| [`02-DATABASE.md`](./02-DATABASE.md) | Full MySQL schema (14 tables) + seed from `spots.json` | Day 1 |
 | [`03-CORE-PHP.md`](./03-CORE-PHP.md) | PDO connection, JSON response helpers, session, auth middleware, `js/api.js` | Day 1 |
 | [`04-AUTH-MODULE.md`](./04-AUTH-MODULE.md) | Register, Login, Logout, Session check + form wire-up | Day 2 |
 | [`05-SPOTS-MODULE.md`](./05-SPOTS-MODULE.md) | Replace `data/spots.json` fetch with `api/spots/list.php` | Day 2 |
@@ -50,6 +70,7 @@ If time is tight, **the minimum viable backend** for the rubric is: **01 + 02 + 
 | [`09-CONTACT-MODULE.md`](./09-CONTACT-MODULE.md) | Contact form persists to DB | Day 3 |
 | [`10-PROFILE-MODULE.md`](./10-PROFILE-MODULE.md) | Load + update profile fields and password | Day 4 |
 | [`11-CHECKLIST.md`](./11-CHECKLIST.md) | End-to-end test plan, demo script, submission checklist | Day 4 |
+| [`12-DOCUMENTATION.md`](./12-DOCUMENTATION.md) | **The formal 13-section project documentation required by the rubric** — submission deliverable | Day 5 |
 
 ---
 

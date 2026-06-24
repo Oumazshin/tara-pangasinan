@@ -1,5 +1,11 @@
 // ── GLOBAL HELPERS (called by inline onclick handlers) ────────────
 
+function escapeHTML(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+}
+
 function getSavedIds() { return JSON.parse(localStorage.getItem('tara_saved') || '[]'); }
 function setSavedIds(s) { localStorage.setItem('tara_saved', JSON.stringify(s)); }
 
@@ -25,7 +31,7 @@ function paintHeartButtons(id, isSaved) {
         btn.title = isSaved ? 'Remove from saved' : 'Save to list';
         var svg = btn.querySelector('svg');
         if (svg) {
-            svg.setAttribute('fill',   isSaved ? '#e63946' : 'none');
+            svg.setAttribute('fill', isSaved ? '#e63946' : 'none');
             svg.setAttribute('stroke', isSaved ? '#e63946' : 'currentColor');
         }
     });
@@ -50,8 +56,8 @@ function toggleCardSave(e, id) {
     e.preventDefault();
     e.stopPropagation();
 
-    var s       = getSavedIds();
-    var idx     = s.indexOf(id);
+    var s = getSavedIds();
+    var idx = s.indexOf(id);
     var removing = idx > -1;
 
     // Optimistic UI: flip immediately so the click feels instant
@@ -64,13 +70,13 @@ function toggleCardSave(e, id) {
     if (isLoggedIn() && typeof Api !== 'undefined') {
         Api.post('saved/toggle.php', {
             spot_id: id,
-            force:   removing ? 'remove' : 'save'
+            force: removing ? 'remove' : 'save'
         }).catch(function (err) {
             // Roll back the UI if the server rejected
             var rolled = getSavedIds();
             var i = rolled.indexOf(id);
-            if (removing && i === -1)       { rolled.push(id);    setSavedIds(rolled); }
-            else if (!removing && i !== -1) { rolled.splice(i,1); setSavedIds(rolled); }
+            if (removing && i === -1) { rolled.push(id); setSavedIds(rolled); }
+            else if (!removing && i !== -1) { rolled.splice(i, 1); setSavedIds(rolled); }
             paintHeartButtons(id, removing);
             showToast('Could not save: ' + err.message, 'info');
         });
@@ -82,15 +88,15 @@ function toggleCardSave(e, id) {
 document.addEventListener('DOMContentLoaded', function () {
 
     // ─── NAVBAR ──────────────────────────────────────────────
-    window.initNavbar = function() {
+    window.initNavbar = function () {
         var navbar = document.querySelector('.navbar');
         if (!navbar) return;
-        
+
         window.addEventListener('scroll', function () {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
         var hamburger = document.querySelector('.hamburger');
-        var navLinks  = document.querySelector('.nav-links');
+        var navLinks = document.querySelector('.nav-links');
         if (hamburger && navLinks) {
             hamburger.addEventListener('click', function () {
                 hamburger.classList.toggle('active');
@@ -115,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var isLoggedInLocal = !!localStorage.getItem('tara_session');
         document.querySelectorAll('.nav-profile-icon').forEach(function (icon) {
             if (!isLoggedInLocal) {
-                icon.href  = 'login.html';
+                icon.href = 'login.html';
                 icon.title = 'Sign In';
             }
         });
@@ -132,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 var loggedIn = data.logged_in;
                 document.querySelectorAll('.nav-profile-icon').forEach(function (icon) {
-                    icon.href  = loggedIn ? 'profile.html' : 'login.html';
+                    icon.href = loggedIn ? 'profile.html' : 'login.html';
                     icon.title = loggedIn ? 'My Profile' : 'Sign In';
                 });
             }).catch(function () { /* offline / first run — leave UI as-is */ });
@@ -162,11 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ─── SHARED HELPERS ──────────────────────────────────────
     var CAT_COLORS = {
-        Nature:     '#10b981',
-        Beach:      '#0ea5e9',
+        Nature: '#10b981',
+        Beach: '#0ea5e9',
         Historical: '#78716c',
-        Festival:   '#f59e0b',
-        Food:       '#ef4444'
+        Festival: '#f59e0b',
+        Food: '#ef4444'
     };
 
     function starsHTML(rating, size) {
@@ -186,8 +192,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function cardHTML(spot) {
-        var isSaved     = getSavedIds().includes(spot.id);
-        var heartFill   = isSaved ? '#e63946' : 'none';
+        var isSaved = getSavedIds().includes(spot.id);
+        var heartFill = isSaved ? '#e63946' : 'none';
         var heartStroke = isSaved ? '#e63946' : 'currentColor';
         return '<a href="details.html?id=' + spot.id + '" class="explore-card">' +
             '<div class="explore-card-img" style="position:relative;overflow:hidden;">' +
@@ -235,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     homeFilters.forEach(function (p) { p.classList.remove('active'); });
                     pill.classList.add('active');
                     var cat = pill.dataset.category;
-                    cards.forEach(function(card) {
+                    cards.forEach(function (card) {
                         if (cat === 'All' || card.dataset.category === cat) {
                             card.style.display = '';
                         } else {
@@ -245,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         }
-        
+
         // For explore.html
         var exploreCats = document.querySelectorAll('#exploreCats .explore-cat-btn');
         if (exploreCats.length) {
@@ -257,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     btn.classList.add('active');
                     var cat = btn.dataset.cat;
                     var visible = 0;
-                    expCards.forEach(function(card) {
+                    expCards.forEach(function (card) {
                         if (cat === 'All' || card.dataset.category === cat) {
                             card.style.display = '';
                             visible++;
@@ -272,14 +278,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initPage() {
-        if (document.getElementById('exploreGrid'))           initExplorePage();
+        if (document.getElementById('exploreGrid')) initExplorePage();
         else if (document.getElementById('details-content')) initDetailsPage();
         else if (document.getElementById('destinationsGrid')) initHomePage();
     }
 
     // ─── HOME PAGE ────────────────────────────────────────────
     function initHomePage() {
-        var grid    = document.getElementById('destinationsGrid');
+        var grid = document.getElementById('destinationsGrid');
         var filters = document.querySelectorAll('#categoryFilters .map-pill');
         var currentCat = 'All';
 
@@ -312,35 +318,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ─── EXPLORE PAGE ─────────────────────────────────────────
     function initExplorePage() {
-        var grid     = document.getElementById('exploreGrid');
+        var grid = document.getElementById('exploreGrid');
         var searchEl = document.getElementById('exploreSearch');
-        var sortEl   = document.getElementById('exploreSort');
-        var countEl  = document.getElementById('exploreCount');
-        var paginEl  = document.getElementById('explorePagination');
-        var catBtns  = document.querySelectorAll('#exploreCats .explore-cat-btn');
-        var gridBtn  = document.getElementById('gridViewBtn');
-        var listBtn  = document.getElementById('listViewBtn');
+        var sortEl = document.getElementById('exploreSort');
+        var countEl = document.getElementById('exploreCount');
+        var paginEl = document.getElementById('explorePagination');
+        var catBtns = document.querySelectorAll('#exploreCats .explore-cat-btn');
+        var gridBtn = document.getElementById('gridViewBtn');
+        var listBtn = document.getElementById('listViewBtn');
 
         var PER_PAGE = 8;
-        var cat    = 'All';
-        var query  = '';
-        var sort   = 'popular';
-        var page   = 1;
+        var cat = 'All';
+        var query = '';
+        var sort = 'popular';
+        var page = 1;
         var isGrid = true;
 
         function filtered() {
             var d = spotsData.filter(function (s) {
                 var matchCat = cat === 'All' || s.category === cat;
-                var matchQ   = !query || s.title.toLowerCase().includes(query) || s.location.toLowerCase().includes(query);
+                var matchQ = !query || s.title.toLowerCase().includes(query) || s.location.toLowerCase().includes(query);
                 return matchCat && matchQ;
             });
             if (sort === 'rating') d = d.slice().sort(function (a, b) { return b.rating - a.rating; });
-            if (sort === 'name')   d = d.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
+            if (sort === 'name') d = d.slice().sort(function (a, b) { return a.title.localeCompare(b.title); });
             return d;
         }
 
         function render() {
-            var all   = filtered();
+            var all = filtered();
             var pages = Math.ceil(all.length / PER_PAGE) || 1;
             if (page > pages) page = 1;
             var slice = all.slice((page - 1) * PER_PAGE, page * PER_PAGE);
@@ -373,8 +379,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('pnext').addEventListener('click', function () { if (page < total) { page++; render(); } });
         }
 
-        searchEl.addEventListener('input',  function (e) { query = e.target.value.toLowerCase(); page = 1; render(); });
-        sortEl.addEventListener('change',   function (e) { sort  = e.target.value; page = 1; render(); });
+        searchEl.addEventListener('input', function (e) { query = e.target.value.toLowerCase(); page = 1; render(); });
+        sortEl.addEventListener('change', function (e) { sort = e.target.value; page = 1; render(); });
         catBtns.forEach(function (b) {
             b.addEventListener('click', function () {
                 catBtns.forEach(function (x) { x.classList.remove('active'); });
@@ -382,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cat = b.dataset.cat; page = 1; render();
             });
         });
-        gridBtn.addEventListener('click', function () { isGrid = true;  gridBtn.classList.add('active'); listBtn.classList.remove('active'); render(); });
+        gridBtn.addEventListener('click', function () { isGrid = true; gridBtn.classList.add('active'); listBtn.classList.remove('active'); render(); });
         listBtn.addEventListener('click', function () { isGrid = false; listBtn.classList.add('active'); gridBtn.classList.remove('active'); render(); });
 
         render();
@@ -390,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ─── DETAILS PAGE ─────────────────────────────────────────
     function initDetailsPage() {
-        var id   = new URLSearchParams(window.location.search).get('id') || 'hundred-islands';
+        var id = new URLSearchParams(window.location.search).get('id') || 'hundred-islands';
         var spot = spotsData.find(function (s) { return s.id === id; });
 
         if (!spot) {
@@ -404,13 +410,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.title = spot.title + ' | Tara Pangasinan';
 
         // Hero
-        document.getElementById('dh-hero').style.backgroundImage = "url('" + spot.image + "')";
+        document.getElementById('dh-hero').style.backgroundImage = "url('" + spot.image.replace(/ /g, '%20') + "')";
         var badge = document.getElementById('dh-category-badge');
         badge.textContent = spot.category;
         badge.style.background = CAT_COLORS[spot.category] || '#6b7280';
-        document.getElementById('dh-title').textContent         = spot.title;
+        document.getElementById('dh-title').textContent = spot.title;
         document.getElementById('dh-location-text').textContent = spot.location + ', Pangasinan · ' + spot.category;
-        document.getElementById('bc-spot-name').textContent     = spot.title;
+        document.getElementById('bc-spot-name').textContent = spot.title;
 
         // Overview
         document.getElementById('overview-text').innerHTML =
@@ -453,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     '</div>' +
                     (isLast
                         ? '<div class="gallery-more-overlay"><span class="gallery-more-count">+' + extra + '</span>' +
-                          '<span class="gallery-more-label">more photos</span></div>'
+                        '<span class="gallery-more-label">more photos</span></div>'
                         : '') +
                     '</div>';
             }).join('');
@@ -533,8 +539,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.addEventListener('keydown', function (e) {
                 var lb2 = document.getElementById('gallery-lightbox');
                 if (!lb2 || lb2.style.display !== 'block') return;
-                if (e.key === 'Escape')     closeLightbox();
-                if (e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + imgs.length) % imgs.length; syncLb(lbIdx); }
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + imgs.length) % imgs.length; syncLb(lbIdx); }
                 if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % imgs.length; syncLb(lbIdx); }
             });
         }
@@ -542,14 +548,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Map
         if (spot.lat && spot.lng) {
             var dMap = L.map('details-map', { scrollWheelZoom: false })
-                        .setView([spot.lat, spot.lng], 13);
+                .setView([spot.lat, spot.lng], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(dMap);
             L.marker([spot.lat, spot.lng]).addTo(dMap)
-             .bindPopup('<strong>' + spot.title + '</strong><br>' + spot.location + ', Pangasinan<br>' +
-                        '<a href="details.html?id=' + spot.id + '" style="color:#1D9E75;font-family:Inter,sans-serif;font-size:12px;">View Details →</a>')
-             .openPopup();
+                .bindPopup('<strong>' + spot.title + '</strong><br>' + spot.location + ', Pangasinan<br>' +
+                    '<a href="details.html?id=' + spot.id + '" style="color:#1D9E75;font-family:Inter,sans-serif;font-size:12px;">View Details →</a>')
+                .openPopup();
             document.getElementById('map-caption').textContent = '📍 ' + spot.location + ', Pangasinan, Philippines';
             var dirBtn = document.getElementById('directions-btn');
             if (dirBtn) dirBtn.href = 'https://www.google.com/maps?q=' + spot.lat + ',' + spot.lng;
@@ -562,10 +568,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Sidebar info
-        setText('sidebar-hours',    spot.hours    || 'Contact for hours');
+        setText('sidebar-hours', spot.hours || 'Contact for hours');
         setText('sidebar-entrance', spot.entrance || 'Free');
-        setText('sidebar-contact',  spot.contact  || 'N/A');
-        setText('sidebar-address',  spot.location + ', Pangasinan, Philippines');
+        setText('sidebar-contact', spot.contact || 'N/A');
+        setText('sidebar-address', spot.location + ', Pangasinan, Philippines');
         if (spot.website) {
             var ws = document.getElementById('sidebar-website');
             ws.textContent = spot.website;
@@ -574,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('weather-location').textContent = spot.location;
 
         // Rating
-        setText('sidebar-rating',  spot.rating);
+        setText('sidebar-rating', spot.rating);
         setText('sidebar-reviews', '(' + spot.reviews + ' reviews)');
         ['review-stars-row'].forEach(function (rid) {
             var el = document.getElementById(rid);
@@ -583,10 +589,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Nearby (3 other spots)
         var nearbyEl = document.getElementById('nearby-list');
-        var others   = spotsData.filter(function (s) { return s.id !== spot.id; }).slice(0, 3);
+        var others = spotsData.filter(function (s) { return s.id !== spot.id; }).slice(0, 3);
         nearbyEl.innerHTML = others.map(function (s) {
             return '<li>' +
-                '<div class="nearby-img" style="background-image:url(\'' + s.image + '\');"></div>' +
+                '<div class="nearby-img" style="background-image:url(\'' + s.image.replace(/ /g, '%20') + '\');"></div>' +
                 '<div class="nearby-info"><h4>' + s.title + '</h4><span>' + s.location + ' · ' + s.category + '</span></div>' +
                 '<a href="details.html?id=' + s.id + '" style="margin-left:auto;color:#1D9E75;flex-shrink:0;">' +
                 '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
@@ -594,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
 
         // You Might Also Like
-        var likeEl    = document.getElementById('you-might-like-grid');
+        var likeEl = document.getElementById('you-might-like-grid');
         var likeSpots = spotsData.filter(function (s) { return s.id !== spot.id; }).slice(0, 4);
         likeEl.innerHTML = likeSpots.map(cardHTML).join('');
 
@@ -602,42 +608,40 @@ document.addEventListener('DOMContentLoaded', function () {
         var reviewsState = { offset: 0, limit: 10, total: 0, ratingFilter: 0 };
 
         function renderReviewCard(r) {
+
+
             // Tiny avatar from initials (no external service)
-            var initials = r.user_name.split(' ').map(function(p){ return p.charAt(0); }).join('').slice(0,2).toUpperCase();
+            var initials = r.user_name.split(' ').map(function (p) { return p.charAt(0); }).join('').slice(0, 2).toUpperCase();
 
             // Owner controls — only show on reviews authored by current user
             var ownerControls = r.is_owner
                 ? '<div class="review-owner-controls" style="margin-left:auto;display:flex;gap:8px;">' +
-                      '<button class="btn-link" onclick="startEditReview(' + r.id + ', ' + r.rating + ', this)" data-review-id="' + r.id + '" style="background:#f3f4f6;border:1px solid #e5e7eb;color:var(--dark);cursor:pointer;font-size:0.85rem;padding:6px 12px;border-radius:50px;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s ease;font-weight:500;" onmouseover="this.style.background=\'#e5e7eb\'" onmouseout="this.style.background=\'#f3f4f6\'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Edit</button>' +
-                      '<button class="btn-link" onclick="deleteReview(' + r.id + ')" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;cursor:pointer;font-size:0.85rem;padding:6px 12px;border-radius:50px;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s ease;font-weight:500;" onmouseover="this.style.background=\'#fee2e2\'" onmouseout="this.style.background=\'#fef2f2\'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete</button>' +
-                  '</div>'
+                '<button class="btn-link" onclick="startEditReview(' + r.id + ', ' + r.rating + ', this)" data-review-id="' + r.id + '" style="background:#f3f4f6;border:1px solid #e5e7eb;color:var(--dark);cursor:pointer;font-size:0.85rem;padding:6px 12px;border-radius:50px;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s ease;font-weight:500;" onmouseover="this.style.background=\'#e5e7eb\'" onmouseout="this.style.background=\'#f3f4f6\'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Edit</button>' +
+                '<button class="btn-link" onclick="deleteReview(' + r.id + ')" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;cursor:pointer;font-size:0.85rem;padding:6px 12px;border-radius:50px;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s ease;font-weight:500;" onmouseover="this.style.background=\'#fee2e2\'" onmouseout="this.style.background=\'#fef2f2\'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Delete</button>' +
+                '</div>'
                 : '';
 
-            var photoHTML = r.photo_url 
+            var photoHTML = r.photo_url
                 ? '<div style="margin-top:12px;"><img src="' + r.photo_url + '" alt="Review Photo" onerror="this.onerror=null;this.src=\'assets/icons/image-fallback.svg\';" style="max-width:100%;height:auto;border-radius:8px;max-height:300px;object-fit:cover;border:1px solid #e5e7eb;"></div>'
                 : '';
 
             return '<div class="review-card" id="review-' + r.id + '" style="background:white;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:16px;">' +
                 '<div class="reviewer-info" style="display:flex;align-items:center;gap:12px;">' +
-                    '<div class="avatar" style="background:var(--brand-green);color:white;display:flex;align-items:center;justify-content:center;font-weight:600;border-radius:50%;width:40px;height:40px;">' + initials + '</div>' +
-                    '<div><strong style="display:block;color:var(--dark);">' + escapeHTML(r.user_name) + '</strong><span class="date" style="font-size:0.85rem;color:var(--text-light);">' + r.date_label + '</span></div>' +
-                    ownerControls +
+                '<div class="avatar" style="background:var(--brand-green);color:white;display:flex;align-items:center;justify-content:center;font-weight:600;border-radius:50%;width:40px;height:40px;">' + initials + '</div>' +
+                '<div><strong style="display:block;color:var(--dark);">' + escapeHTML(r.user_name) + '</strong><span class="date" style="font-size:0.85rem;color:var(--text-light);">' + r.date_label + '</span></div>' +
+                ownerControls +
                 '</div>' +
                 '<div class="review-stars" style="margin:12px 0;">' + starsHTML(r.rating, 14) + '</div>' +
                 '<p class="review-body-text" style="color:var(--text);line-height:1.6;margin:0;">' + escapeHTML(r.body) + '</p>' +
                 photoHTML +
-            '</div>';
+                '</div>';
         }
 
-        function escapeHTML(s) {
-            return String(s).replace(/[&<>"']/g, function(c){
-                return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-            });
-        }
+
 
         function loadReviews(append) {
             var url = 'reviews/list.php?spot_id=' + encodeURIComponent(spot.id) +
-                      '&limit=' + reviewsState.limit + '&offset=' + reviewsState.offset;
+                '&limit=' + reviewsState.limit + '&offset=' + reviewsState.offset;
             if (reviewsState.ratingFilter > 0) {
                 url += '&rating=' + reviewsState.ratingFilter;
             }
@@ -696,12 +700,12 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('review-form').addEventListener('submit', function (e) {
                 e.preventDefault();
                 var msgEl = document.getElementById('review-form-msg');
-                var btn   = e.target.querySelector('button[type="submit"]');
+                var btn = e.target.querySelector('button[type="submit"]');
                 var payload = new FormData();
                 payload.append('spot_id', spot.id);
                 payload.append('rating', parseInt(hidden.value, 10));
                 payload.append('body', document.getElementById('review-body').value.trim());
-                
+
                 var fileInput = document.getElementById('review-photo');
                 if (fileInput && fileInput.files.length > 0) {
                     payload.append('photo', fileInput.files[0]);
@@ -719,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         clearReviewPhoto('review-photo', 'review-photo-preview');
 
                         // Update visible rating + count without full reload
-                        setText('sidebar-rating',  data.new_rating);
+                        setText('sidebar-rating', data.new_rating);
                         setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
                         document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
 
@@ -749,34 +753,34 @@ document.addEventListener('DOMContentLoaded', function () {
             dropZone.style.background = '#f9fafb';
             dropZone.style.textAlign = 'center';
             dropZone.style.transition = 'all 0.3s ease';
-            
+
             var label = dropZone.querySelector('label[for="review-photo"]');
             label.style.display = 'flex';
             label.style.flexDirection = 'column';
             label.style.justifyContent = 'center';
             label.style.width = '100%';
 
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function(eventName) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
                 dropZone.addEventListener(eventName, preventDefaults, false);
             });
 
             function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
 
-            ['dragenter', 'dragover'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
+            ['dragenter', 'dragover'].forEach(function (eventName) {
+                dropZone.addEventListener(eventName, function () {
                     dropZone.style.borderColor = 'var(--brand-green)';
                     dropZone.style.background = '#ecfdf5';
                 }, false);
             });
 
-            ['dragleave', 'drop'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
+            ['dragleave', 'drop'].forEach(function (eventName) {
+                dropZone.addEventListener(eventName, function () {
                     dropZone.style.borderColor = '#e5e7eb';
                     dropZone.style.background = '#f9fafb';
                 }, false);
             });
 
-            dropZone.addEventListener('drop', function(e) {
+            dropZone.addEventListener('drop', function (e) {
                 var dt = e.dataTransfer;
                 var files = dt.files;
                 if (files.length > 0) {
@@ -789,14 +793,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // ── Edit review (in-place) ───────────────────────────────
-        window.startEditReview = function(reviewId, currentRating, btnEl) {
+        window.startEditReview = function (reviewId, currentRating, btnEl) {
             var card = document.getElementById('review-' + reviewId);
             if (!card || card.dataset.editing === '1') return;
             card.dataset.editing = '1';
 
             var bodyEl = card.querySelector('.review-body-text');
             var currentBody = bodyEl.textContent;
-            
+
             var photoEl = card.querySelector('img[alt="Review Photo"]');
             var hasPhoto = photoEl ? true : false;
             if (photoEl) photoEl.parentNode.style.display = 'none';
@@ -807,29 +811,29 @@ document.addEventListener('DOMContentLoaded', function () {
             // Replace body with editable controls; preserve original for cancel
             var editorHTML =
                 '<div class="review-edit-form" style="margin-top:8px;">' +
-                    '<div style="display:flex;gap:4px;font-size:24px;color:#d1d5db;cursor:pointer;margin-bottom:8px;" id="edit-rating-picker-' + reviewId + '">' +
-                        [1,2,3,4,5].map(function(n){ return '<span data-val="' + n + '" style="color:' + (n <= currentRating ? '#FFB400' : '#d1d5db') + ';">★</span>'; }).join('') +
-                    '</div>' +
-                    '<input type="hidden" id="edit-rating-' + reviewId + '" value="' + currentRating + '">' +
-                    '<textarea id="edit-body-' + reviewId + '" class="form-control" rows="3" minlength="10" maxlength="1000" style="width:100%;resize:vertical;border-radius:12px;padding:12px;border:1px solid #e5e7eb;font-family:inherit;">' + escapeHTML(currentBody) + '</textarea>' +
-                    
-                    '<div style="margin-top:12px;margin-bottom:12px;">' +
-                        '<label for="edit-photo-' + reviewId + '" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--brand-green);font-weight:600;font-size:0.9rem;">' +
-                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>' +
-                            (hasPhoto ? 'Replace Photo' : 'Add Photo') +
-                        '</label>' +
-                        '<input type="file" id="edit-photo-' + reviewId + '" accept="image/jpeg, image/png, image/webp" style="display:none;" onchange="previewReviewPhoto(event, \'edit-photo-preview-' + reviewId + '\')">' +
-                        (hasPhoto ? '<div style="margin-left:12px;display:inline-flex;align-items:center;"><input type="checkbox" id="remove-photo-' + reviewId + '" style="margin-right:4px;"> <label for="remove-photo-' + reviewId + '" style="font-size:0.9rem;cursor:pointer;">Remove existing photo</label></div>' : '') +
-                        '<div id="edit-photo-preview-' + reviewId + '" style="margin-top:8px;display:none;">' +
-                            '<img src="" style="max-width:120px;border-radius:6px;border:1px solid #e5e7eb;">' +
-                            '<button type="button" onclick="clearReviewPhoto(\'edit-photo-' + reviewId + '\', \'edit-photo-preview-' + reviewId + '\')" style="display:block;margin-top:4px;color:#ef4444;background:none;border:none;font-size:0.8rem;cursor:pointer;padding:0;">Cancel new photo</button>' +
-                        '</div>' +
-                    '</div>' +
+                '<div style="display:flex;gap:4px;font-size:24px;color:#d1d5db;cursor:pointer;margin-bottom:8px;" id="edit-rating-picker-' + reviewId + '">' +
+                [1, 2, 3, 4, 5].map(function (n) { return '<span data-val="' + n + '" style="color:' + (n <= currentRating ? '#FFB400' : '#d1d5db') + ';">★</span>'; }).join('') +
+                '</div>' +
+                '<input type="hidden" id="edit-rating-' + reviewId + '" value="' + currentRating + '">' +
+                '<textarea id="edit-body-' + reviewId + '" class="form-control" rows="3" minlength="10" maxlength="1000" style="width:100%;resize:vertical;border-radius:12px;padding:12px;border:1px solid #e5e7eb;font-family:inherit;">' + escapeHTML(currentBody) + '</textarea>' +
 
-                    '<div style="margin-top:8px;display:flex;gap:8px;">' +
-                        '<button class="btn-primary" style="padding:6px 16px;border-radius:8px;" onclick="submitEditReview(' + reviewId + ')">Save</button>' +
-                        '<button class="btn-outline" style="padding:6px 16px;border-radius:8px;background:white;cursor:pointer;" onclick="cancelEditReview(' + reviewId + ')" data-original-body="' + encodeURIComponent(currentBody) + '" data-original-rating="' + currentRating + '">Cancel</button>' +
-                    '</div>' +
+                '<div style="margin-top:12px;margin-bottom:12px;">' +
+                '<label for="edit-photo-' + reviewId + '" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--brand-green);font-weight:600;font-size:0.9rem;">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>' +
+                (hasPhoto ? 'Replace Photo' : 'Add Photo') +
+                '</label>' +
+                '<input type="file" id="edit-photo-' + reviewId + '" accept="image/jpeg, image/png, image/webp" style="display:none;" onchange="previewReviewPhoto(event, \'edit-photo-preview-' + reviewId + '\')">' +
+                (hasPhoto ? '<div style="margin-left:12px;display:inline-flex;align-items:center;"><input type="checkbox" id="remove-photo-' + reviewId + '" style="margin-right:4px;"> <label for="remove-photo-' + reviewId + '" style="font-size:0.9rem;cursor:pointer;">Remove existing photo</label></div>' : '') +
+                '<div id="edit-photo-preview-' + reviewId + '" style="margin-top:8px;display:none;">' +
+                '<img src="" style="max-width:120px;border-radius:6px;border:1px solid #e5e7eb;">' +
+                '<button type="button" onclick="clearReviewPhoto(\'edit-photo-' + reviewId + '\', \'edit-photo-preview-' + reviewId + '\')" style="display:block;margin-top:4px;color:#ef4444;background:none;border:none;font-size:0.8rem;cursor:pointer;padding:0;">Cancel new photo</button>' +
+                '</div>' +
+                '</div>' +
+
+                '<div style="margin-top:8px;display:flex;gap:8px;">' +
+                '<button class="btn-primary" style="padding:6px 16px;border-radius:8px;" onclick="submitEditReview(' + reviewId + ')">Save</button>' +
+                '<button class="btn-outline" style="padding:6px 16px;border-radius:8px;background:white;cursor:pointer;" onclick="cancelEditReview(' + reviewId + ')" data-original-body="' + encodeURIComponent(currentBody) + '" data-original-rating="' + currentRating + '">Cancel</button>' +
+                '</div>' +
                 '</div>';
 
             bodyEl.style.display = 'none';
@@ -863,25 +867,25 @@ document.addEventListener('DOMContentLoaded', function () {
             label.style.justifyContent = 'center';
             label.style.width = '100%';
 
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function(e) { e.preventDefault(); e.stopPropagation(); }, false);
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+                dropZone.addEventListener(eventName, function (e) { e.preventDefault(); e.stopPropagation(); }, false);
             });
 
-            ['dragenter', 'dragover'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
+            ['dragenter', 'dragover'].forEach(function (eventName) {
+                dropZone.addEventListener(eventName, function () {
                     dropZone.style.borderColor = 'var(--brand-green)';
                     dropZone.style.background = '#ecfdf5';
                 }, false);
             });
 
-            ['dragleave', 'drop'].forEach(function(eventName) {
-                dropZone.addEventListener(eventName, function() {
+            ['dragleave', 'drop'].forEach(function (eventName) {
+                dropZone.addEventListener(eventName, function () {
                     dropZone.style.borderColor = '#e5e7eb';
                     dropZone.style.background = '#f9fafb';
                 }, false);
             });
 
-            dropZone.addEventListener('drop', function(e) {
+            dropZone.addEventListener('drop', function (e) {
                 var dt = e.dataTransfer;
                 var files = dt.files;
                 if (files.length > 0) {
@@ -893,7 +897,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, false);
         };
 
-        window.cancelEditReview = function(reviewId) {
+        window.cancelEditReview = function (reviewId) {
             var card = document.getElementById('review-' + reviewId);
             if (!card) return;
             var editor = card.querySelector('.review-edit-form');
@@ -902,16 +906,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (bodyEl) bodyEl.style.display = '';
             var photoEl = card.querySelector('img[alt="Review Photo"]');
             if (photoEl) photoEl.parentNode.style.display = '';
-            
+
             var controlsEl = card.querySelector('.review-owner-controls');
             if (controlsEl) controlsEl.style.display = 'flex';
-            
+
             card.dataset.editing = '';
         };
 
-        window.submitEditReview = function(reviewId) {
+        window.submitEditReview = function (reviewId) {
             var newRating = parseInt(document.getElementById('edit-rating-' + reviewId).value, 10);
-            var newBody   = document.getElementById('edit-body-' + reviewId).value.trim();
+            var newBody = document.getElementById('edit-body-' + reviewId).value.trim();
 
             if (newBody.length < 10) {
                 alert('Review must be at least 10 characters.');
@@ -922,12 +926,12 @@ document.addEventListener('DOMContentLoaded', function () {
             payload.append('review_id', reviewId);
             payload.append('rating', newRating);
             payload.append('body', newBody);
-            
+
             var removePhoto = document.getElementById('remove-photo-' + reviewId);
             if (removePhoto && removePhoto.checked) {
                 payload.append('remove_photo', '1');
             }
-            
+
             var fileInput = document.getElementById('edit-photo-' + reviewId);
             if (fileInput && fileInput.files.length > 0) {
                 payload.append('photo', fileInput.files[0]);
@@ -936,7 +940,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Api.post('reviews/update.php', payload)
                 .then(function (data) {
                     // Update the sidebar rating in case the average changed
-                    setText('sidebar-rating',  data.new_rating);
+                    setText('sidebar-rating', data.new_rating);
                     setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
                     document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
 
@@ -950,13 +954,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // ── Delete review ────────────────────────────────────────
-        window.deleteReview = function(reviewId) {
+        window.deleteReview = function (reviewId) {
             if (!confirm('Delete this review? This cannot be undone.')) return;
 
             Api.post('reviews/delete.php', { review_id: reviewId })
                 .then(function (data) {
                     // Update sidebar (deletion changes the average)
-                    setText('sidebar-rating',  data.new_rating);
+                    setText('sidebar-rating', data.new_rating);
                     setText('sidebar-reviews', '(' + data.reviews_count + ' reviews)');
                     document.getElementById('review-stars-row').innerHTML = starsHTML(data.new_rating, 16);
 
@@ -995,7 +999,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 btn.style.background = 'var(--brand-green)';
                 btn.style.color = 'white';
                 btn.style.borderColor = 'var(--brand-green)';
-                
+
                 reviewsState.ratingFilter = parseInt(btn.dataset.rating, 10);
                 reviewsState.offset = 0;
                 loadReviews(false);
@@ -1015,14 +1019,14 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Global Photo Preview Helpers
-window.previewReviewPhoto = function(event, previewContainerId) {
+window.previewReviewPhoto = function (event, previewContainerId) {
     var file = event.target.files[0];
     var container = document.getElementById(previewContainerId);
     if (!container) return;
-    
+
     if (file) {
         var reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             container.querySelector('img').src = e.target.result;
             container.style.display = 'block';
         };
@@ -1032,7 +1036,7 @@ window.previewReviewPhoto = function(event, previewContainerId) {
     }
 };
 
-window.clearReviewPhoto = function(inputId, previewContainerId) {
+window.clearReviewPhoto = function (inputId, previewContainerId) {
     var input = document.getElementById(inputId);
     var container = document.getElementById(previewContainerId);
     if (input) input.value = '';

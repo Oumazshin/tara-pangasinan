@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="View detailed information, activities, and reviews for this iconic Pangasinan tourist destination.">
+    <meta name="description"
+        content="View detailed information, activities, and reviews for this iconic Pangasinan tourist destination.">
     <meta property="og:title" content="Spot Details | Tara Pangasinan">
-    <meta property="og:description" content="View detailed information, activities, and reviews for this iconic Pangasinan tourist destination.">
+    <meta property="og:description"
+        content="View detailed information, activities, and reviews for this iconic Pangasinan tourist destination.">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/pages/details/main.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
     <title>Spot Details | Tara Pangasinan</title>
 </head>
+
 <body>
 
     <!-- Navbar -->
     <header id="navbar-placeholder"></header>
 
     <!-- Loading state -->
-    <div id="details-loading" style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:#6b7280;">
+    <div id="details-loading"
+        style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;color:#6b7280;">
         Loading...
     </div>
 
@@ -46,7 +53,11 @@
                     <span id="dh-category-badge" class="dh-badge">Nature</span>
                     <h1 id="dh-title" class="dh-title">Loading...</h1>
                     <p id="dh-location" class="dh-location">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
                         <span id="dh-location-text">...</span>
                     </p>
                 </div>
@@ -85,8 +96,12 @@
                         <div id="details-map" style="width:100%;height:300px;border-radius:12px;"></div>
                     </div>
                     <p class="map-caption" id="map-caption">Pangasinan, Philippines</p>
-                    <a id="directions-btn" href="#" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;gap:6px;margin-top:12px;padding:8px 20px;font-size:0.9rem;border-radius:50px;text-decoration:none;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                    <a id="directions-btn" href="#" target="_blank" rel="noopener" class="btn-outline"
+                        style="display:inline-flex;gap:6px;margin-top:12px;padding:8px 20px;font-size:0.9rem;border-radius:50px;text-decoration:none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                        </svg>
                         Get Directions
                     </a>
                 </section>
@@ -105,74 +120,119 @@
                             <span class="rating-number" id="sidebar-rating">4.8</span>
                             <div class="stars">
                                 <div id="review-stars-row"></div>
-                                <span id="sidebar-reviews" style="font-size:0.85rem;color:var(--text-light);">(0 reviews)</span>
+                                <span id="sidebar-reviews" style="font-size:0.85rem;color:var(--text-light);">(0
+                                    reviews)</span>
                             </div>
                         </div>
                     </div>
                     <div class="review-cards">
 
-<!-- Review Filter UI -->
-<div class="review-filters" id="review-filters" style="display:flex;gap:8px;margin-bottom:24px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;">
-    <button class="filter-btn active" data-rating="0" style="padding:8px 16px;border-radius:50px;border:1px solid var(--brand-green);background:var(--brand-green);color:white;cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">All</button>
-    <button class="filter-btn" data-rating="5" style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">5 Stars</button>
-    <button class="filter-btn" data-rating="4" style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">4 Stars</button>
-    <button class="filter-btn" data-rating="3" style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">3 Stars</button>
-    <button class="filter-btn" data-rating="2" style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">2 Stars</button>
-    <button class="filter-btn" data-rating="1" style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">1 Star</button>
-</div>
+                        <!-- Review Filter UI -->
+                        <div class="review-filters" id="review-filters"
+                            style="display:flex;gap:8px;margin-bottom:24px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;">
+                            <button class="filter-btn active" data-rating="0"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid var(--brand-green);background:var(--brand-green);color:white;cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">All</button>
+                            <button class="filter-btn" data-rating="5"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">5
+                                Stars</button>
+                            <button class="filter-btn" data-rating="4"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">4
+                                Stars</button>
+                            <button class="filter-btn" data-rating="3"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">3
+                                Stars</button>
+                            <button class="filter-btn" data-rating="2"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">2
+                                Stars</button>
+                            <button class="filter-btn" data-rating="1"
+                                style="padding:8px 16px;border-radius:50px;border:1px solid #e5e7eb;background:white;color:var(--text);cursor:pointer;font-weight:500;font-size:0.9rem;white-space:nowrap;transition:all 0.2s ease;">1
+                                Star</button>
+                        </div>
 
-<!-- Review form (visible only when logged in) -->
-<div id="review-form-card" class="review-card" style="display:none;background:#ffffff;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,0.05);border-radius:16px;padding:24px;margin-bottom:32px;">
-    <h3 style="margin-top:0;font-size:1.2rem;color:var(--dark);">Share Your Experience</h3>
-    <form id="review-form">
-        <div class="form-group" style="margin-bottom:16px;">
-            <label style="display:block;margin-bottom:8px;font-weight:600;color:var(--dark);">Your Rating</label>
-            <div id="rating-picker" style="display:inline-flex;gap:4px;cursor:pointer;font-size:28px;color:#d1d5db;padding:8px 16px;background:#f9fafb;border-radius:12px;border:1px solid #e5e7eb;transition:all 0.3s ease;">
-                <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
-            </div>
-            <input type="hidden" id="review-rating" value="5">
-        </div>
-        <div class="form-group" style="margin-bottom:16px;">
-            <label for="review-body" style="display:block;margin-bottom:8px;font-weight:600;color:var(--dark);">Your Review</label>
-            <textarea id="review-body" class="form-control" rows="4" minlength="10" maxlength="1000" placeholder="Tell other travelers what made your visit special..." style="width:100%;resize:vertical;border-radius:12px;padding:14px;border:1px solid #e5e7eb;font-family:inherit;font-size:0.95rem;transition:border-color 0.3s ease;" required></textarea>
-        </div>
-        <div class="form-group" style="margin-bottom:20px;">
-            <label for="review-photo" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--brand-green);font-weight:600;font-size:0.95rem;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                Add a Photo
-            </label>
-            <span style="font-size:0.8rem;color:var(--text-light);margin-left:8px;">(Optional, Max 5MB)</span>
-            <input type="file" id="review-photo" accept="image/jpeg, image/png, image/webp" style="display:none;" onchange="previewReviewPhoto(event, 'review-photo-preview')">
-            <div id="review-photo-preview" style="margin-top:10px;display:none;">
-                <img src="" style="max-width:150px;border-radius:8px;border:1px solid #e5e7eb;">
-                <button type="button" onclick="clearReviewPhoto('review-photo', 'review-photo-preview')" style="display:block;margin-top:4px;color:#ef4444;background:none;border:none;font-size:0.85rem;cursor:pointer;padding:0;">Remove</button>
-            </div>
-        </div>
-        <button type="submit" class="btn-primary" style="padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.95rem;transition:all 0.3s ease;">Post Review</button>
-        <div id="review-form-msg" style="margin-top:12px;font-size:0.9rem;font-weight:500;"></div>
-    </form>
-</div>
+                        <!-- Review form (visible only when logged in) -->
+                        <div id="review-form-card" class="review-card"
+                            style="display:none;background:#ffffff;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,0.05);border-radius:16px;padding:24px;margin-bottom:32px;">
+                            <h3 style="margin-top:0;font-size:1.2rem;color:var(--dark);">Share Your Experience</h3>
+                            <form id="review-form">
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label
+                                        style="display:block;margin-bottom:8px;font-weight:600;color:var(--dark);">Your
+                                        Rating</label>
+                                    <div id="rating-picker"
+                                        style="display:inline-flex;gap:4px;cursor:pointer;font-size:28px;color:#d1d5db;padding:8px 16px;background:#f9fafb;border-radius:12px;border:1px solid #e5e7eb;transition:all 0.3s ease;">
+                                        <span data-val="1">★</span><span data-val="2">★</span><span
+                                            data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+                                    </div>
+                                    <input type="hidden" id="review-rating" value="5">
+                                </div>
+                                <div class="form-group" style="margin-bottom:16px;">
+                                    <label for="review-body"
+                                        style="display:block;margin-bottom:8px;font-weight:600;color:var(--dark);">Your
+                                        Review</label>
+                                    <textarea id="review-body" class="form-control" rows="4" minlength="10"
+                                        maxlength="1000"
+                                        placeholder="Tell other travelers what made your visit special..."
+                                        style="width:100%;resize:vertical;border-radius:12px;padding:14px;border:1px solid #e5e7eb;font-family:inherit;font-size:0.95rem;transition:border-color 0.3s ease;"
+                                        required></textarea>
+                                </div>
+                                <div class="form-group" style="margin-bottom:20px;">
+                                    <label for="review-photo"
+                                        style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--brand-green);font-weight:600;font-size:0.95rem;">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
+                                            <polyline points="21 15 16 10 5 21" />
+                                        </svg>
+                                        Add a Photo
+                                    </label>
+                                    <span style="font-size:0.8rem;color:var(--text-light);margin-left:8px;">(Optional,
+                                        Max 5MB)</span>
+                                    <input type="file" id="review-photo" accept="image/jpeg, image/png, image/webp"
+                                        style="display:none;"
+                                        onchange="previewReviewPhoto(event, 'review-photo-preview')">
+                                    <div id="review-photo-preview" style="margin-top:10px;display:none;">
+                                        <img src="" style="max-width:150px;border-radius:8px;border:1px solid #e5e7eb;">
+                                        <button type="button"
+                                            onclick="clearReviewPhoto('review-photo', 'review-photo-preview')"
+                                            style="display:block;margin-top:4px;color:#ef4444;background:none;border:none;font-size:0.85rem;cursor:pointer;padding:0;">Remove</button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary"
+                                    style="padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.95rem;transition:all 0.3s ease;">Post
+                                    Review</button>
+                                <div id="review-form-msg" style="margin-top:12px;font-size:0.9rem;font-weight:500;">
+                                </div>
+                            </form>
+                        </div>
 
-<!-- Login prompt (visible only when logged out) -->
-<div id="review-login-prompt" style="display:none;text-align:center;padding:24px;background:#f9fafb;border-radius:16px;border:1px dashed #d1d5db;margin-bottom:32px;">
-    <p style="margin:0;font-size:0.95rem;">
-        <a href="login.html" style="color:var(--brand-green);font-weight:600;text-decoration:none;">Log in</a>
-        to share your own review of this spot.
-    </p>
-</div>
+                        <!-- Login prompt (visible only when logged out) -->
+                        <div id="review-login-prompt"
+                            style="display:none;text-align:center;padding:24px;background:#f9fafb;border-radius:16px;border:1px dashed #d1d5db;margin-bottom:32px;">
+                            <p style="margin:0;font-size:0.95rem;">
+                                <a href="login.html"
+                                    style="color:var(--brand-green);font-weight:600;text-decoration:none;">Log in</a>
+                                to share your own review of this spot.
+                            </p>
+                        </div>
 
-<!-- Reviews list (rendered by JS) -->
-<div class="review-cards" id="review-cards-container">
-    <p style="text-align:center;color:var(--text-light);padding:32px;">Loading reviews…</p>
-</div>
+                        <!-- Reviews list (rendered by JS) -->
+                        <div class="review-cards" id="review-cards-container">
+                            <p style="text-align:center;color:var(--text-light);padding:32px;">Loading reviews…</p>
+                        </div>
 
-<!-- Load more button (shown only when more reviews exist) -->
-<div style="text-align:center;margin-top:32px;display:none;" id="load-more-wrapper">
-    <button class="btn-outline" id="btn-load-more-reviews" style="padding:12px 32px;border-radius:50px;background:white;cursor:pointer;font-family:inherit;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
-        Load More Reviews
-    </button>
-</div>
+                        <!-- Load more button (shown only when more reviews exist) -->
+                        <div style="text-align:center;margin-top:32px;display:none;" id="load-more-wrapper">
+                            <button class="btn-outline" id="btn-load-more-reviews"
+                                style="padding:12px 32px;border-radius:50px;background:white;cursor:pointer;font-family:inherit;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="vertical-align:middle;margin-right:6px;">
+                                    <polyline points="1 4 1 10 7 10" />
+                                    <path d="M3.51 15a9 9 0 1 0 .49-3.5" />
+                                </svg>
+                                Load More Reviews
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -185,68 +245,114 @@
                 <div class="sidebar-card">
                     <h3>Plan Your Visit</h3>
                     <div class="info-row">
-                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
                         <div>
                             <span class="info-label">Hours</span>
                             <span class="info-value" id="sidebar-hours">Open Daily 7AM – 5PM</span>
                         </div>
                     </div>
                     <div class="info-row">
-                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2"/><path d="M15 11v2"/><path d="M15 17v2"/><path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2Z"/></svg>
+                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 5v2" />
+                            <path d="M15 11v2" />
+                            <path d="M15 17v2" />
+                            <path
+                                d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2Z" />
+                        </svg>
                         <div>
                             <span class="info-label">Entrance Fee</span>
                             <span class="info-value" id="sidebar-entrance">Free</span>
                         </div>
                     </div>
                     <div class="info-row">
-                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75"
+                            stroke-width="2">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
                         <div>
                             <span class="info-label">Contact</span>
                             <span class="info-value" id="sidebar-contact">N/A</span>
                         </div>
                     </div>
                     <div class="info-row">
-                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z"/></svg>
+                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75"
+                            stroke-width="2">
+                            <circle cx="12" cy="10" r="3" />
+                            <path
+                                d="M12 2a8 8 0 0 0-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 0 0 1.3 0C12.95 21.5 20 15.4 20 10a8 8 0 0 0-8-8z" />
+                        </svg>
                         <div>
                             <span class="info-label">Address</span>
                             <span class="info-value" id="sidebar-address">Pangasinan, Philippines</span>
                         </div>
                     </div>
                     <div class="info-row">
-                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        <svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D9E75"
+                            stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
                         <div>
                             <span class="info-label">Website</span>
-                            <a class="info-value" id="sidebar-website" href="#" style="color:#1D9E75;text-decoration:none;" target="_blank">N/A</a>
+                            <a class="info-value" id="sidebar-website" href="#"
+                                style="color:#1D9E75;text-decoration:none;" target="_blank">N/A</a>
                         </div>
                     </div>
-                    <a id="book-btn" href="plan.html" class="btn-primary w-100 mb-10" style="display:block;text-align:center;text-decoration:none;padding:13px;border-radius:50px;margin-bottom:10px;font-family:'Inter',sans-serif;font-weight:500;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <a id="book-btn" href="plan.html" class="btn-primary w-100 mb-10"
+                        style="display:block;text-align:center;text-decoration:none;padding:13px;border-radius:50px;margin-bottom:10px;font-family:'Inter',sans-serif;font-weight:500;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="vertical-align:middle;margin-right:6px;">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
                         Book Tour
                     </a>
-                    <button id="save-btn" type="button" class="btn-outline w-100" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;border-radius:50px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;width:100%;background:transparent;">
-                        <svg id="save-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    <button id="save-btn" type="button" class="btn-outline w-100"
+                        style="display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;border-radius:50px;font-family:'Inter',sans-serif;font-weight:500;cursor:pointer;width:100%;background:transparent;">
+                        <svg id="save-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                        </svg>
                         <span id="save-label">Save to List</span>
                     </button>
                 </div>
 
                 <!-- Current Weather -->
                 <div class="sidebar-card weather-card">
-                    <h3>Current Weather <span style="font-size:0.8rem;font-weight:400;color:var(--text-light);" id="weather-location"></span></h3>
+                    <h3>Current Weather <span style="font-size:0.8rem;font-weight:400;color:var(--text-light);"
+                            id="weather-location"></span></h3>
                     <div class="weather-info">
-                        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" fill="#1D9E75" opacity="0.15" stroke="none" />
+                        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" fill="#1D9E75" opacity="0.15"
+                                stroke="none" />
                             <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" stroke="#1D9E75" />
-                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#F59E0B" stroke-linecap="round" />
+                            <path
+                                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                                stroke="#F59E0B" stroke-linecap="round" />
                         </svg>
                         <div class="weather-temp">
                             <span class="temp">28°C</span>
                             <span class="desc">Partly Cloudy</span>
                         </div>
                     </div>
-                    <div style="display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-                        <div><span style="color:var(--text-light);font-size:0.82rem;display:block;">Humidity</span><span style="font-weight:600;">74%</span></div>
-                        <div><span style="color:var(--text-light);font-size:0.82rem;display:block;">Wind</span><span style="font-weight:600;">12 km/h</span></div>
-                        <div><span style="color:var(--text-light);font-size:0.82rem;display:block;">Visibility</span><span style="font-weight:600;">10 km</span></div>
+                    <div
+                        style="display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+                        <div><span style="color:var(--text-light);font-size:0.82rem;display:block;">Humidity</span><span
+                                style="font-weight:600;">74%</span></div>
+                        <div><span style="color:var(--text-light);font-size:0.82rem;display:block;">Wind</span><span
+                                style="font-weight:600;">12 km/h</span></div>
+                        <div><span
+                                style="color:var(--text-light);font-size:0.82rem;display:block;">Visibility</span><span
+                                style="font-weight:600;">10 km</span></div>
                     </div>
                 </div>
 
@@ -289,21 +395,21 @@
             function setSaved(arr) { localStorage.setItem('tara_saved', JSON.stringify(arr)); }
 
             function updateSaveBtn(saved) {
-                const btn   = document.getElementById('save-btn');
-                const icon  = document.getElementById('save-icon');
+                const btn = document.getElementById('save-btn');
+                const icon = document.getElementById('save-icon');
                 const label = document.getElementById('save-label');
                 if (saved) {
                     label.textContent = 'Saved ✓';
                     btn.style.borderColor = '#1D9E75';
-                    btn.style.color       = '#1D9E75';
-                    btn.style.background  = 'rgba(29,158,117,0.07)';
+                    btn.style.color = '#1D9E75';
+                    btn.style.background = 'rgba(29,158,117,0.07)';
                     icon.setAttribute('fill', '#1D9E75');
                     icon.setAttribute('stroke', '#1D9E75');
                 } else {
                     label.textContent = 'Save to List';
                     btn.style.borderColor = '';
-                    btn.style.color       = '';
-                    btn.style.background  = '';
+                    btn.style.color = '';
+                    btn.style.background = '';
                     icon.setAttribute('fill', 'none');
                     icon.setAttribute('stroke', 'currentColor');
                 }
@@ -312,14 +418,17 @@
             // Set initial state
             updateSaveBtn(getSaved().includes(spotId));
 
-            document.getElementById('save-btn').addEventListener('click', function () {
-                let s = getSaved();
-                const idx = s.indexOf(spotId);
-                if (idx > -1) { s.splice(idx, 1); updateSaveBtn(false); }
-                else          { s.push(spotId);   updateSaveBtn(true);  }
-                setSaved(s);
+            // Sync state periodically in case of server rollback or delayed load
+            setInterval(function() {
+                updateSaveBtn(getSavedIds().includes(spotId));
+            }, 500);
+
+            document.getElementById('save-btn').addEventListener('click', function (e) {
+                toggleCardSave(e, spotId);
+                updateSaveBtn(getSavedIds().includes(spotId));
             });
         })();
     </script>
 </body>
+
 </html>

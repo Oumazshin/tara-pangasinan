@@ -45,6 +45,12 @@
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer id="footer-placeholder"></footer>
+    <script src="js/components.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+
     <script>
     const CAT_COLORS_SAVED = {
         Nature: '#10b981', Beach: '#0ea5e9', Historical: '#78716c',
@@ -101,9 +107,9 @@
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         ${s.location}
                     </div>
-                    <p class="explore-card-desc">${s.shortDesc}</p>
+                    <p class="explore-card-desc">${s.shortDesc || s.short_desc}</p>
                     <div class="explore-card-footer">
-                        <div class="explore-card-rating">⭐ ${s.rating} (${s.reviews})</div>
+                        <div class="explore-card-rating">⭐ ${s.rating} (${s.reviews || s.reviews_count})</div>
                         <a href="details.html?id=${s.id}" class="explore-card-link">
                             View Details
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -132,11 +138,5 @@
     }
     loadPage();
     </script>
-
-    <!-- Footer -->
-    <footer id="footer-placeholder"></footer>
-    <script src="js/components.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

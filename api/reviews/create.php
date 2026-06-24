@@ -21,6 +21,32 @@ $rating  = clean_int($payload['rating'], 1, 5);
 $body    = clean_str($payload['body']);
 $user_id = $_SESSION['user_id'];
 
+// ── Validation ────────────────────────────────────────────────
+if (!valid_slug($spot_id)) {
+    json_error('Invalid spot_id.', 400);
+}
+$body_len = mb_strlen($body);
+if ($body_len < 10) {
+    json_error('Review must be at least 10 characters.', 400);
+}
+if ($body_len > 1000) {
+    json_error('Review cannot exceed 1000 characters.', 400);
+}
+
+// ── Verify spot exists ───────────────────────────────────────
+$exists = $pdo->prepare('SELECT 1 FROM spots WHERE id = ? LIMIT 1');
+$exists->execute([$spot_id]);
+if (!$exists->fetchColumn()) {
+    json_error('Spot not found.', 404);
+}
+
+// ── Verify not already reviewed ──────────────────────────────
+$dup = $pdo->prepare('SELECT 1 FROM reviews WHERE user_id = ? AND spot_id = ? LIMIT 1');
+$dup->execute([$user_id, $spot_id]);
+if ($dup->fetchColumn()) {
+    json_error('You have already reviewed this spot.', 409);
+}
+
 // ── Photo Upload ──────────────────────────────────────────────
 $photo_url = null;
 if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -55,30 +81,11 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE)
     $photo_url = 'assets/images/reviews/' . $filename;
 }
 
-// ── Validation ────────────────────────────────────────────────
-if (!valid_slug($spot_id)) {
-    json_error('Invalid spot_id.', 400);
-}
-$body_len = mb_strlen($body);
-if ($body_len < 10) {
-    json_error('Review must be at least 10 characters.', 400);
-}
-if ($body_len > 1000) {
-    json_error('Review cannot exceed 1000 characters.', 400);
-}
-
-// ── Verify spot exists ───────────────────────────────────────
-$exists = $pdo->prepare('SELECT 1 FROM spots WHERE id = ? LIMIT 1');
-$exists->execute([$spot_id]);
-if (!$exists->fetchColumn()) {
-    json_error('Spot not found.', 404);
-}
-
 // ── Insert + recompute, wrapped in a transaction ─────────────
 try {
     $pdo->beginTransaction();
 
-    // Insert review (UNIQUE(user_id, spot_id) will throw if duplicate)
+    // Insert review
     $ins = $pdo->prepare("
         INSERT INTO reviews (user_id, spot_id, rating, body, photo_url, created_at)
         VALUES (?, ?, ?, ?, ?, NOW())
@@ -98,12 +105,17 @@ try {
     $pdo->commit();
 } catch (PDOException $e) {
     $pdo->rollBack();
-
-    // 23000 = integrity constraint violation; 1062 = duplicate entry
+    // In case there is a race condition with duplicates
     if ($e->getCode() === '23000') {
+        if ($photo_url && file_exists(__DIR__ . '/../../' . $photo_url)) {
+            unlink(__DIR__ . '/../../' . $photo_url);
+        }
         json_error('You have already reviewed this spot.', 409);
     }
-    throw $e; // re-throw; handled by global handler in db.php
+    if ($photo_url && file_exists(__DIR__ . '/../../' . $photo_url)) {
+        unlink(__DIR__ . '/../../' . $photo_url);
+    }
+    throw $e;
 }
 
 // Fetch new totals so frontend can update stars without re-fetching

@@ -3,7 +3,7 @@
  * Database credentials for the local XAMPP environment.
  *
  * Each developer keeps their own local copy of this file.
- * This file is listed in .gitignore so teammates don't overwrite each other.
+ * This file is listed in .gitignore so we don't overwrite each other's changes.
  *
  * Default XAMPP values:
  *   host     = localhost

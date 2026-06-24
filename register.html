@@ -155,5 +155,22 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
         });
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var bgImages = [
+        'assets/images/nature/hundred-island-national-park.jpg',
+        'assets/images/nature/hundred-island-2.webp',
+        'assets/images/beaches/bolinao-patar-beach-1.jpg',
+        'assets/images/beaches/tondol-whitesand.jpg',
+        'assets/images/nature/enchanted-cave.jpg',
+        'assets/images/beaches/tambobong-beach.jpg'
+    ];
+    var randomImg = bgImages[Math.floor(Math.random() * bgImages.length)];
+    var side = document.querySelector('.auth-image-side');
+    if (side) {
+        side.style.backgroundImage = 'url(' + randomImg + ')';
+    }
+});
+</script>
 </body>
 </html>

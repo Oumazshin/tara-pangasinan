@@ -14,7 +14,7 @@ $tours_stmt = $pdo->query("
            badge, badge_color, rating, reviews_count,
            meeting_point, includes
     FROM tours
-    ORDER BY price ASC
+    ORDER BY reviews_count DESC, rating DESC
 ");
 $tours = $tours_stmt->fetchAll();
 
